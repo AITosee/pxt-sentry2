@@ -244,23 +244,11 @@ namespace Sentry {
     }
 
 
-    class SentryStreamBase {
+    class SentryI2CMethod {
+
         _addr: number
         constructor(addr: number) {
             this._addr = addr;
-        }
-
-        Set(reg_address: number, value: number): number { return 0; }
-        Get(reg_address: number): number { return 0; }
-        Read(reg_address: number): number { return 0; }
-        ReadQrCode(reg_address: number): number { return 0; }
-        SetParam(vision_id: number, param: number[], param_id: number): number { return 0; }
-    }
-
-    class SentryI2CMethod extends SentryStreamBase {
-
-        constructor(addr: number) {
-            super(addr);
         }
 
         private i2cwrite(reg: number, value: number) {
@@ -268,12 +256,16 @@ namespace Sentry {
             buf[0] = reg;
             buf[1] = value;
             pins.i2cWriteBuffer(this._addr, buf);
+            
+            console.log("i2cwrite " + this._addr.toString() + " reg:" + reg.toString() + "\t" + value.toString() + "\n")
         }
 
         private i2cread(reg: number) {
-            pins.i2cWriteNumber(this._addr, reg, NumberFormat.UInt8BE);
-            let val = pins.i2cReadNumber(this._addr, NumberFormat.UInt8BE);
-            return val;
+            pins.i2cWriteNumber(this._addr, reg, NumberFormat.UInt8BE, true);
+            let value = pins.i2cReadNumber(this._addr, NumberFormat.UInt8BE);
+            console.log("i2cread " + this._addr.toString() + " reg:" + reg.toString() +"\t" + value.toString() + "\n")
+
+            return value;
         }
 
         private get_u16_data(reg_L: number, reg_H: number): number {
@@ -321,11 +313,7 @@ namespace Sentry {
         }
     }
 
-    class SentryUartMethod extends SentryStreamBase {
-
-        constructor(addr: number) {
-            super(addr);
-        }
+    class SentryUartMethod {
 
         Set(reg_address: number, value: number): number {
             return SENTRY_OK;
@@ -350,7 +338,7 @@ namespace Sentry {
 
     class SentryMethod {
         _address: number
-        _stream: SentryStreamBase
+        stream: any
         _mode: sentry_mode_e
         img_w = 0
         img_h = 0
@@ -368,10 +356,10 @@ namespace Sentry {
             if (this._mode != mode) {
                 this._mode = mode;
                 if (mode == sentry_mode_e.kI2CMode) {
-                    this._stream = new SentryI2CMethod(this._address);
+                    this.stream = new SentryI2CMethod(this._address);
                 }
                 else {
-                    this._stream = new SentryUartMethod(this._address);
+                    this.stream = new SentryUartMethod();
                 }
             }
 
@@ -404,7 +392,7 @@ namespace Sentry {
             do {
                 if (++err_count > 100) return SENTRY_FAIL;  // set max retry times
 
-                start_up = this._stream.Get(kRegSensorConfig1)
+                start_up = this.stream.Get(kRegSensorConfig1)
                 if (start_up & 0x01) break
 
                 basic.pause(200);
@@ -420,7 +408,7 @@ namespace Sentry {
             let device_id = 0;
             while (true) {
                 if (++err_count > 3) return SENTRY_UNKNOWN_PROTOCOL;
-                device_id = this._stream.Get(kRegDeviceId);
+                device_id = this.stream.Get(kRegDeviceId);
 
                 if (device_id == SENTRY_DEVICE_ID) break;
             }
@@ -429,13 +417,13 @@ namespace Sentry {
 
         SensorSetDefault() {
             let err = SENTRY_OK;
-            let sensor_config_reg_value = this._stream.Get(kRegSensorConfig1)
+            let sensor_config_reg_value = this.stream.Get(kRegSensorConfig1)
 
             sensor_config_reg_value |= 0x08
-            err = this._stream.Set(kRegSensorConfig1,
+            err = this.stream.Set(kRegSensorConfig1,
                 sensor_config_reg_value)
             while (true) {
-                sensor_config_reg_value = this._stream.Get(kRegSensorConfig1)
+                sensor_config_reg_value = this.stream.Get(kRegSensorConfig1)
                 if (!(sensor_config_reg_value & 0x08)) {
                     break
                 }
@@ -447,12 +435,12 @@ namespace Sentry {
         GetImageShape() {
             let tmp = [0, 0]
 
-            tmp[0] = this._stream.Get(kRegFrameWidthL)
-            tmp[1] = this._stream.Get(kRegFrameWidthH)
+            tmp[0] = this.stream.Get(kRegFrameWidthL)
+            tmp[1] = this.stream.Get(kRegFrameWidthH)
             this.img_w = tmp[1] << 8 | tmp[0]
 
-            tmp[0] = this._stream.Get(kRegFrameHeightL)
-            tmp[1] = this._stream.Get(kRegFrameHeightH)
+            tmp[0] = this.stream.Get(kRegFrameHeightL)
+            tmp[1] = this.stream.Get(kRegFrameHeightH)
             this.img_h = tmp[1] << 8 | tmp[0]
 
             return SENTRY_OK
@@ -466,7 +454,7 @@ namespace Sentry {
     }
 
     let pSentry: any[] = [null, null, null, null]
-
+    
     /**
      * Begin Sentry.
      */
@@ -475,7 +463,7 @@ namespace Sentry {
     export function Begin(id: SentryId, port: sentry_mode_e) {
         if (pSentry[id] == null) {
             pSentry[id] = new SentryMethod(id + 0x60)
-            pSentry[id].Begin(port);
+            while (pSentry[id].Begin(port) != SENTRY_OK);
         }
     }
 
