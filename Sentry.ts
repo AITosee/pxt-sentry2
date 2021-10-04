@@ -368,8 +368,8 @@ namespace Sentry {
             [err, vision_state] = this.Read(sentry_vision_e.kVisionQrCode, vision_state)
 
             for (let i = 0; i < vision_state.result[0].data5; i++) {
-                result_id = (i / 5 + 2) | 0
-                offset = i % 5
+                result_id = (i / 5 + 2) | 0;
+                offset = i % 5;
                 if (0 == i % 5) {
                     err = this.Set(kRegResultId, result_id)
                     if (err) return [err, vision_state];
@@ -484,16 +484,15 @@ namespace Sentry {
         SensorStartupCheck() {
             let err = SENTRY_OK;
             let err_count = 0;
-            let start_up = 0
-            do {
+            let start_up = 0;
+            while (true){
                 if (++err_count > 100) return SENTRY_FAIL;  // set max retry times
 
-                start_up = this._stream.Get(kRegSensorConfig1)
-                if (start_up & 0x01) break
+                start_up = this._stream.Get(kRegSensorConfig1);
+                if (start_up & 0x01) break;
 
                 basic.pause(200);
-
-            } while (true)
+            } 
 
             return err;
         }
@@ -513,15 +512,14 @@ namespace Sentry {
 
         SensorSetDefault() {
             let err = SENTRY_OK;
-            let sensor_config_reg_value = this._stream.Get(kRegSensorConfig1)
+            let sensor_config_reg_value = this._stream.Get(kRegSensorConfig1);
 
-            sensor_config_reg_value |= 0x08
-            err = this._stream.Set(kRegSensorConfig1,
-                sensor_config_reg_value)
+            sensor_config_reg_value |= 0x08;
+            err = this._stream.Set(kRegSensorConfig1, sensor_config_reg_value);
             while (true) {
-                sensor_config_reg_value = this._stream.Get(kRegSensorConfig1)
+                sensor_config_reg_value = this._stream.Get(kRegSensorConfig1);
                 if (!(sensor_config_reg_value & 0x08)) {
-                    break
+                    break;
                 }
             }
 
@@ -529,15 +527,15 @@ namespace Sentry {
         }
 
         GetImageShape() {
-            let tmp = [0, 0]
+            let tmp = [0, 0];
 
-            tmp[0] = this._stream.Get(kRegFrameWidthL)
-            tmp[1] = this._stream.Get(kRegFrameWidthH)
-            this.img_w = tmp[1] << 8 | tmp[0]
+            tmp[0] = this._stream.Get(kRegFrameWidthL);
+            tmp[1] = this._stream.Get(kRegFrameWidthH);
+            this.img_w = tmp[1] << 8 | tmp[0];
 
-            tmp[0] = this._stream.Get(kRegFrameHeightL)
-            tmp[1] = this._stream.Get(kRegFrameHeightH)
-            this.img_h = tmp[1] << 8 | tmp[0]
+            tmp[0] = this._stream.Get(kRegFrameHeightL);
+            tmp[1] = this._stream.Get(kRegFrameHeightH);
+            this.img_h = tmp[1] << 8 | tmp[0];
 
             return SENTRY_OK
         }
@@ -549,28 +547,28 @@ namespace Sentry {
             err = this._stream.Set(kRegVisionId, vision_type);
             if (err) return err;
 
-            [err, vision_config1] = this._stream.Get(kRegVisionConfig1)
+            [err, vision_config1] = this._stream.Get(kRegVisionConfig1);
             if (err) return err;
 
             status = vision_config1 & 0x01
             if (status != SentryStatus.Eisable)
                 vision_config1 &= 0xfe
-            vision_config1 |= status & 0x01
+            vision_config1 |= status & 0x01;
 
-            err = this._stream.Set(kRegVisionConfig1, vision_config1)
+            err = this._stream.Set(kRegVisionConfig1, vision_config1);
             if (err) return err;
 
             if (status) {
-                this._vision_states[vision_type - 1] = new VisionState(vision_type)
+                this._vision_states[vision_type - 1] = new VisionState(vision_type);
             }
             else {
-                this._vision_states[vision_type - 1] = undefined
+                this._vision_states[vision_type - 1] = undefined;
             }
             return SENTRY_OK
         }
     }
 
-    let pSentry: any[] = [null, null, null, null]
+    let pSentry: SentryMethod[];
 
     /**
      * Begin Sentry.
@@ -578,10 +576,10 @@ namespace Sentry {
     //% blockId=Sentry_begin block="initialize%id|port%port"
     //% group="Settings"
     export function Begin(id: SentryId, port: sentry_mode_e) {
-        if (pSentry[id] == null) {
-            pSentry[id] = new SentryMethod(id + 0x60)
+        if (pSentry.length < id){
+            pSentry.push(new SentryMethod(id + 0x60))
             while (pSentry[id].Begin(port) != SENTRY_OK);
-        }
+        }       
     }
 
     /**
