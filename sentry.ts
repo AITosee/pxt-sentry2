@@ -160,7 +160,7 @@ namespace Sentry {
     const kRegFirmwareVersion = 0x02
     const kRegRestart = 0x03
     const kRegSensorConfig1 = 0x04
-    const kRegLocconst = 0x05
+    const kRegLock = 0x05
     const kRegLed1 = 0x06
     const kRegLed2 = 0x07
     const kRegLedLevel = 0x08
@@ -186,8 +186,8 @@ namespace Sentry {
     const kRegVisionStatus2 = 0x2B
     const kRegVisionDetect1 = 0x30
     const kRegVisionDetect2 = 0x31
-    const kRegResultNumber = 0x34
-    const kRegResultId = 0x35
+    const kRegsentry_object_tNumber = 0x34
+    const kRegsentry_object_tId = 0x35
     const kRegReadStatus1 = 0x36
     const kRegParamValue1H = 0x70
     const kRegParamValue1L = 0x71
@@ -199,16 +199,16 @@ namespace Sentry {
     const kRegParamValue4L = 0x77
     const kRegParamValue5H = 0x78
     const kRegParamValue5L = 0x79
-    const kRegResultData1H = 0x80
-    const kRegResultData1L = 0x81
-    const kRegResultData2H = 0x82
-    const kRegResultData2L = 0x83
-    const kRegResultData3H = 0x84
-    const kRegResultData3L = 0x85
-    const kRegResultData4H = 0x86
-    const kRegResultData4L = 0x87
-    const kRegResultData5H = 0x88
-    const kRegResultData5L = 0x89
+    const kRegsentry_object_tData1H = 0x80
+    const kRegsentry_object_tData1L = 0x81
+    const kRegsentry_object_tData2H = 0x82
+    const kRegsentry_object_tData2L = 0x83
+    const kRegsentry_object_tData3H = 0x84
+    const kRegsentry_object_tData3L = 0x85
+    const kRegsentry_object_tData4H = 0x86
+    const kRegsentry_object_tData4L = 0x87
+    const kRegsentry_object_tData5H = 0x88
+    const kRegsentry_object_tData5L = 0x89
     const kRegSn = 0xD0
 
     const SENTRY_DEVICE_ID = 0x04
@@ -224,7 +224,7 @@ namespace Sentry {
     const SENTRY_UNSUPPORT_PARAM = 0x10
     const SENTRY_UNKNOWN_PROTOCOL = 0x11
 
-    class Result {
+    class sentry_object_t {
         data1: number
         data2: number
         data3: number
@@ -242,16 +242,16 @@ namespace Sentry {
         }
     }
 
-    class VisionState {
+    class sentry_vision_state_t {
         vision_type: sentry_vision_e
         frame: number
         detect: number
-        result: any[]
+        sentry_object_t: any[]
         constructor(vision_type: sentry_vision_e) {
             this.vision_type = vision_type;
             this.frame = 0;
             this.detect = 0;
-            this.result = [
+            this.sentry_object_t = [
                 null, null, null, null, null, 
                 null, null, null, null, null,
                 null, null, null, null, null,
@@ -259,7 +259,7 @@ namespace Sentry {
                 null, null, null, null, null,];
                 
             for(let i=0;i<SENTRY_MAX_RESULT;i++) {
-                this.result[i] = new Result();
+                this.sentry_object_t[i] = new sentry_object_t();
             }
         }
     }
@@ -313,7 +313,7 @@ namespace Sentry {
             return [SENTRY_OK, value];
         }
 
-        Read(vision_type: sentry_vision_e, vision_state: VisionState): [number, VisionState] {
+        Read(vision_type: sentry_vision_e, vision_state: sentry_vision_state_t): [number, sentry_vision_state_t] {
             let err = SENTRY_OK;
 
             err = this.Set(kRegVisionId, vision_type);
@@ -323,7 +323,7 @@ namespace Sentry {
             [err, vision_state.frame] = this.Get(kRegFrameCount)
             if (err) return [err, vision_state];
 
-            [err, vision_state.detect] = this.Get(kRegResultNumber)
+            [err, vision_state.detect] = this.Get(kRegsentry_object_tNumber)
             if (err) return [err, vision_state];
 
             if (!vision_state.detect) {
@@ -339,56 +339,56 @@ namespace Sentry {
             }
 
             for (let i = 0; i < vision_state.detect; i++) {
-                err = this.Set(kRegResultId, i + 1);
+                err = this.Set(kRegsentry_object_tId, i + 1);
                 if (err) return [err, vision_state];
 
-                [err, vision_state.result[i].data1] = this.Get_u16(
-                    kRegResultData1L, kRegResultData1H)
+                [err, vision_state.sentry_object_t[i].data1] = this.Get_u16(
+                    kRegsentry_object_tData1L, kRegsentry_object_tData1H)
                 if (err) return [err, vision_state];
-                [err, vision_state.result[i].data2] = this.Get_u16(
-                    kRegResultData2L, kRegResultData2H)
+                [err, vision_state.sentry_object_t[i].data2] = this.Get_u16(
+                    kRegsentry_object_tData2L, kRegsentry_object_tData2H)
                 if (err) return [err, vision_state];
-                [err, vision_state.result[i].data3] = this.Get_u16(
-                    kRegResultData3L, kRegResultData3H)
+                [err, vision_state.sentry_object_t[i].data3] = this.Get_u16(
+                    kRegsentry_object_tData3L, kRegsentry_object_tData3H)
                 if (err) return [err, vision_state];
-                [err, vision_state.result[i].data4] = this.Get_u16(
-                    kRegResultData4L, kRegResultData4H)
+                [err, vision_state.sentry_object_t[i].data4] = this.Get_u16(
+                    kRegsentry_object_tData4L, kRegsentry_object_tData4H)
                 if (err) return [err, vision_state];
-                [err, vision_state.result[i].data5] = this.Get_u16(
-                    kRegResultData5L, kRegResultData5H)
+                [err, vision_state.sentry_object_t[i].data5] = this.Get_u16(
+                    kRegsentry_object_tData5L, kRegsentry_object_tData5H)
                 if (err) return [err, vision_state];
             }
 
             return [SENTRY_OK, vision_state]
         }
 
-        ReadQrCode(vision_state: VisionState): [number, VisionState] {
+        ReadQrCode(vision_state: sentry_vision_state_t): [number, sentry_vision_state_t] {
             let err = SENTRY_OK;
             let bytec = 0;
-            let result_id = 0;
+            let sentry_object_t_id = 0;
             let offset = 0;
 
-            vision_state.result[0].bytestr = "";
+            vision_state.sentry_object_t[0].bytestr = "";
 
             [err, vision_state] = this.Read(sentry_vision_e.kVisionQrCode, vision_state)
 
-            for (let i = 0; i < vision_state.result[0].data5; i++) {
-                result_id = (i / 5 + 2) | 0;
+            for (let i = 0; i < vision_state.sentry_object_t[0].data5; i++) {
+                sentry_object_t_id = (i / 5 + 2) | 0;
                 offset = i % 5;
                 if (0 == i % 5) {
-                    err = this.Set(kRegResultId, result_id)
+                    err = this.Set(kRegsentry_object_tId, sentry_object_t_id)
                     if (err) return [err, vision_state];
                 }
 
-                [err, bytec] = this.Get(kRegResultData1L + 2 * offset)
+                [err, bytec] = this.Get(kRegsentry_object_tData1L + 2 * offset)
                 if (err) return [err, vision_state];
 
-                vision_state.result[0].bytestr += String.fromCharCode(bytec)
+                vision_state.sentry_object_t[0].bytestr += String.fromCharCode(bytec)
             }
             return [SENTRY_OK, vision_state];
         }
 
-        SetParam(vision_id: number, param: number[], param_id: number): number {
+        SetParam(vision_id: number, param: sentry_object_t, param_id: number): number {
             let err = SENTRY_OK
             err = this.Set(kRegVisionId, vision_id)
             if (err) return err;
@@ -396,16 +396,16 @@ namespace Sentry {
             err = this.Set(kRegParamId, param_id + 1)
             if (err) return err;
 
-            this.Set(kRegParamValue1H, param[0])
-            this.Set(kRegParamValue1H, param[1])
-            this.Set(kRegParamValue2H, param[2])
-            this.Set(kRegParamValue2H, param[3])
-            this.Set(kRegParamValue3H, param[4])
-            this.Set(kRegParamValue3H, param[5])
-            this.Set(kRegParamValue4H, param[6])
-            this.Set(kRegParamValue4H, param[7])
-            this.Set(kRegParamValue5H, param[8])
-            this.Set(kRegParamValue5H, param[9])
+            this.Set(kRegParamValue1H, (param.data1 >> 8) & 0xFF)
+            this.Set(kRegParamValue1H, param.data1)
+            this.Set(kRegParamValue2H, (param.data2 >> 8) & 0xFF)
+            this.Set(kRegParamValue2H, param.data2)
+            this.Set(kRegParamValue3H, (param.data3 >> 8) & 0xFF)
+            this.Set(kRegParamValue3H, param.data3)
+            this.Set(kRegParamValue4H, (param.data4 >> 8) & 0xFF)
+            this.Set(kRegParamValue4H, param.data4)
+            this.Set(kRegParamValue5H, (param.data5 >> 8) & 0xFF)
+            this.Set(kRegParamValue5H, param.data5)
 
             return SENTRY_OK;
         }
@@ -421,15 +421,15 @@ namespace Sentry {
             return [0,0];
         }
 
-        Read(reg_address: number): number {
-            return SENTRY_OK;
+        Read(vision_type: sentry_vision_e, vision_state: sentry_vision_state_t): [number, sentry_vision_state_t] {
+            return [SENTRY_OK, vision_state];
         }
 
-        ReadQrCode(reg_address: number): number {
-            return SENTRY_OK;
+        ReadQrCode(vision_state: sentry_vision_state_t): [number, sentry_vision_state_t] {
+            return [SENTRY_OK, vision_state];
         }
 
-        SetParam(vision_id: number, param: number[], param_id: number): number {
+        SetParam(vision_id: number, param: sentry_object_t, param_id: number): number {
             return SENTRY_OK;
         }
     }
@@ -535,6 +535,13 @@ namespace Sentry {
             return err;
         }
 
+        SensorSetRestart() {
+            let err = this._stream.Set(kRegRestart, 1);
+            if (err) return err;
+
+            return SENTRY_OK;
+        }
+
         GetImageShape() {
             let err = SENTRY_OK;
             let tmp = [0, 0];
@@ -574,10 +581,328 @@ namespace Sentry {
             if (err) return err;
 
             if (enable && this._vision_states[vision_type] == null) {
-                this._vision_states[vision_type] = new VisionState(vision_type);
+                this._vision_states[vision_type] = new sentry_vision_state_t(vision_type);
             }
             
+            return SENTRY_OK;
+        }
+
+        VisionGetStatus(vision_type: sentry_vision_e) {
+            let err = SENTRY_OK;
+            let vision_config1 = 0;
+
+            err = this._stream.Set(kRegVisionId, vision_type);
+            if (err) return err;
+
+            [err, vision_config1] = this._stream.Get(kRegVisionConfig1);
+            if (err) return err;
+
+            return 0x01 & vision_config1
+        }
+
+        GetValue(vision_type:sentry_vision_e, obj_info:sentry_obj_info_e , obj_id: number = 0){
+            /*
+            Note: when getting the vision status, if the block is true, it will wait until the vision_type result is updated
+            */
+            if (obj_info == sentry_obj_info_e.kStatus){
+                let err = 1;
+                while (err) {
+                    let err = this.UpdateResult(vision_type)
+                    basic.pause(200);
+                }
+            }
+
+            return this.read(vision_type, obj_info, obj_id)
+        }
+
+        GetQrCodeValue(){
+            let vision_state = this._vision_states[sentry_vision_e.kVisionQrCode - 1]
+            if (vision_state == null)
+                return ""
+
+            return vision_state.result[0].bytestr
+        }
+
+        SetParamNum(vision_type: sentry_vision_e, max_num: number){
+            let err = SENTRY_OK;
+
+            err = this._stream.Set(kRegVisionId, vision_type);
+            if (err) return err;
+
+            err = this._stream.Set(kRegParamNum, max_num);
+            
+            return err;
+        }
+
+        SetParam(vision_type: sentry_vision_e, param: sentry_object_t, param_id: number = 0){
+            return this._stream.SetParam(vision_type, param, param_id)
+        }
+
+        _SensorLockkReg(lock: SentryStatus){
+            let err = SENTRY_OK;
+            let status = 0;
+
+            for (; ;) {
+                [err,status] = this._stream.Get(kRegLock);
+                if (err) return err;
+                if (status == lock) {
+                    return SENTRY_OK;
+                }
+                err = this._stream.Set(kRegLock, lock);
+                if (err) return err;
+            }
+        }
+            
+        UpdateResult(vision_type:sentry_vision_e){
+            if (vision_type >= sentry_vision_e.kVisionMaxType)
+                return 0;
+
+            let vision_state = this._vision_states[vision_type - 1];
+
+            let [err, frame] = this._stream.Get(kRegFrameCount);
+            if (err) return err;
+
+            while (SENTRY_OK != this._SensorLockkReg(SentryStatus.Disable));
+
+            if (frame == vision_state.frame)
+                return SENTRY_FAIL;
+
+            while (SENTRY_OK != this._SensorLockkReg(SentryStatus.Enable));
+
+            if (vision_type == sentry_vision_e.kVisionQrCode) {
+                [err, vision_state] = this._stream.ReadQrCode(vision_state);
+            }
+            else {
+                [err, vision_state] = this._stream.Read(vision_type, vision_state);
+            }
+
+            while (SENTRY_OK != this._SensorLockkReg(SentryStatus.Disable));
+
+            return SENTRY_OK;
+        }
+
+        read(vision_type:sentry_vision_e, obj_info:sentry_obj_info_e , obj_id:number = 0){
+            let vision_pointer = vision_type - 1;
+
+            if (obj_id >= SENTRY_MAX_RESULT) obj_id = SENTRY_MAX_RESULT-1;
+
+            if (null == this._vision_states[vision_pointer] || vision_pointer >= sentry_vision_e.kVisionMaxType)
+                return 0;
+
+            switch (obj_info) {
+                case sentry_obj_info_e.kStatus:
+                    return this._vision_states[vision_pointer].detect;
+                case sentry_obj_info_e.kXValue:
+                    return this._vision_states[vision_pointer].vision_result[obj_id].x_value * 100 / this.img_w;
+                case sentry_obj_info_e.kYValue:
+                    return this._vision_states[vision_pointer].vision_result[obj_id].y_value * 100 / this.img_h;
+                case sentry_obj_info_e.kWidthValue:
+                    return this._vision_states[vision_pointer].vision_result[obj_id].width * 100 / this.img_w;
+                case sentry_obj_info_e.kHeightValue:
+                    return this._vision_states[vision_pointer].vision_result[obj_id].height * 100 / this.img_h;
+                case sentry_obj_info_e.kLabel:
+                    return this._vision_states[vision_pointer].vision_result[obj_id].label;
+                case sentry_obj_info_e.kGValue:
+                    return this._vision_states[vision_pointer].vision_result[obj_id].color_g_value;
+                case sentry_obj_info_e.kRValue:
+                    return this._vision_states[vision_pointer].vision_result[obj_id].color_r_value;
+                case sentry_obj_info_e.kBValue:
+                    return this._vision_states[vision_pointer].vision_result[obj_id].color_b_value;
+                default:
+                    return 0;
+            }
+        }
+
+        LedSetMode(led: sentry_led_e, manual: SentryStatus, hold: SentryStatus){
+            let err = SENTRY_OK;
+            let led_reg_value = 0;
+            let address = 0;
+
+            if (sentry_led_e.kLed1 == led){
+                address = kRegLed1
+            }
+            else if (sentry_led_e.kLed2 == led){
+                address = kRegLed2
+            }      
+            else if (sentry_led_e.kLedAll == led){
+                err = this.LedSetMode(sentry_led_e.kLed1, manual, hold)
+                if (err) return err;
+                err = this.LedSetMode(sentry_led_e.kLed2, manual, hold)
+                if (err) return err;
+            }
+            else{
+                return SENTRY_UNSUPPORT_PARAM
+            }
+            
+
+            [err, led_reg_value] = this._stream.Get(address)
+            if (err) return err;
+
+            let gmanual = led_reg_value & 0x01
+            let ghold = (led_reg_value >> 4) & 0x01
+
+            if (manual != gmanual || hold != ghold){
+                led_reg_value &= 0xfe
+                led_reg_value |= manual & 0x01
+
+                led_reg_value &= 0xef
+                led_reg_value |= (hold & 0x01) << 4
+
+                err = this._stream.Set(address, led_reg_value)
+                if (err) return err;
+            }
+
             return SENTRY_OK
+        }
+        
+        LedSetColor(led: sentry_led_e, detected_color: sentry_led_color_e, undetected_color: sentry_led_color_e, level: number = 1){
+            let err = SENTRY_OK;
+            let led_reg_value = 0;
+            let address = 0;
+            let led_level = 0;
+
+            [err, led_level] = this._stream.Get(kRegLedLevel)
+
+            if (sentry_led_e.kLed1 == led) {
+                address = kRegLed1
+                led_level = led_level&0xF0;
+                led_level |= (level & 0x0F)
+                this._stream.Set(kRegLedLevel, led_level)
+            }
+            else if (sentry_led_e.kLed2 == led) {
+                address = kRegLed2
+                led_level &= 0x0F
+                led_level |= (level << 4)
+                this._stream.Set(kRegLedLevel, led_level)
+            }
+            else if (sentry_led_e.kLedAll == led) {
+                err = this.LedSetColor(sentry_led_e.kLed1, detected_color, undetected_color, level)
+                if (err) return err;
+                err = this.LedSetColor(sentry_led_e.kLed1, detected_color, undetected_color, level)
+                if (err) return err;
+            }
+            else {
+                return SENTRY_UNSUPPORT_PARAM
+            }
+
+            [err, led_reg_value] = this._stream.Get(address)
+            if (err) return err;
+
+            led_reg_value &= 0xf1
+            led_reg_value |= (detected_color & 0x07) << 1
+
+            led_reg_value &= 0x1f
+            led_reg_value |= (undetected_color & 0x07) << 5
+
+            err = this._stream.Set(address, led_reg_value)
+            if (err) return err;
+
+            return SENTRY_OK
+        }
+
+        CameraSetZoom(zoom:sentry_camera_zoom_e){
+            let [err, camera_reg_value] = this._stream.Get(kRegCameraConfig1);
+            if (err) return err;
+
+            let gzoom = camera_reg_value & 0x07
+            if (zoom != gzoom){
+                camera_reg_value &= 0xf8
+                camera_reg_value |= zoom & 0x07
+                err = this._stream.Set(kRegCameraConfig1, camera_reg_value);
+                if (err) return err;
+            }
+
+            return SENTRY_OK;
+        }
+
+        CameraGetZoom(){
+            let [err, camera_reg_value] = this._stream.Get(kRegCameraConfig1);
+            if (err) return err;
+
+            return camera_reg_value & 0x07
+        }
+
+        CameraSetRotate(enable: SentryStatus){
+            let [err, camera_reg_value] = this._stream.Get(kRegCameraConfig1);
+            if (err) return err;
+
+            let rotate = (camera_reg_value >> 3) & 0x01
+            if (rotate != enable) {
+                camera_reg_value &= 0xf7
+                camera_reg_value |= (enable & 0x01) << 3
+                err = this._stream.Set(kRegCameraConfig1, camera_reg_value);
+                if (err) return err;
+            }
+
+            return SENTRY_OK;
+        }
+
+        CameraGetRotate(){
+            let [err, camera_reg_value] = this._stream.Get(kRegCameraConfig1);
+            if (err) return err;
+
+            return (camera_reg_value >> 3) & 0x01
+        }
+
+        CameraSetFPS(fps:sentry_camera_fps_e){
+            let [err, camera_reg_value] = this._stream.Get(kRegCameraConfig1);
+            if (err) return err;
+
+            let gfps = (camera_reg_value >> 4) & 0x01
+            if (fps != gfps) {
+                camera_reg_value &= 0xef
+                camera_reg_value |= (fps & 0x01) << 4
+                err = this._stream.Set(kRegCameraConfig1, camera_reg_value);
+                if (err) return err;
+            }
+
+            return SENTRY_OK;
+        }
+
+        CameraGetFPS(){
+            let [err, camera_reg_value] = this._stream.Get(kRegCameraConfig1);
+            if (err) return err;
+
+            return (camera_reg_value >> 4) & 0x01
+        }
+
+        CameraSetAwb(awb:sentry_camera_white_balance_e){
+            let [err, camera_reg_value] = this._stream.Get(kRegCameraConfig1);
+            if (err) return err;
+
+            let white_balance = (camera_reg_value >> 5) & 0x03
+            if (sentry_camera_white_balance_e.kLockWhiteBalance == awb) {
+                camera_reg_value &= 0x1f
+                camera_reg_value |= (awb & 0x03) << 5
+                err = this._stream.Set(kRegCameraConfig1, camera_reg_value);
+                if (err) return err;
+                while ((camera_reg_value >> 7) == 0){
+                    [err, camera_reg_value] = this._stream.Get(kRegCameraConfig1);
+                    if (err) return err;
+                }
+            }
+            else if (white_balance != awb){
+                camera_reg_value &= 0x1f
+                camera_reg_value |= (awb & 0x03) << 5
+                err = this._stream.Set(kRegCameraConfig1, camera_reg_value);
+                if (err) return err;
+            }
+
+            return SENTRY_OK;
+        }
+
+        CameraGetAwb(){
+            let [err, camera_reg_value] = this._stream.Get(kRegCameraConfig1);
+            if (err) return err;
+
+            return (camera_reg_value >> 5) & 0x03
+        }
+
+        VisionSetDefault(vision_type:sentry_vision_e){
+            let err = this._stream.Set(kRegVisionId, vision_type);
+            if (err) return err;
+
+            return SENTRY_OK;
         }
     }
 
@@ -586,12 +911,12 @@ namespace Sentry {
     /**
      * Begin Sentry.
      */
-    //% blockId=Sentry_begin block="initialize%id|port%port"
+    //% blockId=Sentry_begin block="initialize%id|mode%mode"
     //% group="Settings"
-    export function Begin(id: SentryId, port: sentry_mode_e) {
+    export function Begin(id: SentryId, mode: sentry_mode_e) {
         if (pSentry[id] == null) {
             pSentry[id] = new SentryMethod(id + 0x60)
-            while (pSentry[id].Begin(port) != SENTRY_OK);
+            while (pSentry[id].Begin(mode) != SENTRY_OK);
         }
     }
 
@@ -624,7 +949,7 @@ namespace Sentry {
     //% weight=200 inlineInputMode=inline
     //% group="Settings" advanced=true
     export function ledSetColor(id: SentryId, led: sentry_led_e, detected_color: sentry_led_color_e, undetected_color: sentry_led_color_e) {
-
+        while (pSentry[id].ledSetColor(led, detected_color, undetected_color) != SENTRY_OK);
     }
 
     /**
@@ -635,7 +960,7 @@ namespace Sentry {
     //% blockId=Sentry_camera_set_zoom block="%id|digital zoom%level"
     //% group="Settings" advanced=true
     export function cameraSetZoom(id: SentryId, zoom: sentry_camera_zoom_e) {
-
+        while (pSentry[id].ledSetColor(zoom) != SENTRY_OK);
     }
 
     /**
@@ -646,7 +971,7 @@ namespace Sentry {
     //% blockId=Sentry_camera_set_awb block="%id|white balance%wb"
     //% group="Settings" advanced=true
     export function cameraSetAwb(id: SentryId, wb: sentry_camera_white_balance_e) {
-
+        while (pSentry[id].ledSetColor(wb) != SENTRY_OK);
     }
 
     /**
@@ -658,11 +983,11 @@ namespace Sentry {
     //% on.shadow="toggleOnOff" on.defl="true"
     //% group="Settings" advanced=true
     export function cameraSetFPS(id: SentryId, on: boolean) {
-
+        while (pSentry[id].ledSetColor(on) != SENTRY_OK);
     }
 
     /**
-    * get vision result data, this function will update vision result automatically.
+    * get vision sentry_object_t data, this function will update vision sentry_object_t automatically.
     * @param id Sentry id
     * @param vision_type: vision type.
     * @param object_inf:  object information
