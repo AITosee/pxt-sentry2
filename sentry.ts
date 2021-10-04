@@ -151,7 +151,7 @@ declare const enum SentryStatus {
     //% block="enable"
     Enable = 1,
     //% block="disable"
-    Eisable = 0,
+    Disable = 0,
 }
 
 namespace Sentry {
@@ -255,11 +255,6 @@ namespace Sentry {
                 this.result.push(new Result)
             }
         }
-    }
-
-    class Res {
-        err: number
-        value: any
     }
 
     class SentryI2CMethod {
@@ -433,12 +428,23 @@ namespace Sentry {
         _address: number;
         _stream: any;
         _mode: sentry_mode_e;
-        _vision_states: any[];
+        _vision_states: VisionState[];
+        
         img_w = 0;
         img_h = 0;
         constructor(addr: number) {
             this._address = addr
             this._mode = sentry_mode_e.kUnknownMode;
+        }
+
+        private get_index(vision_state: sentry_vision_e): number{
+            for (let i = 0; i < this._vision_states.length;i++){
+                if (this._vision_states[i].vision_type == vision_state) {
+                    return i;
+                }
+            }
+
+            return -1;
         }
 
         Begin(mode: sentry_mode_e): number {
@@ -540,7 +546,7 @@ namespace Sentry {
             return SENTRY_OK
         }
 
-        VisionSetStatus(vision_type: sentry_vision_e, status: SentryStatus) {
+        VisionSetStatus(vision_type: sentry_vision_e, enable: SentryStatus) {
             let err = SENTRY_OK;
             let vision_config1 = 0;
 
@@ -550,20 +556,25 @@ namespace Sentry {
             [err, vision_config1] = this._stream.Get(kRegVisionConfig1);
             if (err) return err;
 
-            status = vision_config1 & 0x01
-            if (status != SentryStatus.Eisable)
+            let status = vision_config1 & 0x01
+            if (status != enable) {
                 vision_config1 &= 0xfe
-            vision_config1 |= status & 0x01;
+                vision_config1 |= enable & 0x01;
+            } 
 
             err = this._stream.Set(kRegVisionConfig1, vision_config1);
             if (err) return err;
 
             if (status) {
-                this._vision_states[vision_type - 1] = new VisionState(vision_type);
+                this._vision_states.push(new VisionState(vision_type));
             }
-            else {
-                this._vision_states[vision_type - 1] = null;
+            else{
+                let index = this.get_index(vision_type)
+                if (index != -1){
+                    this._vision_states.splice(index, 1)
+                }         
             }
+
             return SENTRY_OK
         }
     }
