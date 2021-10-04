@@ -225,24 +225,42 @@ namespace Sentry {
     const SENTRY_UNKNOWN_PROTOCOL = 0x11
 
     class Result {
-        result_data1 = 0
-        result_data2 = 0
-        result_data3 = 0
-        result_data4 = 0
-        result_data5 = 0
-        bytestr = ""
+        data1: number
+        data2: number
+        data3: number
+        data4: number
+        data5: number
+        bytestr: string
+
+        constructor() {
+            this.data1 = 0;
+            this.data2 = 0;
+            this.data3 = 0;
+            this.data4 = 0;
+            this.data5 = 0;
+            this.bytestr = "";
+        }
     }
 
     class VisionState {
         vision_type: sentry_vision_e
-        frame = 0
-        detect = 0
-        //result = Result
+        frame:number
+        detect: number
+        result: Result[]
         constructor(vision_type: sentry_vision_e) {
             this.vision_type = vision_type;
+            this.frame = 0;
+            this.detect = 0;
+            for (let index = 0; index < SENTRY_MAX_RESULT; index++) {
+                this.result.push(new Result)
+            }
         }
     }
 
+    class Res {
+        err: number
+        value: any
+    }
 
     class SentryI2CMethod {
 
@@ -256,20 +274,27 @@ namespace Sentry {
             buf[0] = reg;
             buf[1] = value;
             pins.i2cWriteBuffer(this._addr, buf);
-            
+
             console.log("i2cwrite " + this._addr.toString() + " reg:" + reg.toString() + "\t" + value.toString() + "\n")
         }
 
         private i2cread(reg: number) {
             pins.i2cWriteNumber(this._addr, reg, NumberFormat.UInt8BE, true);
             let value = pins.i2cReadNumber(this._addr, NumberFormat.UInt8BE);
-            console.log("i2cread " + this._addr.toString() + " reg:" + reg.toString() +"\t" + value.toString() + "\n")
+            console.log("i2cread " + this._addr.toString() + " reg:" + reg.toString() + "\t" + value.toString() + "\n")
 
             return value;
         }
 
-        private get_u16_data(reg_L: number, reg_H: number): number {
-            return 0;
+        private Get_u16(reg_L: number, reg_H: number): [number, number] {
+            let err = SENTRY_OK;
+            let tmp = [0, 0];
+
+            [err, tmp[0]] = this.Get(reg_L);
+
+            [err, tmp[1]] = this.Get(reg_H);
+
+            return [err, (tmp[1] << 8 | tmp[0])];
         }
 
         Set(reg_address: number, value: number): number {
@@ -277,17 +302,85 @@ namespace Sentry {
             return SENTRY_OK;
         }
 
-        Get(reg_address: number): number {
+        Get(reg_address: number): [number, number] {
             let value = this.i2cread(reg_address);
-            return value;
+
+            return [SENTRY_OK, value];
         }
 
-        Read(reg_address: number): number {
-            return SENTRY_OK;
+        Read(vision_type: sentry_vision_e, vision_state: VisionState): [number, VisionState] {
+            let err = SENTRY_OK;
+
+            err = this.Set(kRegVisionId, vision_type);
+
+            if (err) return [err, vision_state];
+
+            [err, vision_state.frame] = this.Get(kRegFrameCount)
+            if (err) return [err, vision_state];
+
+            [err, vision_state.detect] = this.Get(kRegResultNumber)
+            if (err) return [err, vision_state];
+
+            if (!vision_state.detect) {
+                if (err) return [SENTRY_OK, vision_state];
+            }
+
+            if (SENTRY_MAX_RESULT > vision_state.detect) {
+                vision_state.detect = SENTRY_MAX_RESULT;
+            }
+
+            if (sentry_vision_e.kVisionQrCode == vision_type) {
+                vision_state.detect = 1;
+            }
+
+            for (let i = 0; i < vision_state.detect; i++) {
+                err = this.Set(kRegResultId, i + 1);
+                if (err) return [err, vision_state];
+
+                [err, vision_state.result[i].data1] = this.Get_u16(
+                    kRegResultData1L, kRegResultData1H)
+                if (err) return [err, vision_state];
+                [err, vision_state.result[i].data2] = this.Get_u16(
+                    kRegResultData2L, kRegResultData2H)
+                if (err) return [err, vision_state];
+                [err, vision_state.result[i].data3] = this.Get_u16(
+                    kRegResultData3L, kRegResultData3H)
+                if (err) return [err, vision_state];
+                [err, vision_state.result[i].data4] = this.Get_u16(
+                    kRegResultData4L, kRegResultData4H)
+                if (err) return [err, vision_state];
+                [err, vision_state.result[i].data5] = this.Get_u16(
+                    kRegResultData5L, kRegResultData5H)
+                if (err) return [err, vision_state];
+            }
+
+            return [SENTRY_OK, vision_state]
         }
 
-        ReadQrCode(reg_address: number): number {
-            return SENTRY_OK;
+        ReadQrCode(vision_state: VisionState): [number, VisionState] {
+            let err = SENTRY_OK;
+            let bytec = 0;
+            let result_id = 0;
+            let offset = 0;
+
+            vision_state.result[0].bytestr = "";
+
+            [err, vision_state] = this.Read(sentry_vision_e.kVisionQrCode, vision_state)
+
+            for (let i = 0; i < vision_state.result[0].data5; i++) {
+                result_id = (i / 5 + 2) | 0
+                offset = i % 5
+                if (0 == i % 5) {
+                    err = this.Set(kRegResultId, result_id)
+                    if (err) return [err, vision_state];
+                }
+
+                [err, bytec] = this.Get(kRegResultData1L + 2 * offset)
+                if (err) return [err, vision_state];
+
+                vision_state.result[0].bytestr += String.fromCharCode(bytec)
+            }
+            return [SENTRY_OK, vision_state];
         }
 
         SetParam(vision_id: number, param: number[], param_id: number): number {
@@ -337,15 +430,18 @@ namespace Sentry {
     }
 
     class SentryMethod {
-        _address: number
-        stream: any
-        _mode: sentry_mode_e
-        img_w = 0
-        img_h = 0
-
+        _address: number;
+        _stream: any;
+        _mode: sentry_mode_e;
+        _vision_states:any[];
+        img_w = 0;
+        img_h = 0;
         constructor(addr: number) {
             this._address = addr
             this._mode = sentry_mode_e.kUnknownMode;
+            for(let i=0;i<sentry_vision_e.kVisionMaxType;++i) {
+                this._vision_states.push(undefined)
+            }
         }
 
         Begin(mode: sentry_mode_e) {
@@ -356,10 +452,10 @@ namespace Sentry {
             if (this._mode != mode) {
                 this._mode = mode;
                 if (mode == sentry_mode_e.kI2CMode) {
-                    this.stream = new SentryI2CMethod(this._address);
+                    this._stream = new SentryI2CMethod(this._address);
                 }
                 else {
-                    this.stream = new SentryUartMethod();
+                    this._stream = new SentryUartMethod();
                 }
             }
 
@@ -392,7 +488,7 @@ namespace Sentry {
             do {
                 if (++err_count > 100) return SENTRY_FAIL;  // set max retry times
 
-                start_up = this.stream.Get(kRegSensorConfig1)
+                start_up = this._stream.Get(kRegSensorConfig1)
                 if (start_up & 0x01) break
 
                 basic.pause(200);
@@ -408,7 +504,7 @@ namespace Sentry {
             let device_id = 0;
             while (true) {
                 if (++err_count > 3) return SENTRY_UNKNOWN_PROTOCOL;
-                device_id = this.stream.Get(kRegDeviceId);
+                device_id = this._stream.Get(kRegDeviceId);
 
                 if (device_id == SENTRY_DEVICE_ID) break;
             }
@@ -417,13 +513,13 @@ namespace Sentry {
 
         SensorSetDefault() {
             let err = SENTRY_OK;
-            let sensor_config_reg_value = this.stream.Get(kRegSensorConfig1)
+            let sensor_config_reg_value = this._stream.Get(kRegSensorConfig1)
 
             sensor_config_reg_value |= 0x08
-            err = this.stream.Set(kRegSensorConfig1,
+            err = this._stream.Set(kRegSensorConfig1,
                 sensor_config_reg_value)
             while (true) {
-                sensor_config_reg_value = this.stream.Get(kRegSensorConfig1)
+                sensor_config_reg_value = this._stream.Get(kRegSensorConfig1)
                 if (!(sensor_config_reg_value & 0x08)) {
                     break
                 }
@@ -435,26 +531,47 @@ namespace Sentry {
         GetImageShape() {
             let tmp = [0, 0]
 
-            tmp[0] = this.stream.Get(kRegFrameWidthL)
-            tmp[1] = this.stream.Get(kRegFrameWidthH)
+            tmp[0] = this._stream.Get(kRegFrameWidthL)
+            tmp[1] = this._stream.Get(kRegFrameWidthH)
             this.img_w = tmp[1] << 8 | tmp[0]
 
-            tmp[0] = this.stream.Get(kRegFrameHeightL)
-            tmp[1] = this.stream.Get(kRegFrameHeightH)
+            tmp[0] = this._stream.Get(kRegFrameHeightL)
+            tmp[1] = this._stream.Get(kRegFrameHeightH)
             this.img_h = tmp[1] << 8 | tmp[0]
 
             return SENTRY_OK
         }
 
         VisionSetStatus(vision_type: sentry_vision_e, status: SentryStatus) {
+            let err = SENTRY_OK;
+            let vision_config1 = 0;
+
+            err = this._stream.Set(kRegVisionId, vision_type);
+            if (err) return err;
+
+            [err, vision_config1] = this._stream.Get(kRegVisionConfig1)
+            if (err) return err;
+
+            status = vision_config1 & 0x01
+            if (status != SentryStatus.Eisable)
+                vision_config1 &= 0xfe
+            vision_config1 |= status & 0x01
+
+            err = this._stream.Set(kRegVisionConfig1, vision_config1)
+            if (err) return err;
+
+            if (status) {
+                this._vision_states[vision_type - 1] = new VisionState(vision_type)
+            }
+            else {
+                this._vision_states[vision_type - 1] = undefined
+            }
             return SENTRY_OK
         }
-
-
     }
 
     let pSentry: any[] = [null, null, null, null]
-    
+
     /**
      * Begin Sentry.
      */
