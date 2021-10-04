@@ -246,7 +246,7 @@ namespace Sentry {
         vision_type: sentry_vision_e
         frame: number
         detect: number
-        result: any
+        result: any[]
         constructor(vision_type: sentry_vision_e) {
             this.vision_type = vision_type;
             this.frame = 0;
