@@ -1,4 +1,3 @@
-
 declare const enum sentry_vision_e {
     kVisionColor = 1,
     kVisionBlob = 2,
@@ -33,17 +32,6 @@ declare const enum sentry_led_color_e {
     //% block="white"
     kLedWhite = 7,
 }
-
-
-declare const enum sentry_led_e {
-    //% block="1"
-    kLed1 = 0,
-    //% block="2"
-    kLed2 = 1,
-    //% block="All"
-    kLedAll = 2,
-}
-
 
 declare const enum sentry_mode_e {
     //% block="SerialMode"
@@ -161,8 +149,7 @@ namespace Sentry {
     const kRegRestart = 0x03
     const kRegSensorConfig1 = 0x04
     const kRegLock = 0x05
-    const kRegLed1 = 0x06
-    const kRegLed2 = 0x07
+    const kRegLed = 0x06
     const kRegLedLevel = 0x08
     const kRegUart = 0x09
     const kRegUSBCongig = 0x0B
@@ -713,27 +700,10 @@ namespace Sentry {
             }
         }
 
-        LedSetMode(led: sentry_led_e, manual: SentryStatus, hold: SentryStatus){
+        LedSetMode(manual: SentryStatus, hold: SentryStatus){
             let err = SENTRY_OK;
             let led_reg_value = 0;
-            let address = 0;
-
-            if (sentry_led_e.kLed1 == led){
-                address = kRegLed1
-            }
-            else if (sentry_led_e.kLed2 == led){
-                address = kRegLed2
-            }      
-            else if (sentry_led_e.kLedAll == led){
-                err = this.LedSetMode(sentry_led_e.kLed1, manual, hold)
-                if (err) return err;
-                err = this.LedSetMode(sentry_led_e.kLed2, manual, hold)
-                if (err) return err;
-            }
-            else{
-                return SENTRY_UNSUPPORT_PARAM
-            }
-            
+            let address = 0;   
 
             [err, led_reg_value] = this._stream.Get(address)
             if (err) return err;
@@ -755,38 +725,19 @@ namespace Sentry {
             return SENTRY_OK
         }
         
-        LedSetColor(led: sentry_led_e, detected_color: sentry_led_color_e, undetected_color: sentry_led_color_e, level: number = 1){
+        LedSetColor( detected_color: sentry_led_color_e, undetected_color: sentry_led_color_e, level: number = 1){
             let err = SENTRY_OK;
             let led_reg_value = 0;
-            let address = 0;
             let led_level = 0;
-
+            
             [err, led_level] = this._stream.Get(kRegLedLevel)
-
-            if (sentry_led_e.kLed1 == led) {
-                address = kRegLed1
-                led_level = led_level&0xF0;
-                led_level |= (level & 0x0F)
-                this._stream.Set(kRegLedLevel, led_level)
-            }
-            else if (sentry_led_e.kLed2 == led) {
-                address = kRegLed2
-                led_level &= 0x0F
-                led_level |= (level << 4)
-                this._stream.Set(kRegLedLevel, led_level)
-            }
-            else if (sentry_led_e.kLedAll == led) {
-                err = this.LedSetColor(sentry_led_e.kLed1, detected_color, undetected_color, level)
-                if (err) return err;
-                err = this.LedSetColor(sentry_led_e.kLed1, detected_color, undetected_color, level)
-                if (err) return err;
-            }
-            else {
-                return SENTRY_UNSUPPORT_PARAM
-            }
-
-            [err, led_reg_value] = this._stream.Get(address)
             if (err) return err;
+
+            [err, led_reg_value] = this._stream.Get(kRegLed)
+            if (err) return err;
+
+            led_level = (led_level & 0xF0) | (level & 0x0F);
+            this._stream.Set(kRegLedLevel, led_level)
 
             led_reg_value &= 0xf1
             led_reg_value |= (detected_color & 0x07) << 1
@@ -794,7 +745,7 @@ namespace Sentry {
             led_reg_value &= 0x1f
             led_reg_value |= (undetected_color & 0x07) << 5
 
-            err = this._stream.Set(address, led_reg_value)
+            err = this._stream.Set(kRegLed, led_reg_value)
             if (err) return err;
 
             return SENTRY_OK
@@ -945,11 +896,12 @@ namespace Sentry {
     * @param detected_color led color while sensor detected target.
     * @param undetected_color led color while sensor undetected target.
     */
-    //% blockId=Sentry_led_set_color block="%id|LED %led|when detected %detected_color|when undetected %undetected_color"
+    //% blockId=Sentry_led_set_color block="%id|LED when detected %detected_color|when undetected %undetected_color|level %level"
+    //% level.min=0 level.max=15 level.defl=1
     //% weight=200 inlineInputMode=inline
     //% group="Settings" advanced=true
-    export function ledSetColor(id: SentryId, led: sentry_led_e, detected_color: sentry_led_color_e, undetected_color: sentry_led_color_e) {
-        while (pSentry[id].ledSetColor(led, detected_color, undetected_color) != SENTRY_OK);
+    export function LedSetColor(id: SentryId, detected_color: sentry_led_color_e, undetected_color: sentry_led_color_e, level: number) {
+        while (pSentry[id].LedSetColor(detected_color, undetected_color, level) != SENTRY_OK);
     }
 
     /**
@@ -959,8 +911,8 @@ namespace Sentry {
      */
     //% blockId=Sentry_camera_set_zoom block="%id|digital zoom%level"
     //% group="Settings" advanced=true
-    export function cameraSetZoom(id: SentryId, zoom: sentry_camera_zoom_e) {
-        while (pSentry[id].ledSetColor(zoom) != SENTRY_OK);
+    export function CameraSetZoom(id: SentryId, zoom: sentry_camera_zoom_e) {
+        while (pSentry[id].CameraSetZoom(zoom) != SENTRY_OK);
     }
 
     /**
@@ -970,8 +922,8 @@ namespace Sentry {
     */
     //% blockId=Sentry_camera_set_awb block="%id|white balance%wb"
     //% group="Settings" advanced=true
-    export function cameraSetAwb(id: SentryId, wb: sentry_camera_white_balance_e) {
-        while (pSentry[id].ledSetColor(wb) != SENTRY_OK);
+    export function CameraSetAwb(id: SentryId, wb: sentry_camera_white_balance_e) {
+        while (pSentry[id].CameraSetAwb(wb) != SENTRY_OK);
     }
 
     /**
@@ -982,8 +934,8 @@ namespace Sentry {
     //% blockId=Sentry_camera_set_fps block="%id|high FPS mode$on"
     //% on.shadow="toggleOnOff" on.defl="true"
     //% group="Settings" advanced=true
-    export function cameraSetFPS(id: SentryId, on: boolean) {
-        while (pSentry[id].ledSetColor(on) != SENTRY_OK);
+    export function CameraSetFPS(id: SentryId, on: boolean) {
+        while (pSentry[id].CameraSetFPS(on) != SENTRY_OK);
     }
 
     /**
@@ -993,7 +945,7 @@ namespace Sentry {
     * @param object_inf:  object information
     */
     //% blockId=Sentry_get_value
-    export function getValue(id: SentryId, vision_type: sentry_vision_e, object_inf: sentry_obj_info_e) {
+    export function GetValue(id: SentryId, vision_type: sentry_vision_e, object_inf: sentry_obj_info_e) {
 
     }
 
