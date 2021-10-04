@@ -956,9 +956,9 @@ namespace Sentry {
     * @param vision_type: vision type.
     * @param object_inf:  object information
     */
-    //% blockId=Sentry_get_value blockblock="%id|algorithm%vision_type| %object_inf"
+    //% blockId=Sentry_get_value block="%id|algorithm%vision_type| %object_inf"
     export function GetValue(id: SentryId, vision_type: sentry_vision_e, object_inf: sentry_obj_info_e):number {
-        return pSentry[id].GetValue(id, vision_type, object_inf);
+        return <number>pSentry[id].GetValue(id, vision_type, object_inf);
     }
 
     //% blockId=Sentry_get_img_h block="%id rows"
