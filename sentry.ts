@@ -466,6 +466,7 @@ namespace Sentry {
             if (this.SensorInit()) {
                 return SENTRY_FAIL;
             }
+
             return SENTRY_OK;
         }
 
@@ -572,7 +573,7 @@ namespace Sentry {
             err = this._stream.Set(kRegVisionConfig1, vision_config1);
             if (err) return err;
 
-            if (status && this._vision_states[vision_type] == null) {
+            if (enable && this._vision_states[vision_type] == null) {
                 this._vision_states[vision_type] = new VisionState(vision_type);
             }
             
@@ -602,6 +603,7 @@ namespace Sentry {
     export function setDefault(id: SentryId) {
         while (pSentry[id].SensorSetDefault() != SENTRY_OK);
     }
+
     /**
      * Sentry vision begin.
     */
