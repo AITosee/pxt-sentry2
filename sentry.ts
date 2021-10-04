@@ -883,7 +883,7 @@ namespace Sentry {
     /**
      * Sentry vision begin.
     */
-    //% blockId=Sentry_vision_begin block="%id|%enable|algorithm%type"
+    //% blockId=Sentry_vision_begin block="%id|%enable|algorithm%vision_type"
     //% group="Settings"
     export function VisionSetStatus(id: SentryId, status: SentryStatus, vision_type: sentry_vision_e) {
         while (pSentry[id].VisionSetStatus(vision_type, status) != SENTRY_OK);
@@ -909,10 +909,22 @@ namespace Sentry {
      * @param id Sentry id
      * @param zoom zoom value.
      */
-    //% blockId=Sentry_camera_set_zoom block="%id|digital zoom%level"
+    //% blockId=Sentry_camera_set_zoom block="%id|digital zoom%zoom"
     //% group="Settings" advanced=true
     export function CameraSetZoom(id: SentryId, zoom: sentry_camera_zoom_e) {
         while (pSentry[id].CameraSetZoom(zoom) != SENTRY_OK);
+    }
+
+    /**
+     * set camera zoom.
+     * @param id Sentry id
+     * @param rotate value.
+     */
+    //% blockId=Sentry_camera_set_rotate block="%id|digital rotate 180°%on"
+    //% on.shadow="toggleOnOff" on.defl="true"
+    //% group="Settings" advanced=true
+    export function CameraSetRotate(id: SentryId, on: boolean) {
+        while (pSentry[id].CameraSetRotate(on) != SENTRY_OK);
     }
 
     /**
@@ -944,9 +956,9 @@ namespace Sentry {
     * @param vision_type: vision type.
     * @param object_inf:  object information
     */
-    //% blockId=Sentry_get_value
-    export function GetValue(id: SentryId, vision_type: sentry_vision_e, object_inf: sentry_obj_info_e) {
-
+    //% blockId=Sentry_get_value blockblock="%id|algorithm%vision_type| %object_inf"
+    export function GetValue(id: SentryId, vision_type: sentry_vision_e, object_inf: sentry_obj_info_e):number {
+        return pSentry[id].GetValue(id, vision_type, object_inf);
     }
 
     //% blockId=Sentry_get_img_h block="%id rows"
