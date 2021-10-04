@@ -352,8 +352,8 @@ namespace Sentry {
         _address: number
         _stream: SentryStreamBase
         _mode: sentry_mode_e
-        _img_w = 0
-        _img_h = 0
+        img_w = 0
+        img_h = 0
 
         constructor(addr: number) {
             this._address = addr
@@ -445,37 +445,21 @@ namespace Sentry {
         }
 
         GetImageShape() {
-            let err = SENTRY_OK;
             let tmp = [0, 0]
 
-            err, tmp[0] = this._stream.Get(kRegFrameWidthL)
-            if (err) return err;
+            tmp[0] = this._stream.Get(kRegFrameWidthL)
+            tmp[1] = this._stream.Get(kRegFrameWidthH)
+            this.img_w = tmp[1] << 8 | tmp[0]
 
-            err, tmp[1] = this._stream.Get(kRegFrameWidthH)
-            if (err) return err;
-
-            this._img_w = tmp[1] << 8 | tmp[0]
-            err, tmp[0] = this._stream.Get(kRegFrameHeightL)
-            if (err) return err;
-
-            err, tmp[1] = this._stream.Get(kRegFrameHeightH)
-            if (err) return err;
-
-            this._img_h = tmp[1] << 8 | tmp[0]
+            tmp[0] = this._stream.Get(kRegFrameHeightL)
+            tmp[1] = this._stream.Get(kRegFrameHeightH)
+            this.img_h = tmp[1] << 8 | tmp[0]
 
             return SENTRY_OK
         }
 
-        Rows() {
-            return this._img_h;
-        }
-
-        Cols() {
-            return this._img_w;
-        }
-
         VisionSetStatus(vision_type: sentry_vision_e, status: SentryStatus) {
-
+            return SENTRY_OK
         }
 
 
@@ -569,5 +553,15 @@ namespace Sentry {
     //% blockId=Sentry_get_value
     export function getValue(id: SentryId, vision_type: sentry_vision_e, object_inf: sentry_obj_info_e) {
 
+    }
+
+    //% blockId=Sentry_get_img_h block="%id rows"
+    export function Rows(id: SentryId) {
+        return pSentry[id].img_h;
+    }
+
+    //% blockId=Sentry_get_img_w block="%id cols"
+    export function Cols(id: SentryId) {
+        return pSentry[id].img_w;
     }
 }
