@@ -2,11 +2,9 @@
     "name": "Sentry",
     "description": "",
     "dependencies": {
-        "core": "*",
-        "microphone": "*"
+        "core": "*"
     },
     "files": [
-        "main.ts",
         "README.md",
         "Sentry.ts"
     ],
