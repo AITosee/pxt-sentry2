@@ -1,18 +1,3 @@
-declare const enum sentry_vision_e {
-    kVisionColor = 1,
-    kVisionBlob = 2,
-    kVisionAprilTag = 3,
-    kVisionLine = 4,
-    kVisionBody = 5,
-    kVisionCard = 6,
-    kVisionFace = 7,
-    kVision20Classes = 8,
-    kVisionQrCode = 9,
-    kVisionObjTrack = 10,
-    kVisionMotionDetect = 11,
-    kVisionMaxType
-}
-
 declare const enum sentry_vision_detected {
     kVisionColor = 1,
     kVisionBlob = 2,
@@ -382,6 +367,21 @@ namespace Sentry {
     const SENTRY_CHECK_ERROR = 0x04
     const SENTRY_UNSUPPORT_PARAM = 0x10
     const SENTRY_UNKNOWN_PROTOCOL = 0x11
+
+    const enum sentry_vision_e {
+        kVisionColor = 1,
+        kVisionBlob = 2,
+        kVisionAprilTag = 3,
+        kVisionLine = 4,
+        kVisionBody = 5,
+        kVisionCard = 6,
+        kVisionFace = 7,
+        kVision20Classes = 8,
+        kVisionQrCode = 9,
+        kVisionObjTrack = 10,
+        kVisionMotionDetect = 11,
+        kVisionMaxType
+    }
 
     class sentry_object_t {
         data1: number
@@ -1142,6 +1142,7 @@ namespace Sentry {
      * Begin Sentry.
      */
     //% blockId=Sentry_begin block="initialize%id|mode%mode"
+    //% mode.defl=sentry_mode_e.kI2CMode
     //% group="Settings"
     export function Begin(id: SentryId, mode: sentry_mode_e) {
         if (pSentry[id] == null) {
@@ -1164,8 +1165,8 @@ namespace Sentry {
     */
     //% blockId=Sentry_vision_begin block="%id|%enable|algorithm%vision_type"
     //% group="Settings"
-    export function VisionSetStatus(id: SentryId, status: SentryStatus, vision_type: sentry_vision_e) {
-        while (pSentry[id].VisionSetStatus(vision_type, status) != SENTRY_OK);
+    export function VisionSetStatus(id: SentryId, status: SentryStatus, vision_type: sentry_vision_detected) {
+        while (pSentry[id].VisionSetStatus(<number>vision_type, status) != SENTRY_OK);
     }
 
     /**
@@ -1176,9 +1177,11 @@ namespace Sentry {
     * @param undetected_color led color while sensor undetected target.
     */
     //% blockId=Sentry_led_set_color block="%id|LED when detected %detected_color|when undetected %undetected_color|level %level"
+    //% detected_color.defl=sentry_led_color_e.kLedBlue
+    //% undetected_color.defl=sentry_led_color_e.kLedGreen
     //% level.min=0 level.max=15 level.defl=1
     //% weight=200 inlineInputMode=inline
-    //% group="Settings" advanced=true
+    //% group="Settings" advanced=true 
     export function LedSetColor(id: SentryId, detected_color: sentry_led_color_e, undetected_color: sentry_led_color_e, level: number) {
         while (pSentry[id].LedSetColor(detected_color, undetected_color, level) != SENTRY_OK);
     }
@@ -1290,7 +1293,7 @@ namespace Sentry {
      * @param SentryId id
      * @param type vision type
      */
-    //% blockId=Sentry_detected block="set %id|camera detected%type" color="#2E8B57"
+    //% blockId=Sentry_detected block="get %id| camera detected%vision_type" color="#2E8B57"
     //% group="Functions"
     export function Detected(id: SentryId, vision_type: sentry_vision_detected): number {
         return pSentry[id].GetValue(<number>vision_type, sentry_obj_info_e.kStatus)
@@ -1302,7 +1305,7 @@ namespace Sentry {
     * @param vision_type: vision type.
     * @param object_inf:  object information
     */
-    //% blockId=Sentry_get_value block="%id|algorithm%vision_type| %object_inf| %obj_id" color="#2E8B57"
+    //% blockId=Sentry_get_value block="get %id| algorithm%vision_type| Recognition%object_inf| index %obj_id" color="#2E8B57"
     //% group="Functions"
     export function GetValue(id: SentryId, vision_type: sentry_vision_value, object_inf: Params, obj_id:number):number {
         return <number>pSentry[id].GetValue(<number>vision_type, <number>object_inf, obj_id);
@@ -1313,7 +1316,7 @@ namespace Sentry {
      * @param SentryId id
      * @param item Paramters type
      */
-    //% block="get%id|algorithm 🌈 Color Recognition|%item| %obj_id" color="#2E8B57"
+    //% block="get%id| algorithm Color| Recognition%item| index %obj_id" color="#2E8B57"
     //% group="Functions"
     export function ColorRcgValue(id: SentryId, item: ColorParams, obj_id: number): number {
         return pSentry[id].getValue(sentry_vision_e.kVisionColor, <number>item, obj_id)
@@ -1324,10 +1327,10 @@ namespace Sentry {
      * @param SentryId id
      * @param item Paramters type
      */
-    //% block="get%id|QrCode Recognition|%item| %obj_id" color="#2E8B57"
+    //% block="get%id|QrCode Recognition|%item" color="#2E8B57"
     //% group="Functions"
-    export function QrRcgValue(id: SentryId, item: QrParams, obj_id: number): number {
-        return pSentry[id].GetValue(sentry_vision_e.kVisionQrCode, <number>item, obj_id)
+    export function QrRcgValue(id: SentryId, item: QrParams): number {
+        return pSentry[id].GetValue(sentry_vision_e.kVisionQrCode, <number>item, 0)
     }
 
     /**
