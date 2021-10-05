@@ -297,6 +297,7 @@ declare const enum ColorParams {
     Label = 5
 }
 
+//% color="#ff0000" icon="\uf0a4"
 namespace protocol {
     /* Protocol Error Type */
     const SENTRY_PROTOC_OK = 0xE0
@@ -321,8 +322,8 @@ namespace protocol {
     const SENTRY_PROTOC_GET_RESULT = 0x23
     const SENTRY_PROTOC_MESSAGE = 0x11
 
-
-    function readProtocol(timeout: number = 1000): number[] {
+    //% block
+    export function readpkg(timeout: number = 1000): number[] {
         let protocol_buf: number[] = [];
         let start_receive = false;
 
@@ -340,16 +341,17 @@ namespace protocol {
                         if (start_receive && protocol_buf.length > 5) {
                             if ((protocol_buf.length) == protocol_buf[1]) {
                                 value = protocol_buf[0];
+
                                 for (let i = 1; i < protocol_buf.length - 1; ++i) {
                                     value += protocol_buf[i];
                                 }
+
                                 value &= 0xff;
-                                if (protocol_buf[protocol_buf.length - 1] == value) {
-                                    return protocol_buf;
-                                } else {
-                                    return [];
+                                if (protocol_buf[protocol_buf.length - 1] != value) {
+                                    protocol_buf[2] = SENTRY_PROTOC_CHECK_ERROR;
                                 }
 
+                                return protocol_buf;
                             }
                         }
                         break;
@@ -368,12 +370,13 @@ namespace protocol {
             }
         }
 
-        return [];
+        return [SENTRY_PROTOC_CHECK_ERROR, SENTRY_PROTOC_CHECK_ERROR, SENTRY_PROTOC_CHECK_ERROR];
     }
 
-    function writeProtocol(pkg: number[]): boolean {
+    //% block
+    export function writepkg(pkg: number[]): boolean {
         if (pkg.length > 0) {
-            let protocol_buf: number[] = [SENTRY_PROTOC_START, 5, 0x60];
+            let protocol_buf: number[] = [SENTRY_PROTOC_START, 5];
             protocol_buf[1] += pkg.length;
 
             let value = SENTRY_PROTOC_START + protocol_buf[1];
@@ -674,8 +677,13 @@ namespace Sentry {
     }
 
     class SentryUartMethod {
+        _addr: number
+        constructor(addr: number) {
+            this._addr = addr;
+        }
 
         Set(reg_address: number, value: number): number {
+            protocol.readpkg()
             return SENTRY_OK;
         }
 
@@ -721,7 +729,7 @@ namespace Sentry {
                     this._stream = new SentryI2CMethod(this._address);
                 }
                 else {
-                    this._stream = new SentryUartMethod();
+                    this._stream = new SentryUartMethod(this._address);
                 }
             }
 
