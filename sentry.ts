@@ -100,6 +100,30 @@ declare const enum sentry_camera_zoom_e {
     kZoom5 = 5,
 }
 
+declare const enum sentry_camera_config_e {
+    //% block="Auto"
+    kLevelDefault = 0,
+    //% block="Level1"
+    kLevel1 = 1,
+    //% block="Level2"
+    kLevel2 = 2,
+    //% block="Level3"
+    kLevel3 = 3,
+    //% block="Level4"
+    kLevel4 = 4,
+    //% block="Level5"
+    kLevel5 = 5,    
+    //% block="Level6"
+    kLevel6 = 6,    
+    //% block="Level7"
+    kLevel7 = 7,    
+    //% block="Level8"
+    kLevel8 = 8,    
+    //% block="Level9"
+    kLevel9 = 9,    
+    //% block="Level10"
+    kLevel10 = 10,
+}
 
 declare const enum sentry_camera_fps_e {
     //% block="FPSNorma"
@@ -153,6 +177,7 @@ namespace Sentry {
     const kRegLedLevel = 0x08
     const kRegUart = 0x09
     const kRegUSBCongig = 0x0B
+    const kRegLcdCongig = 0x0C
     const kRegHWConfig = 0x0F
     const kRegCameraConfig1 = 0x10
     const kRegCameraConfig2 = 0x11
@@ -700,12 +725,18 @@ namespace Sentry {
             }
         }
 
+        VisionSetDefault(vision_type: sentry_vision_e) {
+            let err = this._stream.Set(kRegVisionId, vision_type);
+            if (err) return err;
+
+            return SENTRY_OK;
+        }
+
         LedSetMode(manual: SentryStatus, hold: SentryStatus){
             let err = SENTRY_OK;
             let led_reg_value = 0;
-            let address = 0;   
 
-            [err, led_reg_value] = this._stream.Get(address)
+            [err, led_reg_value] = this._stream.Get(kRegLed)
             if (err) return err;
 
             let gmanual = led_reg_value & 0x01
@@ -718,7 +749,7 @@ namespace Sentry {
                 led_reg_value &= 0xef
                 led_reg_value |= (hold & 0x01) << 4
 
-                err = this._stream.Set(address, led_reg_value)
+                err = this._stream.Set(kRegLed, led_reg_value)
                 if (err) return err;
             }
 
@@ -747,6 +778,26 @@ namespace Sentry {
 
             err = this._stream.Set(kRegLed, led_reg_value)
             if (err) return err;
+
+            return SENTRY_OK
+        }
+
+        LcdSetMode(manual: SentryStatus) {
+            let err = SENTRY_OK;
+            let led_reg_value = 0;
+
+            [err, led_reg_value] = this._stream.Get(kRegLcdCongig)
+            if (err) return err;
+
+            let gmanual = led_reg_value & 0x01
+
+            if (manual != gmanual) {
+                led_reg_value &= 0xfe
+                led_reg_value |= manual & 0x01
+
+                err = this._stream.Set(kRegLcdCongig, led_reg_value)
+                if (err) return err;
+            }
 
             return SENTRY_OK
         }
@@ -849,11 +900,92 @@ namespace Sentry {
             return (camera_reg_value >> 5) & 0x03
         }
 
-        VisionSetDefault(vision_type:sentry_vision_e){
-            let err = this._stream.Set(kRegVisionId, vision_type);
+        CameraSetBrightness(level: sentry_camera_config_e) {
+            let [err, camera_reg_value] = this._stream.Get(kRegCameraConfig3);
             if (err) return err;
 
+            let glevel = camera_reg_value & 0x0f
+            if (level != glevel) {
+                camera_reg_value &= 0xf0
+                camera_reg_value |= level & 0x0f
+                err = this._stream.Set(kRegCameraConfig3, camera_reg_value);
+                if (err) return err;
+            }
+
             return SENTRY_OK;
+        }
+
+        CameraGetBrightness() {
+            let [err, camera_reg_value] = this._stream.Get(kRegCameraConfig3);
+            if (err) return err;
+
+            return camera_reg_value & 0x07
+        }
+
+        CameraSetContrast(level: sentry_camera_config_e) {
+            let [err, camera_reg_value] = this._stream.Get(kRegCameraConfig3);
+            if (err) return err;
+
+            let glevel = (camera_reg_value & 0xf0) >> 4
+            if (level != glevel) {
+                camera_reg_value &= 0x0f
+                camera_reg_value |= (level & 0xf0)<<4
+                err = this._stream.Set(kRegCameraConfig3, camera_reg_value);
+                if (err) return err;
+            }
+
+            return SENTRY_OK;
+        }
+
+        CameraGetContrast() {
+            let [err, camera_reg_value] = this._stream.Get(kRegCameraConfig3);
+            if (err) return err;
+
+            return camera_reg_value & 0x07
+        }
+
+        CameraSetSaturation(level: sentry_camera_config_e) {
+            let [err, camera_reg_value] = this._stream.Get(kRegCameraConfig4);
+            if (err) return err;
+
+            let glevel = camera_reg_value & 0x0f
+            if (level != glevel) {
+                camera_reg_value &= 0xf0
+                camera_reg_value |= level & 0x0f
+                err = this._stream.Set(kRegCameraConfig4, camera_reg_value);
+                if (err) return err;
+            }
+
+            return SENTRY_OK;
+        }
+
+        CameraGetSaturation() {
+            let [err, camera_reg_value] = this._stream.Get(kRegCameraConfig4);
+            if (err) return err;
+
+            return camera_reg_value & 0x0f
+        }
+
+        CameraSetShaprness(level: sentry_camera_config_e) {
+            let [err, camera_reg_value] = this._stream.Get(kRegCameraConfig5);
+            if (err) return err;
+
+            let glevel = camera_reg_value & 0x0f
+            if (level != glevel) {
+                camera_reg_value &= 0xf0
+                camera_reg_value |= level & 0x0f
+                err = this._stream.Set(kRegCameraConfig5, camera_reg_value);
+                if (err) return err;
+            }
+
+            return SENTRY_OK;
+        }
+
+        CameraGetShaprness() {
+            let [err, camera_reg_value] = this._stream.Get(kRegCameraConfig5);
+            if (err) return err;
+
+            return camera_reg_value & 0x0f
         }
     }
 
@@ -905,12 +1037,24 @@ namespace Sentry {
     }
 
     /**
+     * set LCD config.
+     * @param id Sentry id
+     * @param config value.
+     */
+    //% blockId=Sentry_set_lcd block="%id|LCD show %on"
+    //% on.shadow="toggleOnOff" on.defl="true"
+    //% group="Settings" advanced=true
+    export function LcdSetMode(id: SentryId, on: boolean) {
+        while (pSentry[id].LcdSetMode(on) != SENTRY_OK);
+    }
+
+    /**
      * set camera zoom.
      * @param id Sentry id
      * @param zoom zoom value.
      */
     //% blockId=Sentry_camera_set_zoom block="%id|digital zoom%zoom"
-    //% group="Settings" advanced=true
+    //% group="CcameraSettings" advanced=true
     export function CameraSetZoom(id: SentryId, zoom: sentry_camera_zoom_e) {
         while (pSentry[id].CameraSetZoom(zoom) != SENTRY_OK);
     }
@@ -920,9 +1064,9 @@ namespace Sentry {
      * @param id Sentry id
      * @param rotate value.
      */
-    //% blockId=Sentry_camera_set_rotate block="%id|digital rotate 180°%on"
+    //% blockId=Sentry_camera_set_rotate block="%id| rotate 180°%on"
     //% on.shadow="toggleOnOff" on.defl="true"
-    //% group="Settings" advanced=true
+    //% group="CcameraSettings" advanced=true
     export function CameraSetRotate(id: SentryId, on: boolean) {
         while (pSentry[id].CameraSetRotate(on) != SENTRY_OK);
     }
@@ -933,7 +1077,7 @@ namespace Sentry {
     * @param wb white balance type.
     */
     //% blockId=Sentry_camera_set_awb block="%id|white balance%wb"
-    //% group="Settings" advanced=true
+    //% group="CcameraSettings" advanced=true
     export function CameraSetAwb(id: SentryId, wb: sentry_camera_white_balance_e) {
         while (pSentry[id].CameraSetAwb(wb) != SENTRY_OK);
     }
@@ -945,9 +1089,53 @@ namespace Sentry {
      */
     //% blockId=Sentry_camera_set_fps block="%id|high FPS mode$on"
     //% on.shadow="toggleOnOff" on.defl="true"
-    //% group="Settings" advanced=true
+    //% group="CcameraSettings" advanced=true
     export function CameraSetFPS(id: SentryId, on: boolean) {
         while (pSentry[id].CameraSetFPS(on) != SENTRY_OK);
+    }
+
+    /**
+     * set camera brightness.
+     * @param id Sentry id
+     * @param brightness level value.
+     */
+    //% blockId=Sentry_camera_set_brightness block="%id|brightness level%level"
+    //% group="CcameraSettings" advanced=true
+    export function CameraSetBrightness(id: SentryId, level: sentry_camera_config_e) {
+        while (pSentry[id].CameraSetBrightness(level) != SENTRY_OK);
+    }
+
+    /**
+     * set camera contrast.
+     * @param id Sentry id
+     * @param contrast level value.
+     */
+    //% blockId=Sentry_camera_set_contrast block="%id|contrast level%level"
+    //% group="CcameraSettings" advanced=true
+    export function CameraSetContrast(id: SentryId, level: sentry_camera_config_e) {
+        while (pSentry[id].CameraSetContrast(level) != SENTRY_OK);
+    }
+
+    /**
+     * set camera saturation.
+     * @param id Sentry id
+     * @param saturation level value.
+     */
+    //% blockId=Sentry_camera_set_saturation block="%id|saturation level%level"
+    //% group="CcameraSettings" advanced=true
+    export function CameraSetSaturation(id: SentryId, level: sentry_camera_config_e) {
+        while (pSentry[id].CameraSetSaturation(level) != SENTRY_OK);
+    }
+
+    /**
+     * set camera shaprness.
+     * @param id Sentry id
+     * @param shaprness level value.
+     */
+    //% blockId=Sentry_camera_set_shaprness block="%id|shaprness level%level"
+    //% group="CcameraSettings" advanced=true
+    export function CameraSetShaprness(id: SentryId, level: sentry_camera_config_e) {
+        while (pSentry[id].CameraSetShaprness(level) != SENTRY_OK);
     }
 
     /**
