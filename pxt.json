@@ -1,7 +1,8 @@
 {
     "name": "Sentry",
     "version": "1.0.0",
-    "description": "",
+    "description": "Sensor designed for the AI education.",
+    "license": "MIT",
     "dependencies": {
         "core": "*"
     },
@@ -12,6 +13,7 @@
     "testFiles": [
         "test.ts"
     ],
+    "public": true,
     "targetVersions": {
         "target": "4.0.11",
         "targetId": "microbit"
