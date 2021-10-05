@@ -13,6 +13,31 @@ declare const enum sentry_vision_e {
     kVisionMaxType
 }
 
+declare const enum sentry_vision_detected {
+    kVisionColor = 1,
+    kVisionBlob = 2,
+    kVisionAprilTag = 3,
+    kVisionLine = 4,
+    kVisionBody = 5,
+    kVisionCard = 6,
+    kVisionFace = 7,
+    kVision20Classes = 8,
+    kVisionQrCode = 9,
+    kVisionObjTrack = 10,
+    kVisionMotionDetect = 11,
+}
+
+declare const enum sentry_vision_value {
+    kVisionBlob = 2,
+    kVisionAprilTag = 3,
+    kVisionLine = 4,
+    kVisionBody = 5,
+    kVisionCard = 6,
+    kVisionFace = 7,
+    kVision20Classes = 8,
+    kVisionObjTrack = 10,
+    kVisionMotionDetect = 11,
+}
 
 declare const enum sentry_led_color_e {
     //% block="off"
@@ -61,29 +86,6 @@ declare const enum sentry_baudrate_e {
     //% block="2000000"
     kBaud2000000 = 0x07,
 }
-
-
-declare const enum sentry_obj_info_e {
-    //% block="status"
-    kStatus = 0,
-    //% block="x position"
-    kXValue = 1,
-    //% block="y position"
-    kYValue = 2,
-    //% block="width"
-    kWidthValue = 3,
-    //% block="height"
-    kHeightValue = 4,
-    //% block="label"
-    kLabel = 5,
-    //% block="red channel"
-    kRValue = 6,
-    //% block="green channel"
-    kGValue = 7,
-    //% block="blue channel"
-    kBValue = 8,
-}
-
 
 declare const enum sentry_camera_zoom_e {
     //% block="Auto"
@@ -146,6 +148,95 @@ declare const enum sentry_camera_white_balance_e {
     kWhiteBalanceCalibrating = 4,
 }
 
+declare const enum card_label_e {
+    kCardForward = 1,
+    kCardLeft = 2,
+    kCardRight = 3,
+    kCardTurnAround = 4,
+    kCardPark = 5,
+    kCardGreenLight = 6,
+    kCardRedLight = 7,
+    kCardSpeed40 = 8,
+    kCardSpeed60 = 9,
+    kCardSpeed80 = 10,
+    kCardCheck = 11,
+    kCardCross = 12,
+    kCardCircle = 13,
+    kCardSquare = 14,
+    kCardTriangle = 15,
+    kCardPlus = 16,
+    kCardMinus = 17,
+    kCardDivide = 18,
+    kCardEqual = 19,
+    kCardZero = 20,
+    kCardOne = 21,
+    kCardTwo = 22,
+    kCardThree = 23,
+    kCardFour = 24,
+    kCardFive = 25,
+    kCardSix = 26,
+    kCardSeven = 27,
+    kCardEight = 28,
+    kCardNine = 29,
+    kCardA = 31,
+    kCardB = 32,
+    kCardC = 33,
+    kCardD = 34,
+    kCardE = 35,
+    kCardF = 36,
+    kCardG = 37,
+    kCardH = 38,
+    kCardI = 39,
+    kCardJ = 40,
+    kCardK = 41,
+    kCardL = 42,
+    kCardM = 43,
+    kCardN = 44,
+    kCardO = 45,
+    kCardP = 46,
+    kCardQ = 47,
+    kCardR = 48,
+    kCardS = 49,
+    kCardT = 50,
+    kCardU = 51,
+    kCardV = 52,
+    kCardW = 53,
+    kCardX = 54,
+    kCardY = 55,
+    kCardZ = 56
+}
+
+declare const enum class20_label_e {
+    kAirplane = 1,
+    kBicycle = 2,
+    kBird = 3,
+    kBoat = 4,
+    kBottle = 5,
+    kBus = 6,
+    kCar = 7,
+    kCat = 8,
+    kChair = 9,
+    kCow = 10,
+    kTable = 11,
+    kDog = 12,
+    kHorse = 13,
+    kMotorBike = 14,
+    kPerson = 15,
+    kPlant = 16,
+    kSheep = 17,
+    kSofa = 18,
+    kTrain = 19,
+    kMonitor = 20
+}
+
+declare const enum color_label_e {
+    kColorBlack = 1,
+    kColorWhite = 2,
+    kColorRed = 3,
+    kColorGreen = 4,
+    kColorBlue = 5,
+    kColorYellow = 6
+}
 
 declare const enum SentryId {
     //% block="Sentry00"
@@ -158,12 +249,67 @@ declare const enum SentryId {
     Sentry11 = 3,
 }
 
-
 declare const enum SentryStatus {
     //% block="enable"
     Enable = 1,
     //% block="disable"
     Disable = 0,
+}
+
+declare const enum sentry_obj_info_e {
+    //% block="status"
+    kStatus = 0,
+    //% block="x position"
+    kXValue = 1,
+    //% block="y position"
+    kYValue = 2,
+    //% block="width"
+    kWidthValue = 3,
+    //% block="height"
+    kHeightValue = 4,
+    //% block="label"
+    kLabel = 5,
+    //% block="red channel"
+    kRValue = 6,
+    //% block="green channel"
+    kGValue = 7,
+    //% block="blue channel"
+    kBValue = 8,
+}
+
+declare const enum Params {
+    //% block="horizontal"
+    Horizontal = 1,
+    //% block="vertical"
+    Vertical,
+    //% block="width"
+    Width,
+    //% block="height"
+    Height,
+    //% block="label"
+    Lable
+}
+
+declare const enum QrParams {
+    //% block="horizontal"
+    Horizontal = 1,
+    //% block="vertical"
+    Vertical,
+    //% block="width"
+    Width,
+    //% block="height"
+    Height
+}
+
+declare const enum ColorParams {
+    //% block="red channel"
+    RedChannal = 6,
+    //% block="green channel"
+    GreenChannal = 7,
+    //% block="blue channel"
+    BlueChannal = 8,
+    //% block="label"
+    Label = 5
 }
 
 namespace Sentry {
@@ -1139,22 +1285,58 @@ namespace Sentry {
     }
 
     /**
+     * Get vision status
+     * @param SentryId id
+     * @param type vision type
+     */
+    //% blockId=Sentry_detected block="%id|detected%type" color="#2E8B57"
+    //% group="Functions"
+    export function Detected(id: SentryId, vision_type: sentry_vision_detected): number {
+        return pSentry[id].GetValue(id, <number>vision_type, sentry_obj_info_e.kStatus)
+    }
+
+    /**
     * get vision sentry_object_t data, this function will update vision sentry_object_t automatically.
     * @param id Sentry id
     * @param vision_type: vision type.
     * @param object_inf:  object information
     */
     //% blockId=Sentry_get_value block="%id|algorithm%vision_type| %object_inf"
-    export function GetValue(id: SentryId, vision_type: sentry_vision_e, object_inf: sentry_obj_info_e):number {
-        return <number>pSentry[id].GetValue(id, vision_type, object_inf);
+    //% group="Functions"
+    export function GetValue(id: SentryId, vision_type: sentry_vision_value, object_inf: Params):number {
+        return <number>pSentry[id].GetValue(id, <number>vision_type, <number>object_inf);
+    }
+
+    /**
+     * Get the result of vision color recognition.
+     * @param SentryId id
+     * @param item Paramters type
+     */
+    //% block="get%id|algorithm 🌈 Color Recognition|%item" color="#2E8B57"
+    //% group="Functions"
+    export function ColorRcgValue(id: SentryId, item: ColorParams): number {
+        return pSentry[id].getValue(id, sentry_vision_e.kVisionColor, <number>item)
+    }
+
+    /**
+     * Get the result of vision color recognition.
+     * @param SentryId id
+     * @param item Paramters type
+     */
+    //% block="get%id|QrCode Recognition|%item" color="#2E8B57"
+    //% group="Functions"
+    export function QrRcgValue(id: SentryId, item: QrParams): number {
+        return pSentry[id].GetValue(id, sentry_vision_e.kVisionQrCode, <number>item)
     }
 
     //% blockId=Sentry_get_img_h block="%id rows"
+    //% group="Functions"
     export function Rows(id: SentryId) {
         return pSentry[id].img_h;
     }
 
     //% blockId=Sentry_get_img_w block="%id cols"
+    //% group="Functions"
     export function Cols(id: SentryId) {
         return pSentry[id].img_w;
     }
