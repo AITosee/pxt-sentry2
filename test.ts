@@ -1,13 +1,9 @@
 Sentry.Begin(SentryId.Sentry00, sentry_mode_e.kI2CMode)
 Sentry.VisionSetStatus(SentryId.Sentry00, SentryStatus.Enable, sentry_vision_detected.kVisionQrCode)
-Sentry.VisionSetStatus(SentryId.Sentry00, SentryStatus.Enable, sentry_vision_detected.kVisionColor)
 basic.forever(function () {
-    basic.pause(5000)
-    Sentry.VisionSetStatus(SentryId.Sentry00, SentryStatus.Disable, sentry_vision_detected.kVisionColor)
-    serial.writeNumber(Sentry.Cols(SentryId.Sentry00))
-    serial.writeString(" ")
-    serial.writeNumber(Sentry.Rows(SentryId.Sentry00))
-    serial.writeLine("")
-    basic.pause(5000)
-    Sentry.VisionSetStatus(SentryId.Sentry00, SentryStatus.Enable, sentry_vision_detected.kVisionColor)
+    for (let index = 0; index <= Sentry.Detected(SentryId.Sentry00, sentry_vision_detected.kVisionQrCode); index++) {
+        serial.writeValue("xxxxxxxxxxxxxx", index)
+        serial.writeLine(Sentry.GetQrCodeValue(SentryId.Sentry00))
+    }
+    basic.pause(2000)
 })
