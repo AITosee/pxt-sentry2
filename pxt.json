@@ -8,8 +8,7 @@
     },
     "files": [
         "README.md",
-        "sentry.ts",
-        "protocol.ts"
+        "sentry.ts"
     ],
     "testFiles": [
         "test.ts"

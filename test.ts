@@ -10,4 +10,10 @@ basic.forever(function () {
         serial.writeLine(Sentry.GetQrCodeValue(SentryId.Sentry00))
     }
     basic.pause(2000)
+
+    let num:number[] = [];
+    for (let i = 0; i < 10; i++) {
+        num.push(i)
+    }
+    serial.writeValue("num -1", num[-1])
 })
