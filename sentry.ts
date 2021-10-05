@@ -405,12 +405,12 @@ namespace Sentry {
         vision_type: sentry_vision_e
         frame: number
         detect: number
-        sentry_object: any[]
+        sentry_objects: any[]
         constructor(vision_type: sentry_vision_e) {
             this.vision_type = vision_type;
             this.frame = 0;
             this.detect = 0;
-            this.sentry_object = [
+            this.sentry_objects = [
                 null, null, null, null, null, 
                 null, null, null, null, null,
                 null, null, null, null, null,
@@ -418,7 +418,7 @@ namespace Sentry {
                 null, null, null, null, null,];
                 
             for(let i=0;i<SENTRY_MAX_RESULT;i++) {
-                this.sentry_object[i] = new sentry_object_t();
+                this.sentry_objects[i] = new sentry_object_t();
             }
         }
     }
@@ -502,21 +502,25 @@ namespace Sentry {
                 err = this.Set(kRegsentry_object_tId, i + 1);
                 if (err) return [err, vision_state];
 
-                [err, vision_state.sentry_object[i].data1] = this.Get_u16(
+                let sentry_object = <sentry_object_t>vision_state.sentry_objects[i];
+
+                [err, sentry_object.data1] = this.Get_u16(
                     kRegsentry_object_tData1L, kRegsentry_object_tData1H)
                 if (err) return [err, vision_state];
-                [err, vision_state.sentry_object[i].data2] = this.Get_u16(
+                [err, sentry_object.data2] = this.Get_u16(
                     kRegsentry_object_tData2L, kRegsentry_object_tData2H)
                 if (err) return [err, vision_state];
-                [err, vision_state.sentry_object[i].data3] = this.Get_u16(
+                [err, sentry_object.data3] = this.Get_u16(
                     kRegsentry_object_tData3L, kRegsentry_object_tData3H)
                 if (err) return [err, vision_state];
-                [err, vision_state.sentry_object[i].data4] = this.Get_u16(
+                [err, sentry_object.data4] = this.Get_u16(
                     kRegsentry_object_tData4L, kRegsentry_object_tData4H)
                 if (err) return [err, vision_state];
-                [err, vision_state.sentry_object[i].data5] = this.Get_u16(
+                [err, sentry_object.data5] = this.Get_u16(
                     kRegsentry_object_tData5L, kRegsentry_object_tData5H)
                 if (err) return [err, vision_state];
+
+                vision_state.sentry_objects[i] = sentry_object;
             }
 
             return [SENTRY_OK, vision_state]
@@ -535,7 +539,7 @@ namespace Sentry {
                 return [SENTRY_OK, vision_state];
             }
 
-            for (let i = 0; i < vision_state.sentry_object[0].data5; i++) {
+            for (let i = 0; i < vision_state.sentry_objects[0].data5; i++) {
                 sentry_object_t_id = (i / 5 + 2) | 0;
                 offset = i % 5;
                 if (0 == i % 5) {
@@ -549,7 +553,7 @@ namespace Sentry {
                 bytestr += String.fromCharCode(bytec)
             }
             
-            vision_state.sentry_object[0].bytestr = bytestr;
+            vision_state.sentry_objects[0].bytestr = bytestr;
 
             return [SENTRY_OK, vision_state];
         }
@@ -780,8 +784,8 @@ namespace Sentry {
             if (this._vision_states[sentry_vision_e.kVisionQrCode - 1] == null) return "";
 
             let vision_state = <sentry_vision_state_t>this._vision_states[sentry_vision_e.kVisionQrCode - 1];
-            
-            return vision_state.sentry_object[0].bytestr;
+            let sentry_object = <sentry_object_t>vision_state.sentry_objects[0];
+            return sentry_object.bytestr;
         }
 
         SetParamNum(vision_type: sentry_vision_e, max_num: number){
@@ -852,25 +856,28 @@ namespace Sentry {
             if (null == this._vision_states[vision_pointer] || vision_pointer >= sentry_vision_e.kVisionMaxType)
                 return 0;
 
+            let vision_state = <sentry_vision_state_t>this._vision_states[vision_pointer];
+            let sentry_object = <sentry_object_t>vision_state.sentry_objects[obj_id];
+
             switch (obj_info) {
                 case sentry_obj_info_e.kStatus:
-                    return this._vision_states[vision_pointer].detect;
+                    return vision_state.detect;
                 case sentry_obj_info_e.kXValue:
-                    return this._vision_states[vision_pointer].sentry_object[obj_id].x_value * 100 / this.img_w;
+                    return sentry_object.data1 * 100 / this.img_w | 0;
                 case sentry_obj_info_e.kYValue:
-                    return this._vision_states[vision_pointer].sentry_object[obj_id].y_value * 100 / this.img_h;
+                    return sentry_object.data2 * 100 / this.img_h | 0;
                 case sentry_obj_info_e.kWidthValue:
-                    return this._vision_states[vision_pointer].sentry_object[obj_id].width * 100 / this.img_w;
+                    return sentry_object.data3 * 100 / this.img_w | 0;
                 case sentry_obj_info_e.kHeightValue:
-                    return this._vision_states[vision_pointer].sentry_object[obj_id].height * 100 / this.img_h;
+                    return sentry_object.data4 * 100 / this.img_h | 0;
                 case sentry_obj_info_e.kLabel:
-                    return this._vision_states[vision_pointer].sentry_object[obj_id].label;
+                    return sentry_object.data5;
                 case sentry_obj_info_e.kGValue:
-                    return this._vision_states[vision_pointer].sentry_object[obj_id].color_g_value;
+                    return sentry_object.data1;
                 case sentry_obj_info_e.kRValue:
-                    return this._vision_states[vision_pointer].sentry_object[obj_id].color_r_value;
+                    return sentry_object.data2;
                 case sentry_obj_info_e.kBValue:
-                    return this._vision_states[vision_pointer].sentry_object[obj_id].color_b_value;
+                    return sentry_object.data3;
                 default:
                     return 0;
             }
