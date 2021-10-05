@@ -1327,7 +1327,7 @@ namespace Sentry {
      * @param SentryId id
      * @param item Paramters type
      */
-    //% block="get%id| algorithm Color| Recognition%item| index %obj_id" color="#2E8B57"
+    //% blockId=Sentry_get_color_value block="get%id| algorithm Color| Recognition%item| index %obj_id" color="#2E8B57"
     //% group="Functions"
     export function ColorRcgValue(id: SentryId, item: ColorParams, obj_id: number): number {
         return pSentry[id].getValue(sentry_vision_e.kVisionColor, <number>item, obj_id)
@@ -1338,7 +1338,7 @@ namespace Sentry {
      * @param SentryId id
      * @param item Paramters type
      */
-    //% block="get%id|QrCode Recognition|%item" color="#2E8B57"
+    //% blockId=Sentry_get_qr_value  block="get%id|QrCode Recognition|%item" color="#2E8B57"
     //% group="Functions"
     export function QrRcgValue(id: SentryId, item: QrParams): number {
         return pSentry[id].GetValue(sentry_vision_e.kVisionQrCode, <number>item, 0)
