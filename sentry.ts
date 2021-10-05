@@ -1187,11 +1187,12 @@ namespace Sentry {
     * @param detected_color led color while sensor detected target.
     * @param undetected_color led color while sensor undetected target.
     */
-    //% blockId=Sentry_led_set_color block="%id|LED when detected %detected_color|when undetected %undetected_color|level %level"
+    //% blockId=Sentry_led_set_color block="%id|LED when detected %detected_color|when undetected %undetected_color||level %level"
     //% detected_color.defl=sentry_led_color_e.kLedBlue
     //% undetected_color.defl=sentry_led_color_e.kLedGreen
     //% level.min=0 level.max=15 level.defl=1
-    //% weight=200 inlineInputMode=inline
+    //% inlineInputMode=inline
+    //% expandableArgumentMode="enabled"
     //% group="Settings" advanced=true 
     export function LedSetColor(id: SentryId, detected_color: sentry_led_color_e, undetected_color: sentry_led_color_e, level: number) {
         while (pSentry[id].LedSetColor(detected_color, undetected_color, level) != SENTRY_OK);
@@ -1316,7 +1317,10 @@ namespace Sentry {
     * @param vision_type: vision type.
     * @param object_inf:  object information
     */
-    //% blockId=Sentry_get_value block="get %id| algorithm%vision_type| Recognition%object_inf| index %obj_id" color="#2E8B57"
+    //% blockId=Sentry_get_value block="get %id| algorithm%vision_type| Recognition%object_inf|| index %obj_id" color="#2E8B57"
+    //% inlineInputMode=inline
+    //% expandableArgumentMode="enabled"
+    //% obj_id.defl=0
     //% group="Functions"
     export function GetValue(id: SentryId, vision_type: sentry_vision_value, object_inf: Params, obj_id: number): number {
         return <number>pSentry[id].GetValue(<number>vision_type, <number>object_inf, obj_id);
@@ -1327,7 +1331,10 @@ namespace Sentry {
      * @param SentryId id
      * @param item Paramters type
      */
-    //% blockId=Sentry_get_color_value block="get%id| algorithm Color| Recognition%item| index %obj_id" color="#2E8B57"
+    //% blockId=Sentry_get_color_value block="get%id| algorithm Color| Recognition%item|| index %obj_id" color="#2E8B57"
+    //% inlineInputMode=inline
+    //% expandableArgumentMode="enabled"
+    //% obj_id.defl=0
     //% group="Functions"
     export function ColorRcgValue(id: SentryId, item: ColorParams, obj_id: number): number {
         return pSentry[id].getValue(sentry_vision_e.kVisionColor, <number>item, obj_id)
