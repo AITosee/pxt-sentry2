@@ -8,7 +8,8 @@
     },
     "files": [
         "README.md",
-        "sentry.ts"
+        "sentry.ts",
+        "enums.d.ts"
     ],
     "testFiles": [
         "test.ts"

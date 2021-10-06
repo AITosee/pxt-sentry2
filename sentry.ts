@@ -1,326 +1,27 @@
-declare const enum sentry_vision_detected {
-    kVisionColor = 1,
-    kVisionBlob = 2,
-    kVisionAprilTag = 3,
-    kVisionLine = 4,
-    kVisionBody = 5,
-    kVisionCard = 6,
-    kVisionFace = 7,
-    kVision20Classes = 8,
-    kVisionQrCode = 9,
-    kVisionObjTrack = 10,
-    kVisionMotionDetect = 11,
-}
-
-declare const enum sentry_vision_value {
-    kVisionBlob = 2,
-    kVisionAprilTag = 3,
-    kVisionLine = 4,
-    kVisionBody = 5,
-    kVisionCard = 6,
-    kVisionFace = 7,
-    kVision20Classes = 8,
-    kVisionObjTrack = 10,
-    kVisionMotionDetect = 11,
-}
-
-declare const enum sentry_led_color_e {
-    //% block="off"
-    kLedClose = 0,
-    //% block="red"
-    kLedRed = 1,
-    //% block="green"
-    kLedGreen = 2,
-    //% block="yellow"
-    kLedYellow = 3,
-    //% block="blue"
-    kLedBlue = 4,
-    //% block="purple"
-    kLedPurple = 5,
-    //% block="cyan"
-    kLedCyan = 6,
-    //% block="white"
-    kLedWhite = 7,
-}
-
-declare const enum sentry_mode_e {
-    //% block="SerialMode"
-    kSerialMode = 0,
-    //% block="I2CMode"
-    kI2CMode = 1,
-    //% block="Default"
-    kUnknownMode,
-}
-
-
-declare const enum sentry_baudrate_e {
-    //% block="9600"
-    kBaud9600 = 0x00,
-    //% block="19200"
-    kBaud19200 = 0x01,
-    //% block="38400"
-    kBaud38400 = 0x02,
-    //% block="57600"
-    kBaud57600 = 0x03,
-    //% block="115200"
-    kBaud115200 = 0x04,
-    //% block="921600"
-    kBaud921600 = 0x05,
-    //% block="1152000"
-    kBaud1152000 = 0x06,
-    //% block="2000000"
-    kBaud2000000 = 0x07,
-}
-
-declare const enum sentry_camera_zoom_e {
-    //% block="Auto"
-    kZoomDefault = 0,
-    //% block="Level1"
-    kZoom1 = 1,
-    //% block="Level2"
-    kZoom2 = 2,
-    //% block="Level3"
-    kZoom3 = 3,
-    //% block="Level4"
-    kZoom4 = 4,
-    //% block="Level5"
-    kZoom5 = 5,
-}
-
-declare const enum sentry_camera_config_e {
-    //% block="Auto"
-    kLevelDefault = 0,
-    //% block="Level1"
-    kLevel1 = 1,
-    //% block="Level2"
-    kLevel2 = 2,
-    //% block="Level3"
-    kLevel3 = 3,
-    //% block="Level4"
-    kLevel4 = 4,
-    //% block="Level5"
-    kLevel5 = 5,
-    //% block="Level6"
-    kLevel6 = 6,
-    //% block="Level7"
-    kLevel7 = 7,
-    //% block="Level8"
-    kLevel8 = 8,
-    //% block="Level9"
-    kLevel9 = 9,
-    //% block="Level10"
-    kLevel10 = 10,
-}
-
-declare const enum sentry_camera_fps_e {
-    //% block="FPSNorma"
-    kFPSNormal = 0,
-    //% block="FPSHigh"
-    kFPSHigh = 1,
-}
-
-
-declare const enum sentry_camera_white_balance_e {
-    //% block="AutoWhiteBalance"
-    kAutoWhiteBalance = 0,
-    //% block="LockWhiteBalance"
-    kLockWhiteBalance = 1,
-    //% block="WhiteLight"
-    kWhiteLight = 2,
-    //% block="YellowLight"
-    kYellowLight = 3,
-    //% block="WhiteBalanceCalibrating"
-    kWhiteBalanceCalibrating = 4,
-}
-
-declare const enum card_label_e {
-    kCardForward = 1,
-    kCardLeft = 2,
-    kCardRight = 3,
-    kCardTurnAround = 4,
-    kCardPark = 5,
-    kCardGreenLight = 6,
-    kCardRedLight = 7,
-    kCardSpeed40 = 8,
-    kCardSpeed60 = 9,
-    kCardSpeed80 = 10,
-    kCardCheck = 11,
-    kCardCross = 12,
-    kCardCircle = 13,
-    kCardSquare = 14,
-    kCardTriangle = 15,
-    kCardPlus = 16,
-    kCardMinus = 17,
-    kCardDivide = 18,
-    kCardEqual = 19,
-    kCardZero = 20,
-    kCardOne = 21,
-    kCardTwo = 22,
-    kCardThree = 23,
-    kCardFour = 24,
-    kCardFive = 25,
-    kCardSix = 26,
-    kCardSeven = 27,
-    kCardEight = 28,
-    kCardNine = 29,
-    kCardA = 31,
-    kCardB = 32,
-    kCardC = 33,
-    kCardD = 34,
-    kCardE = 35,
-    kCardF = 36,
-    kCardG = 37,
-    kCardH = 38,
-    kCardI = 39,
-    kCardJ = 40,
-    kCardK = 41,
-    kCardL = 42,
-    kCardM = 43,
-    kCardN = 44,
-    kCardO = 45,
-    kCardP = 46,
-    kCardQ = 47,
-    kCardR = 48,
-    kCardS = 49,
-    kCardT = 50,
-    kCardU = 51,
-    kCardV = 52,
-    kCardW = 53,
-    kCardX = 54,
-    kCardY = 55,
-    kCardZ = 56
-}
-
-declare const enum class20_label_e {
-    kAirplane = 1,
-    kBicycle = 2,
-    kBird = 3,
-    kBoat = 4,
-    kBottle = 5,
-    kBus = 6,
-    kCar = 7,
-    kCat = 8,
-    kChair = 9,
-    kCow = 10,
-    kTable = 11,
-    kDog = 12,
-    kHorse = 13,
-    kMotorBike = 14,
-    kPerson = 15,
-    kPlant = 16,
-    kSheep = 17,
-    kSofa = 18,
-    kTrain = 19,
-    kMonitor = 20
-}
-
-declare const enum color_label_e {
-    kColorBlack = 1,
-    kColorWhite = 2,
-    kColorRed = 3,
-    kColorGreen = 4,
-    kColorBlue = 5,
-    kColorYellow = 6
-}
-
-declare const enum SentryId {
-    //% block="Sentry00"
-    Sentry00 = 0,
-    //% block="Sentry01"
-    Sentry01 = 1,
-    //% block="Sentry10"
-    Sentry10 = 2,
-    //% block="Sentry11"
-    Sentry11 = 3,
-}
-
-declare const enum SentryStatus {
-    //% block="enable"
-    Enable = 1,
-    //% block="disable"
-    Disable = 0,
-}
-
-declare const enum sentry_obj_info_e {
-    //% block="status"
-    kStatus = 0,
-    //% block="x position"
-    kXValue = 1,
-    //% block="y position"
-    kYValue = 2,
-    //% block="width"
-    kWidthValue = 3,
-    //% block="height"
-    kHeightValue = 4,
-    //% block="label"
-    kLabel = 5,
-    //% block="red channel"
-    kRValue = 6,
-    //% block="green channel"
-    kGValue = 7,
-    //% block="blue channel"
-    kBValue = 8,
-}
-
-declare const enum Params {
-    //% block="horizontal"
-    Horizontal = 1,
-    //% block="vertical"
-    Vertical,
-    //% block="width"
-    Width,
-    //% block="height"
-    Height,
-    //% block="label"
-    Lable
-}
-
-declare const enum QrParams {
-    //% block="horizontal"
-    Horizontal = 1,
-    //% block="vertical"
-    Vertical,
-    //% block="width"
-    Width,
-    //% block="height"
-    Height
-}
-
-declare const enum ColorParams {
-    //% block="red channel"
-    RedChannal = 6,
-    //% block="green channel"
-    GreenChannal = 7,
-    //% block="blue channel"
-    BlueChannal = 8,
-    //% block="label"
-    Label = 5
-}
-
 //% color="#ff0000" icon="\uf0a4"
 namespace protocol {
     /* Protocol Error Type */
-    const SENTRY_PROTOC_OK = 0xE0
-    const SENTRY_PROTOC_FAIL = 0xE1
-    const SENTRY_PROTOC_UNKNOWN = 0xE2
-    const SENTRY_PROTOC_TIMEOUT = 0xE3
-    const SENTRY_PROTOC_CHECK_ERROR = 0xE4
-    const SENTRY_PROTOC_LENGTH_ERROR = 0xE5
-    const SENTRY_PROTOC_UNSUPPORT_COMMAND = 0xE6
-    const SENTRY_PROTOC_UNSUPPORT_REG_ADDRESS = 0xE7
-    const SENTRY_PROTOC_UNSUPPORT_REG_VALUE = 0xE8
-    const SENTRY_PROTOC_READ_ONLY = 0xE9
-    const SENTRY_PROTOC_RESTART_ERROR = 0xEA
-    const SENTRY_PROTOC_RESULT_NOT_END = 0xEC
+    export const SENTRY_PROTOC_OK = 0xE0
+    export const SENTRY_PROTOC_FAIL = 0xE1
+    export const SENTRY_PROTOC_UNKNOWN = 0xE2
+    export const SENTRY_PROTOC_TIMEOUT = 0xE3
+    export const SENTRY_PROTOC_CHECK_ERROR = 0xE4
+    export const SENTRY_PROTOC_LENGTH_ERROR = 0xE5
+    export const SENTRY_PROTOC_UNSUPPORT_COMMAND = 0xE6
+    export const SENTRY_PROTOC_UNSUPPORT_REG_ADDRESS = 0xE7
+    export const SENTRY_PROTOC_UNSUPPORT_REG_VALUE = 0xE8
+    export const SENTRY_PROTOC_READ_ONLY = 0xE9
+    export const SENTRY_PROTOC_RESTART_ERROR = 0xEA
+    export const SENTRY_PROTOC_RESULT_NOT_END = 0xEC
 
     /* Protocol */
-    const SENTRY_PROTOC_START = 0xFF
-    const SENTRY_PROTOC_END = 0xED
-    const SENTRY_PROTOC_COMMADN_SET = 0x01
-    const SENTRY_PROTOC_COMMADN_GET = 0x02
-    const SENTRY_PROTOC_SET_PARAM = 0x21
-    const SENTRY_PROTOC_GET_RESULT = 0x23
-    const SENTRY_PROTOC_MESSAGE = 0x11
+    export const SENTRY_PROTOC_START = 0xFF
+    export const SENTRY_PROTOC_END = 0xED
+    export const SENTRY_PROTOC_COMMADN_SET = 0x01
+    export const SENTRY_PROTOC_COMMADN_GET = 0x02
+    export const SENTRY_PROTOC_SET_PARAM = 0x21
+    export const SENTRY_PROTOC_GET_RESULT = 0x23
+    export const SENTRY_PROTOC_MESSAGE = 0x11
 
     //% block
     export function readpkg(timeout: number = 1000): number[] {
@@ -370,13 +71,13 @@ namespace protocol {
             }
         }
 
-        return [SENTRY_PROTOC_CHECK_ERROR, SENTRY_PROTOC_CHECK_ERROR, SENTRY_PROTOC_CHECK_ERROR];
+        return [0, 0, SENTRY_PROTOC_TIMEOUT, 0, 0];
     }
 
     //% block
     export function writepkg(pkg: number[]): boolean {
         if (pkg.length > 0) {
-            let protocol_buf: number[] = [SENTRY_PROTOC_START, 5];
+            let protocol_buf: number[] = [SENTRY_PROTOC_START, 4];
             protocol_buf[1] += pkg.length;
 
             let value = SENTRY_PROTOC_START + protocol_buf[1];
@@ -616,41 +317,31 @@ namespace Sentry {
                     kRegsentry_object_tData5L, kRegsentry_object_tData5H)
                 if (err) return [err, vision_state];
 
+                if (sentry_vision_e.kVisionQrCode == vision_type) {
+                    let bytec = 0;
+                    let sentry_object_t_id = 0;
+                    let offset = 0;
+                    let bytestr: string = "";
+
+                    for (let i = 0; i < vision_state.sentry_objects[0].data5; i++) {
+                        sentry_object_t_id = (i / 5 + 2) | 0;
+                        offset = i % 5;
+                        if (0 == i % 5) {
+                            err = this.Set(kRegsentry_object_tId, sentry_object_t_id)
+                            if (err) return [err, vision_state];
+                        }
+
+                        [err, bytec] = this.Get(kRegsentry_object_tData1L + 2 * offset)
+                        if (err) return [err, vision_state];
+
+                        bytestr += String.fromCharCode(bytec)
+                    }
+
+                    vision_state.sentry_objects[0].bytestr = bytestr;
+                }
             }
 
             return [SENTRY_OK, vision_state]
-        }
-
-        ReadQrCode(vision_state: sentry_vision_state_t): [number, sentry_vision_state_t] {
-            let err = SENTRY_OK;
-            let bytec = 0;
-            let sentry_object_t_id = 0;
-            let offset = 0;
-            let bytestr: string = "";
-
-            [err, vision_state] = this.Read(sentry_vision_e.kVisionQrCode, vision_state)
-
-            if (vision_state.detect <= 0) {
-                return [SENTRY_OK, vision_state];
-            }
-
-            for (let i = 0; i < vision_state.sentry_objects[0].data5; i++) {
-                sentry_object_t_id = (i / 5 + 2) | 0;
-                offset = i % 5;
-                if (0 == i % 5) {
-                    err = this.Set(kRegsentry_object_tId, sentry_object_t_id)
-                    if (err) return [err, vision_state];
-                }
-
-                [err, bytec] = this.Get(kRegsentry_object_tData1L + 2 * offset)
-                if (err) return [err, vision_state];
-
-                bytestr += String.fromCharCode(bytec)
-            }
-
-            vision_state.sentry_objects[0].bytestr = bytestr;
-
-            return [SENTRY_OK, vision_state];
         }
 
         SetParam(vision_id: number, param: sentry_object_t, param_id: number): number {
@@ -662,15 +353,15 @@ namespace Sentry {
             if (err) return err;
 
             this.Set(kRegParamValue1H, (param.data1 >> 8) & 0xFF)
-            this.Set(kRegParamValue1H, param.data1)
+            this.Set(kRegParamValue1L, param.data1 & 0xFF)
             this.Set(kRegParamValue2H, (param.data2 >> 8) & 0xFF)
-            this.Set(kRegParamValue2H, param.data2)
+            this.Set(kRegParamValue2L, param.data2 & 0xFF)
             this.Set(kRegParamValue3H, (param.data3 >> 8) & 0xFF)
-            this.Set(kRegParamValue3H, param.data3)
+            this.Set(kRegParamValue3L, param.data3 & 0xFF)
             this.Set(kRegParamValue4H, (param.data4 >> 8) & 0xFF)
-            this.Set(kRegParamValue4H, param.data4)
+            this.Set(kRegParamValue4L, param.data4 & 0xFF)
             this.Set(kRegParamValue5H, (param.data5 >> 8) & 0xFF)
-            this.Set(kRegParamValue5H, param.data5)
+            this.Set(kRegParamValue5L, param.data5 & 0xFF)
 
             return SENTRY_OK;
         }
@@ -682,25 +373,119 @@ namespace Sentry {
             this._addr = addr;
         }
 
+        private get_error_code(code:number){
+            let value = 0;
+            switch (code) {
+                case protocol.SENTRY_PROTOC_OK: value = SENTRY_FAIL;
+                case protocol.SENTRY_PROTOC_RESULT_NOT_END: value = SENTRY_FAIL;
+                case protocol.SENTRY_PROTOC_TIMEOUT: value = SENTRY_READ_TIMEOUT;
+                case protocol.SENTRY_PROTOC_CHECK_ERROR: value = SENTRY_CHECK_ERROR;
+                case protocol.SENTRY_PROTOC_LENGTH_ERROR:
+                case protocol.SENTRY_PROTOC_UNSUPPORT_COMMAND:
+                case protocol.SENTRY_PROTOC_UNSUPPORT_REG_ADDRESS:
+                case protocol.SENTRY_PROTOC_UNSUPPORT_REG_VALUE: value = SENTRY_UNKNOWN_PROTOCOL;
+                default: value = SENTRY_FAIL;
+            }
+            return value;
+        }
+
         Set(reg_address: number, value: number): number {
-            protocol.readpkg()
-            return SENTRY_OK;
+            let pkg: number[] = [this._addr, protocol.SENTRY_PROTOC_COMMADN_SET, reg_address, value];
+
+            let err = protocol.writepkg(pkg);
+            if(!err){
+                return SENTRY_FAIL;
+            }
+
+            pkg = protocol.readpkg();
+            return  this.get_error_code(pkg[2]);
+
         }
 
         Get(reg_address: number): [number, number] {
-            return [0, 0];
+            let pkg: number[] = [this._addr, protocol.SENTRY_PROTOC_COMMADN_GET, reg_address];
+
+            let err = protocol.writepkg(pkg);
+            let value = 0;
+            if (!err) {
+                return [SENTRY_FAIL, value];
+            }
+
+            pkg = protocol.readpkg();
+            value = this.get_error_code(pkg[2]);
+
+            return [value, pkg[4]];
         }
 
         Read(vision_type: sentry_vision_e, vision_state: sentry_vision_state_t): [number, sentry_vision_state_t] {
-            return [SENTRY_OK, vision_state];
-        }
+            let pkg: number[] = [this._addr, protocol.SENTRY_PROTOC_GET_RESULT, vision_type, 0, 0];
+            let err = protocol.writepkg(pkg);
+            let value = 0;
+            vision_state.detect = 0;
 
-        ReadQrCode(vision_state: sentry_vision_state_t): [number, sentry_vision_state_t] {
-            return [SENTRY_OK, vision_state];
+            if (!err) {
+                return [SENTRY_FAIL, vision_state];
+            }
+
+            for(;;){
+                pkg = protocol.readpkg();
+                value = this.get_error_code(pkg[2]);
+                if (SENTRY_OK == value && pkg[3] == protocol.SENTRY_PROTOC_GET_RESULT){
+                    if (vision_state.frame != pkg[4] && vision_type == pkg[5]){
+                        vision_state.frame = pkg[4];
+                        let start_id = pkg[6];
+                        let stop_id = pkg[7];
+                        if (stop_id == 0) return [SENTRY_OK, vision_state];
+                        for (let i = start_id - 1, j = 0; i < stop_id; i++, j++) {
+                            vision_state.sentry_objects[i].data1 = pkg[10 * j + 8] << 8 | pkg[10 * j + 9];
+                            vision_state.sentry_objects[i].data2 = pkg[10 * j + 10] << 8 | pkg[10 * j + 11];
+                            vision_state.sentry_objects[i].data3 = pkg[10 * j + 12] << 8 | pkg[10 * j + 13];
+                            vision_state.sentry_objects[i].data4 = pkg[10 * j + 14] << 8 | pkg[10 * j + 15];
+                            vision_state.sentry_objects[i].data5 = pkg[10 * j + 16] << 8 | pkg[10 * j + 17];
+                            vision_state.detect++;
+
+                            if (sentry_vision_e.kVisionQrCode == vision_type) {
+                                let bytec = 0;
+                                let bytestr: string = "";
+
+                                for (let i = 0; i < vision_state.sentry_objects[0].data5; i++) {
+                                    bytec = pkg[19 + 2 * i];
+                                    bytestr += String.fromCharCode(bytec)
+                                }
+
+                                vision_state.sentry_objects[0].bytestr = bytestr;
+                            }
+                        }
+
+                        if (pkg[2] == protocol.SENTRY_PROTOC_OK) {
+                            return [SENTRY_OK, vision_state]
+                        } else {
+                            continue;
+                        }
+                    }
+
+                }
+            }
+
+            return [SENTRY_FAIL, vision_state];
         }
 
         SetParam(vision_id: number, param: sentry_object_t, param_id: number): number {
-            return SENTRY_OK;
+            let pkg: number[] = [this._addr, protocol.SENTRY_PROTOC_SET_PARAM, vision_id, param_id + 1, param_id + 1];
+
+            pkg.push((param.data1 >> 8) & 0xFF); pkg.push(param.data1 & 0xff);
+            pkg.push((param.data1 >> 8) & 0xFF); pkg.push(param.data1 & 0xff);
+            pkg.push((param.data1 >> 8) & 0xFF); pkg.push(param.data1 & 0xff);
+            pkg.push((param.data1 >> 8) & 0xFF); pkg.push(param.data1 & 0xff);
+            pkg.push((param.data1 >> 8) & 0xFF); pkg.push(param.data1 & 0xff);
+
+            let err = protocol.writepkg(pkg);
+            if (!err) {
+                return SENTRY_FAIL;
+            }
+
+            pkg = protocol.readpkg();
+            return this.get_error_code(pkg[2]);
         }
     }
 
@@ -934,18 +719,14 @@ namespace Sentry {
 
             while (SENTRY_OK != this._SensorLockkReg(SentryStatus.Enable));
 
-            if (vision_type == sentry_vision_e.kVisionQrCode) {
-                [err, vision_state] = this._stream.ReadQrCode(vision_state);
-            }
-            else {
-                [err, vision_state] = this._stream.Read(vision_type, vision_state);
-            }
+            [err, vision_state] = this._stream.Read(vision_type, vision_state);
 
-            this._vision_states[vision_type - 1] = vision_state;
+            if(!err) 
+                this._vision_states[vision_type - 1] = vision_state;
 
             while (SENTRY_OK != this._SensorLockkReg(SentryStatus.Disable));
 
-            return SENTRY_OK;
+            return err;
         }
 
         read(vision_type: sentry_vision_e, obj_info: sentry_obj_info_e, obj_id: number = 0) {
