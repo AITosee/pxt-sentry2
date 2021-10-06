@@ -386,7 +386,7 @@ namespace Sentry {
         }
     }
 
-    export class SentryUartMethod {
+    class SentryUartMethod {
         _addr: number
         constructor(addr: number) {
             this._addr = addr;
@@ -444,11 +444,7 @@ namespace Sentry {
 
             pkg = protocol.readpkg();
             value = this.get_error_code(pkg[3]);
-/*
-            pkg.push(value);
-            pkg.push(0x0a);
-            serial.writeBuffer(pins.createBufferFromArray(pkg));
-*/
+
             return [value, pkg[5]];
         }
 
@@ -768,7 +764,7 @@ namespace Sentry {
             return err;
         }
 
-        read(vision_type: sentry_vision_e, obj_info: sentry_obj_info_e, obj_id: number = 0) {
+        private read(vision_type: sentry_vision_e, obj_info: sentry_obj_info_e, obj_id: number = 0) {
             let vision_pointer = vision_type - 1;
 
             if (obj_id >= SENTRY_MAX_RESULT) obj_id = SENTRY_MAX_RESULT - 1;
