@@ -22,18 +22,22 @@ namespace protocol {
     export const SENTRY_PROTOC_GET_RESULT = 0x23
     export const SENTRY_PROTOC_MESSAGE = 0x11
 
+    let readbuff: Buffer = pins.createBuffer(0);
     //% block
     //% blockHidden=true
     export function readpkg(timeout: number = 1000): number[] {
         let protocol_buf: number[] = [];
         let start_receive = false;
+        let timeout_t = timeout;
 
-        let timeout_t = control.millis() + timeout;
-
+        serial.setRxBufferSize(255);
         for (; ;) {
-            let readbuff = serial.readBuffer(0);
-            if (readbuff.length > 0){
+            if (readbuff.length < 1){
+                readbuff = serial.readBuffer(0);
+            }        
 
+            if (readbuff.length > 0){               
+                
                 for (let index = 0; index < readbuff.length; ++index) {
                     let value = readbuff.getUint8(index)
                     switch (value) {
@@ -41,21 +45,26 @@ namespace protocol {
                             start_receive = true;
                             break;
                         case SENTRY_PROTOC_END:
-                            if (start_receive) {                          
-                                if ((protocol_buf.length+1) == protocol_buf[1]) {
-                                    value = protocol_buf[0];
-
-                                    for (let i = 1; i < protocol_buf.length - 1; ++i) {
-                                        value += protocol_buf[i];
-                                    }
-
-                                    value &= 0xff;
-                                    if (protocol_buf[protocol_buf.length - 1] != value) {
-                                        protocol_buf[2] = SENTRY_PROTOC_CHECK_ERROR;
-                                    }
-
-                                   return protocol_buf;
+                        
+                            if (start_receive && (protocol_buf.length + 1) == protocol_buf[1]) {
+                                value = protocol_buf[0];
+                                
+                                for (let i = 1; i < protocol_buf.length - 1; ++i) {
+                                    value += protocol_buf[i];
                                 }
+                                
+                                value &= 0xff;
+                                if (protocol_buf[protocol_buf.length - 1] != value) {
+                                    protocol_buf[2] = SENTRY_PROTOC_CHECK_ERROR;
+                                }
+
+                                if (readbuff.length - index > 1) {
+                                    readbuff = readbuff.slice(index, readbuff.length - index);
+                                } else {
+                                    readbuff = pins.createBuffer(0);
+                                }
+                               
+                                return protocol_buf;
                             }
                             break;
                         default: break;
@@ -64,15 +73,20 @@ namespace protocol {
                     if (start_receive) {
                         protocol_buf.push(value);
                     }
-
-                    timeout_t = control.millis() + timeout;
                 }
+
+                timeout_t = timeout;
+                if (readbuff.length){
+                    readbuff = pins.createBuffer(0);
+                }
+                
             }
             else {
                 basic.pause(5);
+                timeout_t-=5;
             }
 
-            if (timeout_t <= control.millis()) {
+            if (timeout_t < 0) {
                 return [0, 0, 0, SENTRY_PROTOC_TIMEOUT, 0, 0];
             }
         }   
@@ -97,8 +111,8 @@ namespace protocol {
             protocol_buf.push(SENTRY_PROTOC_END);
 
             let buff = pins.createBufferFromArray(protocol_buf)
-            serial.writeBuffer(buff);
 
+            serial.writeBuffer(buff);
             return true;
         } else {
             return false;
@@ -210,7 +224,7 @@ namespace Sentry {
         }
     }
 
-    class sentry_vision_state_t {
+    export class sentry_vision_state_t {
         vision_type: sentry_vision_e
         frame: number
         detect: number
@@ -372,7 +386,7 @@ namespace Sentry {
         }
     }
 
-    class SentryUartMethod {
+    export class SentryUartMethod {
         _addr: number
         constructor(addr: number) {
             this._addr = addr;
@@ -380,6 +394,7 @@ namespace Sentry {
 
         private get_error_code(code:number){
             let value = SENTRY_FAIL;
+
             switch (code) {
                 case protocol.SENTRY_PROTOC_OK:
                     value = SENTRY_OK;
@@ -449,20 +464,22 @@ namespace Sentry {
 
             for(;;){
                 pkg = protocol.readpkg();
+
                 value = this.get_error_code(pkg[3]);
 
-                if (SENTRY_OK == value && pkg[3] == protocol.SENTRY_PROTOC_GET_RESULT){
-                    if (vision_state.frame != pkg[4] && vision_type == pkg[5]){
-                        vision_state.frame = pkg[4];
-                        let start_id = pkg[6];
-                        let stop_id = pkg[7];
+                if (SENTRY_OK == value && pkg[4] == protocol.SENTRY_PROTOC_GET_RESULT){
+                    if (vision_type == pkg[6]){
+                        vision_state.frame = pkg[5];
+                        let start_id = pkg[7];
+                        let stop_id = pkg[8];
                         if (stop_id == 0) return [SENTRY_OK, vision_state];
+
                         for (let i = start_id - 1, j = 0; i < stop_id; i++, j++) {
-                            vision_state.sentry_objects[i].data1 = pkg[10 * j + 8] << 8 | pkg[10 * j + 9];
-                            vision_state.sentry_objects[i].data2 = pkg[10 * j + 10] << 8 | pkg[10 * j + 11];
-                            vision_state.sentry_objects[i].data3 = pkg[10 * j + 12] << 8 | pkg[10 * j + 13];
-                            vision_state.sentry_objects[i].data4 = pkg[10 * j + 14] << 8 | pkg[10 * j + 15];
-                            vision_state.sentry_objects[i].data5 = pkg[10 * j + 16] << 8 | pkg[10 * j + 17];
+                            vision_state.sentry_objects[i].data1 = pkg[10 * j + 9] << 8 | pkg[10 * j + 10];
+                            vision_state.sentry_objects[i].data2 = pkg[10 * j + 11] << 8 | pkg[10 * j + 12];
+                            vision_state.sentry_objects[i].data3 = pkg[10 * j + 13] << 8 | pkg[10 * j + 14];
+                            vision_state.sentry_objects[i].data4 = pkg[10 * j + 15] << 8 | pkg[10 * j + 16];
+                            vision_state.sentry_objects[i].data5 = pkg[10 * j + 17] << 8 | pkg[10 * j + 18];
                             vision_state.detect++;
 
                             if (sentry_vision_e.kVisionQrCode == vision_type) {
@@ -470,7 +487,7 @@ namespace Sentry {
                                 let bytestr: string = "";
 
                                 for (let i = 0; i < vision_state.sentry_objects[0].data5; i++) {
-                                    bytec = pkg[19 + 2 * i];
+                                    bytec = pkg[20 + 2 * i];
                                     bytestr += String.fromCharCode(bytec)
                                 }
 
@@ -478,17 +495,18 @@ namespace Sentry {
                             }
                         }
 
-                        if (pkg[2] == protocol.SENTRY_PROTOC_OK) {
-                            return [SENTRY_OK, vision_state]
-                        } else {
+                        if (pkg[3] == protocol.SENTRY_PROTOC_RESULT_NOT_END) {
                             continue;
+                        } else {
+                            serial.writeBuffer(pins.createBufferFromArray(pkg));
+                            return [SENTRY_OK, vision_state]  
                         }
                     }
 
                 }
-            }
 
-            return [SENTRY_FAIL, vision_state];
+                return [SENTRY_FAIL, vision_state];
+            }
         }
 
         SetParam(vision_id: number, param: sentry_object_t, param_id: number): number {
