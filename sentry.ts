@@ -1,56 +1,3 @@
-
-//% color="#ff0000" icon="\uf0a4"
-namespace SentryLogger {
-    export const enum log_level_t {
-        LOG_DEBUG = 1,
-        LOG_INFO = 2,
-        LOG_WARNING = 3,
-        LOG_ERROR = 4,
-        LOG_OFF = 6
-    }
-
-    let __level__ = log_level_t.LOG_INFO;
-    let _level_dict = ["DEBUG", "INFO", "WARN", "ERROR"];
-    let redirect = false;
-
-    function _level_str(level: log_level_t) {
-        return _level_dict[level]
-    }
-
-    function isEnabledFor(level: log_level_t) {
-        return level >= __level__
-    }
-
-    function outputserial(str: string) {
-        if (redirect) {
-            serial.redirect(SerialPin.P13, SerialPin.P14, 115200);
-        }
-
-        serial.writeLine(str);
-
-        if (redirect) {
-            serial.redirectToUSB();
-        }
-    }
-
-    //% block
-    //% blockHidden=false
-    export function setLevel(level: log_level_t, redirect: boolean = false) {
-        __level__ = level
-    }
-
-    //% blockHidden=true
-    export function log(level: log_level_t, msg: string, value: number[] = [0]) {
-        let num = 0;
-        if (isEnabledFor(level)) {
-            for (let entry of value) {
-                msg += " " + entry.toString();
-            }
-        }
-        outputserial(msg)
-    }
-}
-
 namespace protocol {
     /* Protocol Error Type */
     export const SENTRY_PROTOC_OK = 0xE0
@@ -503,8 +450,6 @@ namespace Sentry {
             for(;;){
                 pkg = protocol.readpkg();
                 value = this.get_error_code(pkg[3]);
-                
-                SentryLogger.log(0,"read",pkg);
 
                 if (SENTRY_OK == value && pkg[3] == protocol.SENTRY_PROTOC_GET_RESULT){
                     if (vision_state.frame != pkg[4] && vision_type == pkg[5]){
