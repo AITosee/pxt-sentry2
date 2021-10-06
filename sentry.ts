@@ -1,4 +1,56 @@
+
 //% color="#ff0000" icon="\uf0a4"
+namespace SentryLogger {
+    export const enum log_level_t {
+        LOG_DEBUG = 1,
+        LOG_INFO = 2,
+        LOG_WARNING = 3,
+        LOG_ERROR = 4,
+        LOG_OFF = 6
+    }
+
+    let __level__ = log_level_t.LOG_INFO;
+    let _level_dict = ["DEBUG", "INFO", "WARN", "ERROR"];
+    let redirect = false;
+
+    function _level_str(level: log_level_t) {
+        return _level_dict[level]
+    }
+
+    function isEnabledFor(level: log_level_t) {
+        return level >= __level__
+    }
+
+    function outputserial(str: string) {
+        if (redirect) {
+            serial.redirect(SerialPin.P13, SerialPin.P14, 115200);
+        }
+
+        serial.writeLine(str);
+
+        if (redirect) {
+            serial.redirectToUSB();
+        }
+    }
+
+    //% block
+    //% blockHidden=false
+    export function setLevel(level: log_level_t, redirect: boolean = false) {
+        __level__ = level
+    }
+
+    //% blockHidden=true
+    export function log(level: log_level_t, msg: string, value: number[] = [0]) {
+        let num = 0;
+        if (isEnabledFor(level)) {
+            for (let entry of value) {
+                msg += " " + entry.toString();
+            }
+        }
+        outputserial(msg)
+    }
+}
+
 namespace protocol {
     /* Protocol Error Type */
     export const SENTRY_PROTOC_OK = 0xE0
@@ -24,57 +76,63 @@ namespace protocol {
     export const SENTRY_PROTOC_MESSAGE = 0x11
 
     //% block
+    //% blockHidden=true
     export function readpkg(timeout: number = 1000): number[] {
         let protocol_buf: number[] = [];
         let start_receive = false;
 
-        timeout += control.millis();
+        let timeout_t = control.millis() + timeout;
 
         for (; ;) {
             let readbuff = serial.readBuffer(0);
-            for (let index = 0; index < readbuff.length; ++index) {
-                let value = readbuff.getUint8(index)
-                switch (value) {
-                    case SENTRY_PROTOC_START:
-                        start_receive = true;
-                        break;
-                    case SENTRY_PROTOC_END:
-                        if (start_receive && protocol_buf.length > 5) {
-                            if ((protocol_buf.length) == protocol_buf[1]) {
-                                value = protocol_buf[0];
+            if (readbuff.length > 0){
 
-                                for (let i = 1; i < protocol_buf.length - 1; ++i) {
-                                    value += protocol_buf[i];
+                for (let index = 0; index < readbuff.length; ++index) {
+                    let value = readbuff.getUint8(index)
+                    switch (value) {
+                        case SENTRY_PROTOC_START:
+                            start_receive = true;
+                            break;
+                        case SENTRY_PROTOC_END:
+                            if (start_receive) {                          
+                                if ((protocol_buf.length+1) == protocol_buf[1]) {
+                                    value = protocol_buf[0];
+
+                                    for (let i = 1; i < protocol_buf.length - 1; ++i) {
+                                        value += protocol_buf[i];
+                                    }
+
+                                    value &= 0xff;
+                                    if (protocol_buf[protocol_buf.length - 1] != value) {
+                                        protocol_buf[2] = SENTRY_PROTOC_CHECK_ERROR;
+                                    }
+
+                                   return protocol_buf;
                                 }
-
-                                value &= 0xff;
-                                if (protocol_buf[protocol_buf.length - 1] != value) {
-                                    protocol_buf[2] = SENTRY_PROTOC_CHECK_ERROR;
-                                }
-
-                                return protocol_buf;
                             }
-                        }
-                        break;
-                    default: break;
-                }
+                            break;
+                        default: break;
+                    }
 
-                if (start_receive) {
-                    protocol_buf.push(value);
-                }
+                    if (start_receive) {
+                        protocol_buf.push(value);
+                    }
 
-                timeout += control.millis();
+                    timeout_t = control.millis() + timeout;
+                }
+            }
+            else {
+                basic.pause(5);
             }
 
-            if (timeout <= control.millis()) {
-                break;
+            if (timeout_t <= control.millis()) {
+                return [0, 0, 0, SENTRY_PROTOC_TIMEOUT, 0, 0];
             }
-        }
-
-        return [0, 0, SENTRY_PROTOC_TIMEOUT, 0, 0];
+        }   
     }
 
     //% block
+    //% blockHidden=true
     export function writepkg(pkg: number[]): boolean {
         if (pkg.length > 0) {
             let protocol_buf: number[] = [SENTRY_PROTOC_START, 4];
@@ -374,18 +432,29 @@ namespace Sentry {
         }
 
         private get_error_code(code:number){
-            let value = 0;
+            let value = SENTRY_FAIL;
             switch (code) {
-                case protocol.SENTRY_PROTOC_OK: value = SENTRY_FAIL;
-                case protocol.SENTRY_PROTOC_RESULT_NOT_END: value = SENTRY_FAIL;
-                case protocol.SENTRY_PROTOC_TIMEOUT: value = SENTRY_READ_TIMEOUT;
-                case protocol.SENTRY_PROTOC_CHECK_ERROR: value = SENTRY_CHECK_ERROR;
+                case protocol.SENTRY_PROTOC_OK:
+                    value = SENTRY_OK;
+                    break;
+                case protocol.SENTRY_PROTOC_RESULT_NOT_END:
+                    value = SENTRY_OK;
+                    break;
+                case protocol.SENTRY_PROTOC_TIMEOUT:
+                    value = SENTRY_READ_TIMEOUT;
+                    break;
+                case protocol.SENTRY_PROTOC_CHECK_ERROR:
+                    value = SENTRY_CHECK_ERROR;
+                    break;
                 case protocol.SENTRY_PROTOC_LENGTH_ERROR:
                 case protocol.SENTRY_PROTOC_UNSUPPORT_COMMAND:
                 case protocol.SENTRY_PROTOC_UNSUPPORT_REG_ADDRESS:
-                case protocol.SENTRY_PROTOC_UNSUPPORT_REG_VALUE: value = SENTRY_UNKNOWN_PROTOCOL;
-                default: value = SENTRY_FAIL;
+                case protocol.SENTRY_PROTOC_UNSUPPORT_REG_VALUE:
+                    value = SENTRY_UNKNOWN_PROTOCOL;
+                    break;
+                default:break;
             }
+
             return value;
         }
 
@@ -398,7 +467,7 @@ namespace Sentry {
             }
 
             pkg = protocol.readpkg();
-            return  this.get_error_code(pkg[2]);
+            return  this.get_error_code(pkg[3]);
 
         }
 
@@ -412,9 +481,13 @@ namespace Sentry {
             }
 
             pkg = protocol.readpkg();
-            value = this.get_error_code(pkg[2]);
-
-            return [value, pkg[4]];
+            value = this.get_error_code(pkg[3]);
+/*
+            pkg.push(value);
+            pkg.push(0x0a);
+            serial.writeBuffer(pins.createBufferFromArray(pkg));
+*/
+            return [value, pkg[5]];
         }
 
         Read(vision_type: sentry_vision_e, vision_state: sentry_vision_state_t): [number, sentry_vision_state_t] {
@@ -429,7 +502,10 @@ namespace Sentry {
 
             for(;;){
                 pkg = protocol.readpkg();
-                value = this.get_error_code(pkg[2]);
+                value = this.get_error_code(pkg[3]);
+                
+                SentryLogger.log(0,"read",pkg);
+
                 if (SENTRY_OK == value && pkg[3] == protocol.SENTRY_PROTOC_GET_RESULT){
                     if (vision_state.frame != pkg[4] && vision_type == pkg[5]){
                         vision_state.frame = pkg[4];
@@ -485,7 +561,7 @@ namespace Sentry {
             }
 
             pkg = protocol.readpkg();
-            return this.get_error_code(pkg[2]);
+            return this.get_error_code(pkg[3]);
         }
     }
 
