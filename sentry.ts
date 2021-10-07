@@ -1,125 +1,3 @@
-namespace protocol {
-    /* Protocol Error Type */
-    export const SENTRY_PROTOC_OK = 0xE0
-    export const SENTRY_PROTOC_FAIL = 0xE1
-    export const SENTRY_PROTOC_UNKNOWN = 0xE2
-    export const SENTRY_PROTOC_TIMEOUT = 0xE3
-    export const SENTRY_PROTOC_CHECK_ERROR = 0xE4
-    export const SENTRY_PROTOC_LENGTH_ERROR = 0xE5
-    export const SENTRY_PROTOC_UNSUPPORT_COMMAND = 0xE6
-    export const SENTRY_PROTOC_UNSUPPORT_REG_ADDRESS = 0xE7
-    export const SENTRY_PROTOC_UNSUPPORT_REG_VALUE = 0xE8
-    export const SENTRY_PROTOC_READ_ONLY = 0xE9
-    export const SENTRY_PROTOC_RESTART_ERROR = 0xEA
-    export const SENTRY_PROTOC_RESULT_NOT_END = 0xEC
-
-    /* Protocol */
-    export const SENTRY_PROTOC_START = 0xFF
-    export const SENTRY_PROTOC_END = 0xED
-    export const SENTRY_PROTOC_COMMADN_SET = 0x01
-    export const SENTRY_PROTOC_COMMADN_GET = 0x02
-    export const SENTRY_PROTOC_SET_PARAM = 0x21
-    export const SENTRY_PROTOC_GET_RESULT = 0x23
-    export const SENTRY_PROTOC_MESSAGE = 0x11
-
-    let readbuff: Buffer = pins.createBuffer(0);
-    //% block
-    //% blockHidden=true
-    export function readpkg(timeout: number = 1000): number[] {
-        let protocol_buf: number[] = [];
-        let start_receive = false;
-        let timeout_t = timeout;
-
-        serial.setRxBufferSize(255);
-        for (; ;) {
-            if (readbuff.length < 1) {
-                readbuff = serial.readBuffer(0);
-            }
-
-            if (readbuff.length > 0) {
-
-                for (let index = 0; index < readbuff.length; ++index) {
-                    let value = readbuff.getUint8(index)
-                    switch (value) {
-                        case SENTRY_PROTOC_START:
-                            start_receive = true;
-                            break;
-                        case SENTRY_PROTOC_END:
-
-                            if (start_receive && (protocol_buf.length + 1) == protocol_buf[1]) {
-                                value = protocol_buf[0];
-
-                                for (let i = 1; i < protocol_buf.length - 1; ++i) {
-                                    value += protocol_buf[i];
-                                }
-
-                                value &= 0xff;
-                                if (protocol_buf[protocol_buf.length - 1] != value) {
-                                    protocol_buf[2] = SENTRY_PROTOC_CHECK_ERROR;
-                                }
-
-                                if (readbuff.length - index > 1) {
-                                    readbuff = readbuff.slice(index, readbuff.length - index);
-                                } else {
-                                    readbuff = pins.createBuffer(0);
-                                }
-
-                                return protocol_buf;
-                            }
-                            break;
-                        default: break;
-                    }
-
-                    if (start_receive) {
-                        protocol_buf.push(value);
-                    }
-                }
-
-                timeout_t = timeout;
-                if (readbuff.length) {
-                    readbuff = pins.createBuffer(0);
-                }
-
-            }
-            else {
-                basic.pause(5);
-                timeout_t -= 5;
-            }
-
-            if (timeout_t < 0) {
-                return [0, 0, 0, SENTRY_PROTOC_TIMEOUT, 0, 0];
-            }
-        }
-    }
-
-    //% block
-    //% blockHidden=true
-    export function writepkg(pkg: number[]): boolean {
-        if (pkg.length > 0) {
-            let protocol_buf: number[] = [SENTRY_PROTOC_START, 4];
-            protocol_buf[1] += pkg.length;
-
-            let value = SENTRY_PROTOC_START + protocol_buf[1];
-
-            for (let index = 0; index < pkg.length; ++index) {
-                value += pkg[index];
-                protocol_buf.push(pkg[index]);
-            }
-
-            value &= 0xff;
-            protocol_buf.push(value);
-            protocol_buf.push(SENTRY_PROTOC_END);
-
-            let buff = pins.createBufferFromArray(protocol_buf)
-
-            serial.writeBuffer(buff);
-            return true;
-        } else {
-            return false;
-        }
-    }
-}
-
 //% color="#ff6600" weight=20 icon="\uf085"
 namespace Sentry {
     // sentry_reg
@@ -190,21 +68,6 @@ namespace Sentry {
     const SENTRY_CHECK_ERROR = 0x04
     const SENTRY_UNSUPPORT_PARAM = 0x10
     const SENTRY_UNKNOWN_PROTOCOL = 0x11
-
-    const enum sentry_vision_e {
-        kVisionColor = 1,
-        kVisionBlob = 2,
-        kVisionAprilTag = 3,
-        kVisionLine = 4,
-        kVisionBody = 5,
-        kVisionCard = 6,
-        kVisionFace = 7,
-        kVision20Classes = 8,
-        kVisionQrCode = 9,
-        kVisionObjTrack = 10,
-        kVisionMotionDetect = 11,
-        kVisionMaxType
-    }
 
     class sentry_object_t {
         data1: number
@@ -1091,8 +954,8 @@ namespace Sentry {
     */
     //% blockId=Sentry_vision_begin block="set %id|%enable|algorithm%vision_type"
     //% group="Settings"
-    export function VisionSetStatus(id: SentryId, status: SentryStatus, vision_type: sentry_vision_detected) {
-        while (pSentry[id].VisionSetStatus(<number>vision_type, status) != SENTRY_OK);
+    export function VisionSetStatus(id: SentryId, status: SentryStatus, vision_type: sentry_vision_e) {
+        while (pSentry[id].VisionSetStatus(vision_type, status) != SENTRY_OK);
     }
 
     /**
@@ -1225,8 +1088,8 @@ namespace Sentry {
      */
     //% blockId=Sentry_detected block="%id| algorithm %vision_type detected number" color="#2E8B57"
     //% group="Functions"
-    export function Detected(id: SentryId, vision_type: sentry_vision_detected): number {
-        return pSentry[id].GetValue(<number>vision_type, sentry_obj_info_e.kStatus)
+    export function Detected(id: SentryId, vision_type: sentry_vision_e): number {
+        return pSentry[id].GetValue(vision_type, sentry_obj_info_e.kStatus)
     }
 
     /**
@@ -1289,5 +1152,127 @@ namespace Sentry {
     //% group="Functions"
     export function Cols(id: SentryId) {
         return pSentry[id].img_w;
+    }
+}
+
+namespace protocol {
+    /* Protocol Error Type */
+    export const SENTRY_PROTOC_OK = 0xE0
+    export const SENTRY_PROTOC_FAIL = 0xE1
+    export const SENTRY_PROTOC_UNKNOWN = 0xE2
+    export const SENTRY_PROTOC_TIMEOUT = 0xE3
+    export const SENTRY_PROTOC_CHECK_ERROR = 0xE4
+    export const SENTRY_PROTOC_LENGTH_ERROR = 0xE5
+    export const SENTRY_PROTOC_UNSUPPORT_COMMAND = 0xE6
+    export const SENTRY_PROTOC_UNSUPPORT_REG_ADDRESS = 0xE7
+    export const SENTRY_PROTOC_UNSUPPORT_REG_VALUE = 0xE8
+    export const SENTRY_PROTOC_READ_ONLY = 0xE9
+    export const SENTRY_PROTOC_RESTART_ERROR = 0xEA
+    export const SENTRY_PROTOC_RESULT_NOT_END = 0xEC
+
+    /* Protocol */
+    export const SENTRY_PROTOC_START = 0xFF
+    export const SENTRY_PROTOC_END = 0xED
+    export const SENTRY_PROTOC_COMMADN_SET = 0x01
+    export const SENTRY_PROTOC_COMMADN_GET = 0x02
+    export const SENTRY_PROTOC_SET_PARAM = 0x21
+    export const SENTRY_PROTOC_GET_RESULT = 0x23
+    export const SENTRY_PROTOC_MESSAGE = 0x11
+
+    let readbuff: Buffer = pins.createBuffer(0);
+    //% block
+    //% blockHidden=true
+    export function readpkg(timeout: number = 1000): number[] {
+        let protocol_buf: number[] = [];
+        let start_receive = false;
+        let timeout_t = timeout;
+
+        serial.setRxBufferSize(255);
+        for (; ;) {
+            if (readbuff.length < 1) {
+                readbuff = serial.readBuffer(0);
+            }
+
+            if (readbuff.length > 0) {
+
+                for (let index = 0; index < readbuff.length; ++index) {
+                    let value = readbuff.getUint8(index)
+                    switch (value) {
+                        case SENTRY_PROTOC_START:
+                            start_receive = true;
+                            break;
+                        case SENTRY_PROTOC_END:
+
+                            if (start_receive && (protocol_buf.length + 1) == protocol_buf[1]) {
+                                value = protocol_buf[0];
+
+                                for (let i = 1; i < protocol_buf.length - 1; ++i) {
+                                    value += protocol_buf[i];
+                                }
+
+                                value &= 0xff;
+                                if (protocol_buf[protocol_buf.length - 1] != value) {
+                                    protocol_buf[2] = SENTRY_PROTOC_CHECK_ERROR;
+                                }
+
+                                if (readbuff.length - index > 1) {
+                                    readbuff = readbuff.slice(index, readbuff.length - index);
+                                } else {
+                                    readbuff = pins.createBuffer(0);
+                                }
+
+                                return protocol_buf;
+                            }
+                            break;
+                        default: break;
+                    }
+
+                    if (start_receive) {
+                        protocol_buf.push(value);
+                    }
+                }
+
+                timeout_t = timeout;
+                if (readbuff.length) {
+                    readbuff = pins.createBuffer(0);
+                }
+
+            }
+            else {
+                basic.pause(5);
+                timeout_t -= 5;
+            }
+
+            if (timeout_t < 0) {
+                return [0, 0, 0, SENTRY_PROTOC_TIMEOUT, 0, 0];
+            }
+        }
+    }
+
+    //% block
+    //% blockHidden=true
+    export function writepkg(pkg: number[]): boolean {
+        if (pkg.length > 0) {
+            let protocol_buf: number[] = [SENTRY_PROTOC_START, 4];
+            protocol_buf[1] += pkg.length;
+
+            let value = SENTRY_PROTOC_START + protocol_buf[1];
+
+            for (let index = 0; index < pkg.length; ++index) {
+                value += pkg[index];
+                protocol_buf.push(pkg[index]);
+            }
+
+            value &= 0xff;
+            protocol_buf.push(value);
+            protocol_buf.push(SENTRY_PROTOC_END);
+
+            let buff = pins.createBufferFromArray(protocol_buf)
+
+            serial.writeBuffer(buff);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

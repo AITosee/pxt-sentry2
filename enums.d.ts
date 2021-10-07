@@ -1,26 +1,48 @@
-declare const enum sentry_vision_detected {
+declare const enum sentry_vision_e {
+    //% block="Color"
     kVisionColor = 1,
+    //% block="Blob"
     kVisionBlob = 2,
+    //% block="AprilTag"
     kVisionAprilTag = 3,
+    //% block="Line"
     kVisionLine = 4,
+    //% block="Body"
     kVisionBody = 5,
+    //% block="Card"
     kVisionCard = 6,
+    //% block="Face"
     kVisionFace = 7,
+    //% block="20Classes"
     kVision20Classes = 8,
+    //% block="QrCode"
     kVisionQrCode = 9,
+    //% block="ObjTrack"
     kVisionObjTrack = 10,
+    //% block="MotionDetect"
     kVisionMotionDetect = 11,
+    //% blockHidden=true
+    kVisionMaxType
 }
 
 declare const enum sentry_vision_value {
+    //% block="Blob"
     kVisionBlob = 2,
+    //% block="AprilTag"
     kVisionAprilTag = 3,
+    //% block="Line"
     kVisionLine = 4,
+    //% block="Body"
     kVisionBody = 5,
+    //% block="Card"
     kVisionCard = 6,
+    //% block="Face"
     kVisionFace = 7,
+    //% block="20Classes"
     kVision20Classes = 8,
+    //% block="ObjTrack"
     kVisionObjTrack = 10,
+    //% block="MotionDetect"
     kVisionMotionDetect = 11,
 }
 
@@ -48,7 +70,7 @@ declare const enum sentry_mode_e {
     kSerialMode = 0,
     //% block="I2CMode"
     kI2CMode = 1,
-    //% block="Default"
+    //% blockHidden=true 
     kUnknownMode,
 }
 
