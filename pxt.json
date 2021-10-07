@@ -10,8 +10,8 @@
         "README.md",
         "sentry.ts",
         "enums.d.ts",
-        "_locales/zh-cn/sentry-strings.json",
-        "_locales/zh-cn/sentry-jsdoc-strings.json"
+        "_locales/zh/sentry-strings.json",
+        "_locales/zh/sentry-jsdoc-strings.json"
     ],
     "testFiles": [
         "test.ts"
