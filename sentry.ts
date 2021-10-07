@@ -1103,33 +1103,33 @@ namespace Sentry {
     //% expandableArgumentMode="enabled"
     //% obj_id.defl=0
     //% group="Functions"
-    export function GetValue(id: SentryId, vision_type: sentry_vision_value, object_inf: sentry_gen_info_e, obj_id: number): number {
-        return <number>pSentry[id].GetValue(<number>vision_type, <number>object_inf, obj_id);
+    export function GetValue(id: SentryId, vision_type: sentry_vision_value, object_info: sentry_gen_info_e, obj_id: number): number {
+        return <number>pSentry[id].GetValue(<number>vision_type, <number>object_info, obj_id);
     }
 
     /**
      * Get the result of vision color recognition.
      * @param SentryId id
-     * @param item Paramters type
+     * @param obj_info Paramters type
      */
-    //% blockId=Sentry_get_color_value block="%id| algorithm Color| Recognition%item|| index %obj_id " color="#2E8B57"
+    //% blockId=Sentry_get_color_value block="%id| algorithm Color| Recognition%obj_info|| index %obj_id " color="#2E8B57"
     //% inlineInputMode=inline
     //% expandableArgumentMode="enabled"
     //% obj_id.defl=0
     //% group="Functions"
-    export function ColorRcgValue(id: SentryId, item: sentry_color_info_e, obj_id: number): number {
-        return pSentry[id].GetValue(sentry_vision_e.kVisionColor, <number>item, obj_id)
+    export function ColorRcgValue(id: SentryId, obj_info: sentry_color_info_e, obj_id: number): number {
+        return pSentry[id].GetValue(sentry_vision_e.kVisionColor, <number>obj_info, obj_id)
     }
 
     /**
      * Get the result of vision color recognition.
      * @param SentryId id
-     * @param item Paramters type
+     * @param obj_info Paramters type
      */
-    //% blockId=Sentry_get_qrRcg_value  block="%id|QrCode Recognition|%item " color="#2E8B57"
+    //% blockId=Sentry_get_qrRcg_value  block="%id|QrCode Recognition|%obj_info " color="#2E8B57"
     //% group="Functions"
-    export function QrRcgValue(id: SentryId, item: sentry_qr_info_e): number {
-        return pSentry[id].GetValue(sentry_vision_e.kVisionQrCode, <number>item, 0)
+    export function QrRcgValue(id: SentryId, obj_info: sentry_qr_info_e): number {
+        return pSentry[id].GetValue(sentry_vision_e.kVisionQrCode, <number>obj_info, 0)
     }
 
     /**

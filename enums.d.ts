@@ -314,35 +314,35 @@ declare const enum sentry_obj_info_e {
 
 declare const enum sentry_gen_info_e {
     //% block="horizontal"
-    Horizontal = 1,
+    kXValue = 1,
     //% block="vertical"
-    Vertical,
+    kYValue,
     //% block="width"
-    Width,
+    kWidthValue,
     //% block="height"
-    Height,
+    kHeightValue,
     //% block="label"
-    Lable
+    kLabel
 }
 
 declare const enum sentry_qr_info_e {
     //% block="horizontal"
-    Horizontal = 1,
+    kXValue = 1,
     //% block="vertical"
-    Vertical,
+    kYValue,
     //% block="width"
-    Width,
+    kWidthValue,
     //% block="height"
-    Height
+    kHeightValue
 }
 
 declare const enum sentry_color_info_e {
     //% block="red channel"
-    RedChannal = 6,
+    kRValue = 6,
     //% block="green channel"
-    GreenChannal = 7,
+    kGValue = 7,
     //% block="blue channel"
-    BlueChannal = 8,
+    kBValue = 8,
     //% block="label"
-    Label = 5
+    kLabel = 5
 }
