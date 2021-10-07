@@ -1089,7 +1089,7 @@ namespace Sentry {
     /**
      * Sentry vision begin.
     */
-    //% blockId=Sentry_vision_begin block="set %id|%enable|algorithm%vision_type"
+    //% blockId=Sentry_vision_begin block="%id|%enable|algorithm%vision_type"
     //% group="Settings"
     export function VisionSetStatus(id: SentryId, status: SentryStatus, vision_type: sentry_vision_detected) {
         while (pSentry[id].VisionSetStatus(<number>vision_type, status) != SENTRY_OK);
@@ -1102,14 +1102,14 @@ namespace Sentry {
     * @param detected_color led color while sensor detected target.
     * @param undetected_color led color while sensor undetected target.
     */
-    //% blockId=Sentry_led_set_color block="set %id|LED when detected %detected_color|when undetected %undetected_color||level %level"
+    //% blockId=Sentry_led_set_color block="%id|LED when detected %detected_color|when undetected %undetected_color||level %level"
     //% detected_color.defl=sentry_led_color_e.kLedBlue
     //% undetected_color.defl=sentry_led_color_e.kLedGreen
     //% level.min=0 level.max=15 level.defl=1
     //% inlineInputMode=inline
     //% expandableArgumentMode="enabled"
     //% group="Settings" advanced=true 
-    export function LedSetColor(id: SentryId, detected_color: sentry_led_color_e, undetected_color: sentry_led_color_e, level: number) {
+    export function LedSetColor(id: SentryId, detected_color: sentry_led_color_e, undetected_color: sentry_led_color_e, level: number = 1) {
         while (pSentry[id].LedSetColor(detected_color, undetected_color, level) != SENTRY_OK);
     }
 
@@ -1131,7 +1131,7 @@ namespace Sentry {
      * @param id Sentry id
      * @param zoom zoom value.
      */
-    //% blockId=Sentry_camera_set_zoom block="set %id|camera digital zoom%zoom" color="#1098C9"
+    //% blockId=Sentry_camera_set_zoom block="%id|camera digital zoom%zoom" color="#1098C9"
     //% group="CameraSettings" advanced=true
     export function CameraSetZoom(id: SentryId, zoom: sentry_camera_zoom_e) {
         while (pSentry[id].CameraSetZoom(zoom) != SENTRY_OK);
@@ -1142,7 +1142,7 @@ namespace Sentry {
      * @param id Sentry id
      * @param rotate value.
      */
-    //% blockId=Sentry_camera_set_rotate block="set %id|camera  rotate 180°%on" color="#1098C9"
+    //% blockId=Sentry_camera_set_rotate block="%id|camera  rotate 180°%on" color="#1098C9"
     //% on.shadow="toggleOnOff" on.defl="true"
     //% group="CameraSettings" advanced=true
     export function CameraSetRotate(id: SentryId, on: boolean) {
@@ -1155,7 +1155,7 @@ namespace Sentry {
     * @param id Sentry id
     * @param wb white balance type.
     */
-    //% blockId=Sentry_camera_set_awb block="set %id|camera white balance%wb" color="#1098C9"
+    //% blockId=Sentry_camera_set_awb block="%id|camera white balance%wb" color="#1098C9"
     //% group="CameraSettings" advanced=true
     export function CameraSetAwb(id: SentryId, wb: sentry_camera_white_balance_e) {
         while (pSentry[id].CameraSetAwb(wb) != SENTRY_OK);
@@ -1166,7 +1166,7 @@ namespace Sentry {
      * @param id Sentry id
      * @param on FPS type.
      */
-    //% blockId=Sentry_camera_set_fps block="set %id|camera high FPS mode$on" color="#1098C9"
+    //% blockId=Sentry_camera_set_fps block="%id|camera high FPS mode$on" color="#1098C9"
     //% on.shadow="toggleOnOff" on.defl="true"
     //% group="CameraSettings" advanced=true
     export function CameraSetFPS(id: SentryId, on: boolean) {
@@ -1179,7 +1179,7 @@ namespace Sentry {
      * @param id Sentry id
      * @param brightness level value.
      */
-    //% blockId=Sentry_camera_set_brightness block="set %id|camera brightness level%level" color="#1098C9"
+    //% blockId=Sentry_camera_set_brightness block="%id|camera brightness level%level" color="#1098C9"
     //% group="CameraSettings" advanced=true
     export function CameraSetBrightness(id: SentryId, level: sentry_camera_config_e) {
         while (pSentry[id].CameraSetBrightness(level) != SENTRY_OK);
@@ -1190,7 +1190,7 @@ namespace Sentry {
      * @param id Sentry id
      * @param contrast level value.
      */
-    //% blockId=Sentry_camera_set_contrast block="set %id|camera contrast level%level" color="#1098C9"
+    //% blockId=Sentry_camera_set_contrast block="%id|camera contrast level%level" color="#1098C9"
     //% group="CameraSettings" advanced=true
     export function CameraSetContrast(id: SentryId, level: sentry_camera_config_e) {
         while (pSentry[id].CameraSetContrast(level) != SENTRY_OK);
@@ -1201,7 +1201,7 @@ namespace Sentry {
      * @param id Sentry id
      * @param saturation level value.
      */
-    //% blockId=Sentry_camera_set_saturation block="set %id|camera saturation level%level" color="#1098C9"
+    //% blockId=Sentry_camera_set_saturation block="%id|camera saturation level%level" color="#1098C9"
     //% group="CameraSettings" advanced=true
     export function CameraSetSaturation(id: SentryId, level: sentry_camera_config_e) {
         while (pSentry[id].CameraSetSaturation(level) != SENTRY_OK);
@@ -1212,7 +1212,7 @@ namespace Sentry {
      * @param id Sentry id
      * @param shaprness level value.
      */
-    //% blockId=Sentry_camera_set_shaprness block="set %id|camera shaprness level%level"  color="#1098C9"
+    //% blockId=Sentry_camera_set_shaprness block="%id|camera shaprness level%level"  color="#1098C9"
     //% group="CameraSettings" advanced=true
     export function CameraSetShaprness(id: SentryId, level: sentry_camera_config_e) {
         while (pSentry[id].CameraSetShaprness(level) != SENTRY_OK);
@@ -1223,7 +1223,7 @@ namespace Sentry {
      * @param SentryId id
      * @param type vision type
      */
-    //% blockId=Sentry_detected block="get %id| algorithm detected number%vision_type" color="#2E8B57"
+    //% blockId=Sentry_detected block="%id| algorithm %vision_type detected number" color="#2E8B57"
     //% group="Functions"
     export function Detected(id: SentryId, vision_type: sentry_vision_detected): number {
         return pSentry[id].GetValue(<number>vision_type, sentry_obj_info_e.kStatus)
@@ -1235,7 +1235,7 @@ namespace Sentry {
     * @param vision_type: vision type.
     * @param object_inf:  object information
     */
-    //% blockId=Sentry_get_value block="get %id| algorithm%vision_type| Recognition%object_inf|| index %obj_id" color="#2E8B57"
+    //% blockId=Sentry_get_value block="%id| algorithm%vision_type| Recognition%object_inf|| index %obj_id" color="#2E8B57"
     //% inlineInputMode=inline
     //% expandableArgumentMode="enabled"
     //% obj_id.defl=0
@@ -1249,7 +1249,7 @@ namespace Sentry {
      * @param SentryId id
      * @param item Paramters type
      */
-    //% blockId=Sentry_get_color_value block="get%id| algorithm Color| Recognition%item|| index %obj_id" color="#2E8B57"
+    //% blockId=Sentry_get_color_value block="%id| algorithm Color| Recognition%item|| index %obj_id" color="#2E8B57"
     //% inlineInputMode=inline
     //% expandableArgumentMode="enabled"
     //% obj_id.defl=0
@@ -1263,7 +1263,7 @@ namespace Sentry {
      * @param SentryId id
      * @param item Paramters type
      */
-    //% blockId=Sentry_get_qr_value  block="get%id|QrCode Recognition|%item" color="#2E8B57"
+    //% blockId=Sentry_get_qrRcg_value  block="%id|QrCode Recognition|%item" color="#2E8B57"
     //% group="Functions"
     export function QrRcgValue(id: SentryId, item: QrParams): number {
         return pSentry[id].GetValue(sentry_vision_e.kVisionQrCode, <number>item, 0)
@@ -1273,7 +1273,7 @@ namespace Sentry {
      * Get the result of vision QrCode value
      * @param SentryId id
      */
-    //% block="get%id|QrCode value" color="#2E8B57"
+    //% blockId=Sentry_get_qr_value block="%id|QrCode value" color="#2E8B57"
     //% group="Functions"
     export function GetQrCodeValue(id: SentryId): string {
         return <string>pSentry[id].GetQrCodeValue()
