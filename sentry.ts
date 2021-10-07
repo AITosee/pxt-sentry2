@@ -32,12 +32,12 @@ namespace protocol {
 
         serial.setRxBufferSize(255);
         for (; ;) {
-            if (readbuff.length < 1){
+            if (readbuff.length < 1) {
                 readbuff = serial.readBuffer(0);
-            }        
+            }
 
-            if (readbuff.length > 0){               
-                
+            if (readbuff.length > 0) {
+
                 for (let index = 0; index < readbuff.length; ++index) {
                     let value = readbuff.getUint8(index)
                     switch (value) {
@@ -45,14 +45,14 @@ namespace protocol {
                             start_receive = true;
                             break;
                         case SENTRY_PROTOC_END:
-                        
+
                             if (start_receive && (protocol_buf.length + 1) == protocol_buf[1]) {
                                 value = protocol_buf[0];
-                                
+
                                 for (let i = 1; i < protocol_buf.length - 1; ++i) {
                                     value += protocol_buf[i];
                                 }
-                                
+
                                 value &= 0xff;
                                 if (protocol_buf[protocol_buf.length - 1] != value) {
                                     protocol_buf[2] = SENTRY_PROTOC_CHECK_ERROR;
@@ -63,7 +63,7 @@ namespace protocol {
                                 } else {
                                     readbuff = pins.createBuffer(0);
                                 }
-                               
+
                                 return protocol_buf;
                             }
                             break;
@@ -76,20 +76,20 @@ namespace protocol {
                 }
 
                 timeout_t = timeout;
-                if (readbuff.length){
+                if (readbuff.length) {
                     readbuff = pins.createBuffer(0);
                 }
-                
+
             }
             else {
                 basic.pause(5);
-                timeout_t-=5;
+                timeout_t -= 5;
             }
 
             if (timeout_t < 0) {
                 return [0, 0, 0, SENTRY_PROTOC_TIMEOUT, 0, 0];
             }
-        }   
+        }
     }
 
     //% block
@@ -392,7 +392,7 @@ namespace Sentry {
             this._addr = addr;
         }
 
-        private get_error_code(code:number){
+        private get_error_code(code: number) {
             let value = SENTRY_FAIL;
 
             switch (code) {
@@ -414,7 +414,7 @@ namespace Sentry {
                 case protocol.SENTRY_PROTOC_UNSUPPORT_REG_VALUE:
                     value = SENTRY_UNKNOWN_PROTOCOL;
                     break;
-                default:break;
+                default: break;
             }
 
             return value;
@@ -424,12 +424,12 @@ namespace Sentry {
             let pkg: number[] = [this._addr, protocol.SENTRY_PROTOC_COMMADN_SET, reg_address, value];
 
             let err = protocol.writepkg(pkg);
-            if(!err){
+            if (!err) {
                 return SENTRY_FAIL;
             }
 
             pkg = protocol.readpkg();
-            return  this.get_error_code(pkg[3]);
+            return this.get_error_code(pkg[3]);
 
         }
 
@@ -458,13 +458,13 @@ namespace Sentry {
                 return [SENTRY_FAIL, vision_state];
             }
 
-            for(;;){
+            for (; ;) {
                 pkg = protocol.readpkg();
 
                 value = this.get_error_code(pkg[3]);
 
-                if (SENTRY_OK == value && pkg[4] == protocol.SENTRY_PROTOC_GET_RESULT){
-                    if (vision_type == pkg[6]){
+                if (SENTRY_OK == value && pkg[4] == protocol.SENTRY_PROTOC_GET_RESULT) {
+                    if (vision_type == pkg[6]) {
                         vision_state.frame = pkg[5];
                         let start_id = pkg[7];
                         let stop_id = pkg[8];
@@ -495,7 +495,7 @@ namespace Sentry {
                             continue;
                         } else {
                             serial.writeBuffer(pins.createBufferFromArray(pkg));
-                            return [SENTRY_OK, vision_state]  
+                            return [SENTRY_OK, vision_state]
                         }
                     }
 
@@ -756,7 +756,7 @@ namespace Sentry {
 
             [err, vision_state] = this._stream.Read(vision_type, vision_state);
 
-            if(!err) 
+            if (!err)
                 this._vision_states[vision_type - 1] = vision_state;
 
             while (SENTRY_OK != this._SensorLockkReg(SentryStatus.Disable));
@@ -1122,7 +1122,7 @@ namespace Sentry {
     //% on.shadow="toggleOnOff" on.defl="true"
     //% group="Settings" advanced=true
     export function LcdSetMode(id: SentryId, on: boolean) {
-        let value = on ? SentryStatus.Enable:SentryStatus.Disable;
+        let value = on ? SentryStatus.Enable : SentryStatus.Disable;
         while (pSentry[id].LcdSetMode(value) != SENTRY_OK);
     }
 
