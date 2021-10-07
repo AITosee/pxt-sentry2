@@ -114,7 +114,8 @@
     "Sentry.visionBegin|block": "%id|%enable|算法%type",
     "Sentry.visionValue|block": "获取%id|算法%type|%item|值",
     "Sentry|block": "Sentry",
-    "{id:category}Sentry": "MU视觉传感器",
+    "{id:category}Sentry": "Sentry视觉传感器",
     "{id:group}Functions": "运行模块",
-    "{id:group}Settings": "设置模块"
+    "{id:group}Settings": "设置模块",
+    "{id:group}CameraSettings": "摄像头设置模块"
 }
