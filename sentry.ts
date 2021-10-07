@@ -945,14 +945,14 @@ namespace Sentry {
      */
     //% blockId=Sentry_set_default block="restore %id| default settings "
     //% group="Settings"
-    export function setDefault(id: SentryId) {
+    export function SetDefault(id: SentryId) {
         while (pSentry[id].SensorSetDefault() != SENTRY_OK);
     }
 
     /**
-     * Sentry vision begin.
+     * Sentry vision Set.
     */
-    //% blockId=Sentry_vision_begin block="set %id|%enable|algorithm%vision_type "
+    //% blockId=Sentry_vision_Set block="set %id|%enable|algorithm%vision_type "
     //% group="Settings"
     export function VisionSetStatus(id: SentryId, status: SentryStatus, vision_type: sentry_vision_e) {
         while (pSentry[id].VisionSetStatus(vision_type, status) != SENTRY_OK);
