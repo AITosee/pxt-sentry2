@@ -312,7 +312,7 @@ declare const enum sentry_obj_info_e {
     kBValue = 8,
 }
 
-declare const enum Params {
+declare const enum sentry_gen_info_e {
     //% block="horizontal"
     Horizontal = 1,
     //% block="vertical"
@@ -325,7 +325,7 @@ declare const enum Params {
     Lable
 }
 
-declare const enum QrParams {
+declare const enum sentry_qr_info_e {
     //% block="horizontal"
     Horizontal = 1,
     //% block="vertical"
@@ -336,7 +336,7 @@ declare const enum QrParams {
     Height
 }
 
-declare const enum ColorParams {
+declare const enum sentry_color_info_e {
     //% block="red channel"
     RedChannal = 6,
     //% block="green channel"

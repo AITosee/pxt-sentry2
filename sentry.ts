@@ -1103,7 +1103,7 @@ namespace Sentry {
     //% expandableArgumentMode="enabled"
     //% obj_id.defl=0
     //% group="Functions"
-    export function GetValue(id: SentryId, vision_type: sentry_vision_value, object_inf: Params, obj_id: number): number {
+    export function GetValue(id: SentryId, vision_type: sentry_vision_value, object_inf: sentry_gen_info_e, obj_id: number): number {
         return <number>pSentry[id].GetValue(<number>vision_type, <number>object_inf, obj_id);
     }
 
@@ -1117,7 +1117,7 @@ namespace Sentry {
     //% expandableArgumentMode="enabled"
     //% obj_id.defl=0
     //% group="Functions"
-    export function ColorRcgValue(id: SentryId, item: ColorParams, obj_id: number): number {
+    export function ColorRcgValue(id: SentryId, item: sentry_color_info_e, obj_id: number): number {
         return pSentry[id].GetValue(sentry_vision_e.kVisionColor, <number>item, obj_id)
     }
 
@@ -1128,7 +1128,7 @@ namespace Sentry {
      */
     //% blockId=Sentry_get_qrRcg_value  block="%id|QrCode Recognition|%item " color="#2E8B57"
     //% group="Functions"
-    export function QrRcgValue(id: SentryId, item: QrParams): number {
+    export function QrRcgValue(id: SentryId, item: sentry_qr_info_e): number {
         return pSentry[id].GetValue(sentry_vision_e.kVisionQrCode, <number>item, 0)
     }
 
@@ -1142,13 +1142,13 @@ namespace Sentry {
         return <string>pSentry[id].GetQrCodeValue()
     }
 
-    //% blockId=Sentry_get_img_h block="%id rows " color="#2E8B57"
+    //% blockId=Sentry_get_img_h block="%id image weight " color="#2E8B57"
     //% group="Functions"
     export function Rows(id: SentryId) {
         return pSentry[id].img_h;
     }
 
-    //% blockId=Sentry_get_img_w block="%id cols " color="#2E8B57"
+    //% blockId=Sentry_get_img_w block="%id image height " color="#2E8B57"
     //% group="Functions"
     export function Cols(id: SentryId) {
         return pSentry[id].img_w;
