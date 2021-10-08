@@ -958,6 +958,21 @@ namespace Sentry {
         while (pSentry[id].VisionSetStatus(vision_type, status) != SENTRY_OK);
     }
 
+    //% blockId=Sentry_vision_SetParamNum block="set %id|algorithm %vision_type|max number %max_num "
+    //% max_num.min=1 max_num.max=25 max_num.defl=1
+    //% group="Settings" advanced=true 
+    export function SetParamNum(id: SentryId, vision_type: sentry_vision_e, max_num: number) {
+        while (pSentry[id].SetParamNum(vision_type, max_num) != SENTRY_OK);
+    }
+
+    //% blockId=Sentry_vision_SetParam block="set %id|algorithm %vision_type|param %param index %param_id"
+    //% inlineInputMode=inline
+    //% param_id.min=0 param_id.max=24 param_id.defl=0
+    //% group="Settings" advanced=true 
+    export function SetParam(id: SentryId, vision_type: sentry_vision_e, param: sentry_object_t, param_id: number = 0) {
+        while (pSentry[id].SetParam(vision_type, param, param_id) != SENTRY_OK);
+    }
+
     /**
     * set led color.
     * @param id Sentry id
@@ -1101,7 +1116,7 @@ namespace Sentry {
     //% blockId=Sentry_get_value block="%id| algorithm%vision_type| Recognition%object_inf|| index %obj_id " color="#2E8B57"
     //% inlineInputMode=inline
     //% expandableArgumentMode="enabled"
-    //% obj_id.defl=0
+    //% obj_id.min=0 obj_id.max=24 obj_id.defl=0
     //% group="Functions"
     export function GetValue(id: SentryId, vision_type: sentry_vision_value, object_info: sentry_gen_info_e, obj_id: number): number {
         return <number>pSentry[id].GetValue(<number>vision_type, <number>object_info, obj_id);
@@ -1115,7 +1130,7 @@ namespace Sentry {
     //% blockId=Sentry_get_color_value block="%id| algorithm Color| Recognition%obj_info|| index %obj_id " color="#2E8B57"
     //% inlineInputMode=inline
     //% expandableArgumentMode="enabled"
-    //% obj_id.defl=0
+    //% obj_id.min=0 obj_id.max=24 obj_id.defl=0
     //% group="Functions"
     export function ColorRcgValue(id: SentryId, obj_info: sentry_color_info_e, obj_id: number): number {
         return pSentry[id].GetValue(sentry_vision_e.kVisionColor, <number>obj_info, obj_id)
@@ -1148,6 +1163,7 @@ namespace Sentry {
      * @param type vision type
      */
     //% blockId=Sentry_detected_color block="%id| detected Color %lable detected || index %obj_id " color="#2E8B57"
+    //% obj_id.min=0 obj_id.max=24 obj_id.defl=0
     //% group="Functions"
     export function DetectedColor(id: SentryId, lable: color_label_e, obj_id: number): boolean {
         return (pSentry[id].GetValue(sentry_vision_e.kVisionCard, sentry_obj_info_e.kLabel, obj_id) == lable)
@@ -1159,6 +1175,7 @@ namespace Sentry {
      * @param type vision type
      */
     //% blockId=Sentry_detected_blob block="%id| detected Blob %lable detected || index %obj_id " color="#2E8B57"
+    //% obj_id.min=0 obj_id.max=24 obj_id.defl=0
     //% group="Functions"
     export function DetectedBlob(id: SentryId, lable: color_label_e, obj_id: number): boolean {
         return (pSentry[id].GetValue(sentry_vision_e.kVisionBlob, sentry_obj_info_e.kLabel, obj_id) == lable)
@@ -1170,6 +1187,7 @@ namespace Sentry {
      * @param type vision type
      */
     //% blockId=Sentry_detected_card block="%id| detected card %lable detected || index %obj_id " color="#2E8B57"
+    //% obj_id.min=0 obj_id.max=24 obj_id.defl=0
     //% group="Functions"
     export function DetectedCard(id: SentryId, lable: card_label_e, obj_id: number): boolean {
         return (pSentry[id].GetValue(sentry_vision_e.kVisionCard, sentry_obj_info_e.kLabel, obj_id)==lable)
@@ -1181,6 +1199,7 @@ namespace Sentry {
      * @param type vision type
      */
     //% blockId=Sentry_detected_class20 block="%id| detected 20Class %lable detected || index %obj_id " color="#2E8B57"
+    //% obj_id.min=0 obj_id.max=24 obj_id.defl=0
     //% group="Functions"
     export function Detected20Class(id: SentryId, lable: class20_label_e, obj_id: number): boolean {
         return (pSentry[id].GetValue(sentry_vision_e.kVision20Classes, sentry_obj_info_e.kLabel, obj_id) == lable)
