@@ -1142,6 +1142,50 @@ namespace Sentry {
         return <string>pSentry[id].GetQrCodeValue()
     }
 
+    /**
+     * Get vision status
+     * @param SentryId id
+     * @param type vision type
+     */
+    //% blockId=Sentry_detected_color block="%id| detected Color %lable detected || index %obj_id " color="#2E8B57"
+    //% group="Functions"
+    export function DetectedColor(id: SentryId, lable: color_label_e, obj_id: number): boolean {
+        return (pSentry[id].GetValue(sentry_vision_e.kVisionCard, sentry_obj_info_e.kLabel, obj_id) == lable)
+    }
+
+    /**
+     * Get vision status
+     * @param SentryId id
+     * @param type vision type
+     */
+    //% blockId=Sentry_detected_blob block="%id| detected Blob %lable detected || index %obj_id " color="#2E8B57"
+    //% group="Functions"
+    export function DetectedBlob(id: SentryId, lable: color_label_e, obj_id: number): boolean {
+        return (pSentry[id].GetValue(sentry_vision_e.kVisionBlob, sentry_obj_info_e.kLabel, obj_id) == lable)
+    }
+
+    /**
+     * Get vision status
+     * @param SentryId id
+     * @param type vision type
+     */
+    //% blockId=Sentry_detected_card block="%id| detected card %lable detected || index %obj_id " color="#2E8B57"
+    //% group="Functions"
+    export function DetectedCard(id: SentryId, lable: card_label_e, obj_id: number): boolean {
+        return (pSentry[id].GetValue(sentry_vision_e.kVisionCard, sentry_obj_info_e.kLabel, obj_id)==lable)
+    }
+
+    /**
+     * Get vision status
+     * @param SentryId id
+     * @param type vision type
+     */
+    //% blockId=Sentry_detected_class20 block="%id| detected 20Class %lable detected || index %obj_id " color="#2E8B57"
+    //% group="Functions"
+    export function Detected20Class(id: SentryId, lable: class20_label_e, obj_id: number): boolean {
+        return (pSentry[id].GetValue(sentry_vision_e.kVision20Classes, sentry_obj_info_e.kLabel, obj_id) == lable)
+    }
+
     //% blockId=Sentry_get_img_h block="%id image weight " color="#2E8B57"
     //% group="Functions"
     export function Rows(id: SentryId) {
