@@ -118,7 +118,7 @@
     "Sentry.SetParamNum|block": "设置 %id|算法  %type  参数个数  %max_num",
     "Sentry.SetParam|block": "设置 %id|算法  %type|参数  %param  || 索引  %obj_id  ",
     "Sentry.ColorParam|block": "颜色识别 区域中心横坐标  %x| 纵坐标  %y| 宽度  %w| 高度  %h ",
-    "Sentry.BoldParam|block": "色块最新检测 宽度  %w| 高度  %h | 检测标签  %l ",
+    "Sentry.BoldParam|block": "色块检测 最小宽度  %w| 高度  %h | 检测标签  %l ",
     "Sentry.FaceParam|block": "人脸标签  %l ",    
     "Sentry.LcdSetMode|block": "设置 %id|LCD 显示  %on  ",
     "Sentry.LedSetColor|block": "设置 %id|LED检测到物体时显示  %detected_color|否则 %undetected_color||亮度等级%level  ",
