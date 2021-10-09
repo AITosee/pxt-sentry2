@@ -960,7 +960,7 @@ namespace Sentry {
 
     //% blockId=Sentry_vision_SetParamNum block="set %id|algorithm %vision_type|max number %max_num "
     //% max_num.min=1 max_num.max=25 max_num.defl=1
-    //% group="Settings" advanced=true 
+    //% group="AlgorithmSettings" advanced=true
     export function SetParamNum(id: SentryId, vision_type: sentry_vision_e, max_num: number) {
         while (pSentry[id].SetParamNum(vision_type, max_num) != SENTRY_OK);
     }
@@ -968,9 +968,41 @@ namespace Sentry {
     //% blockId=Sentry_vision_SetParam block="set %id|algorithm %vision_type|param %param index %param_id"
     //% inlineInputMode=inline
     //% param_id.min=0 param_id.max=24 param_id.defl=0
-    //% group="Settings" advanced=true 
+    //% group="AlgorithmSettings" advanced=true
     export function SetParam(id: SentryId, vision_type: sentry_vision_e, param: sentry_object_t, param_id: number = 0) {
         while (pSentry[id].SetParam(vision_type, param, param_id) != SENTRY_OK);
+    }
+
+    //% blockId=Sentry_vision_color_param block="Color ROI centre x%x| y%y| weight%w| height%h "
+    //% inlineInputMode=inline
+    //% group="AlgorithmSettings" advanced=true
+    export function ColorParam(x: number, y: number, w: number, h: number): sentry_object_t {
+        let prama = new sentry_object_t();
+        prama.data1 = x;
+        prama.data2 = y;
+        prama.data3 = w;
+        prama.data4 = h;
+        return prama;
+    }
+
+    //% blockId=Sentry_vision_bold_param block="Bold min weight%w| height%h| lable%l "
+    //% inlineInputMode=inline
+    //% group="AlgorithmSettings" advanced=true
+    export function BoldParam(w: number, h: number, l: number): sentry_object_t {
+        let prama = new sentry_object_t();
+        prama.data3 = w;
+        prama.data4 = h;
+        prama.data5 = l;
+        return prama;
+    }
+
+    //% blockId=Sentry_vision_face_param block="Face lable%l "
+    //% inlineInputMode=inline
+    //% group="AlgorithmSettings" advanced=true
+    export function FaceParam( l: number): sentry_object_t {
+        let prama = new sentry_object_t();
+        prama.data5 = l;
+        return prama;
     }
 
     /**
