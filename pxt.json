@@ -1,6 +1,6 @@
 {
     "name": "sentry",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "Sensor designed for the AI education.",
     "license": "MIT",
     "dependencies": {
