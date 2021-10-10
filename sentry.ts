@@ -950,7 +950,7 @@ namespace Sentry {
     }
 
     /**
-     * Sentry vision Set.
+     * Sentry vision enable set.
     */
     //% blockId=Sentry_vision_Set block="set %id|%enable|algorithm%vision_type "
     //% group="Settings"
@@ -958,6 +958,12 @@ namespace Sentry {
         while (pSentry[id].VisionSetStatus(vision_type, status) != SENTRY_OK);
     }
 
+    /**
+    * set vision prama number.
+    * @param id Sentry id.
+    * @param vision_type: vision type.
+    * @param max_num max prama number.
+    */
     //% blockId=Sentry_vision_SetParamNum block="set %id|algorithm %vision_type|max number %max_num "
     //% max_num.min=1 max_num.max=25 max_num.defl=1
     //% group="AlgorithmSettings" advanced=true
@@ -965,6 +971,13 @@ namespace Sentry {
         while (pSentry[id].SetParamNum(vision_type, max_num) != SENTRY_OK);
     }
 
+    /**
+    * set vision prama.
+    * @param id Sentry id.
+    * @param vision_type vision type.
+    * @param vision prama.
+    * @param param_id vision prama id.
+    */
     //% blockId=Sentry_vision_SetParam block="set %id|algorithm %vision_type|param %param index %param_id"
     //% inlineInputMode=inline
     //% param_id.min=0 param_id.max=24 param_id.defl=0
@@ -973,6 +986,13 @@ namespace Sentry {
         while (pSentry[id].SetParam(vision_type, param, param_id) != SENTRY_OK);
     }
 
+    /**
+    * color prama.
+    * @param x ROI centre x.
+    * @param y ROI centre y.
+    * @param w ROI weight.
+    * @param h ROI height.
+    */
     //% blockId=Sentry_vision_color_param block="Color ROI centre x%x| y%y| weight%w| height%h "
     //% inlineInputMode=inline
     //% group="AlgorithmSettings" advanced=true
@@ -985,6 +1005,12 @@ namespace Sentry {
         return prama;
     }
 
+    /**
+    * blod prama.
+    * @param w detecte min weight.
+    * @param h detecte min height.
+    * @param l detecte lable.
+    */
     //% blockId=Sentry_vision_bold_param block="Bold min weight%w| height%h| lable%l "
     //% inlineInputMode=inline
     //% group="AlgorithmSettings" advanced=true
@@ -996,6 +1022,10 @@ namespace Sentry {
         return prama;
     }
 
+    /**
+    * face prama.
+    * @param l detected lable.
+    */
     //% blockId=Sentry_vision_face_param block="Face lable%l "
     //% inlineInputMode=inline
     //% group="AlgorithmSettings" advanced=true
@@ -1008,9 +1038,9 @@ namespace Sentry {
     /**
     * set led color.
     * @param id Sentry id
-    * @param led led type.
     * @param detected_color led color while sensor detected target.
     * @param undetected_color led color while sensor undetected target.
+    * @param level led light level.
     */
     //% blockId=Sentry_led_set_color block="set %id|LED when detected %detected_color|when undetected %undetected_color||level %level "
     //% detected_color.defl=sentry_led_color_e.kLedBlue
@@ -1129,7 +1159,7 @@ namespace Sentry {
     }
 
     /**
-     * Get vision status
+     * Get vision detected number
      * @param SentryId id
      * @param type vision type
      */
@@ -1144,6 +1174,7 @@ namespace Sentry {
     * @param id Sentry id
     * @param vision_type: vision type.
     * @param object_inf:  object information
+    * @param obj_id:  object index
     */
     //% blockId=Sentry_get_value block="%id| algorithm%vision_type| Recognition%object_inf|| index %obj_id " color="#2E8B57"
     //% inlineInputMode=inline
@@ -1158,6 +1189,7 @@ namespace Sentry {
      * Get the result of vision color recognition.
      * @param SentryId id
      * @param obj_info Paramters type
+     * @param obj_id:  object index
      */
     //% blockId=Sentry_get_color_value block="%id| algorithm Color| Recognition%obj_info|| index %obj_id " color="#2E8B57"
     //% inlineInputMode=inline
@@ -1190,9 +1222,10 @@ namespace Sentry {
     }
 
     /**
-     * Get vision status
+     * Detected Color
      * @param SentryId id
-     * @param type vision type
+     * @param lable Color lable
+     * @param obj_id:  object index
      */
     //% blockId=Sentry_detected_color block="%id| detected Color %lable detected || index %obj_id " color="#2E8B57"
     //% obj_id.min=0 obj_id.max=24 obj_id.defl=0
@@ -1202,9 +1235,10 @@ namespace Sentry {
     }
 
     /**
-     * Get vision status
+     * Detected Blob
      * @param SentryId id
-     * @param type vision type
+     * @param lable Blob lable
+     * @param obj_id:  object index
      */
     //% blockId=Sentry_detected_blob block="%id| detected Blob %lable detected || index %obj_id " color="#2E8B57"
     //% obj_id.min=0 obj_id.max=24 obj_id.defl=0
@@ -1214,9 +1248,10 @@ namespace Sentry {
     }
 
     /**
-     * Get vision status
+     * Detected Card
      * @param SentryId id
-     * @param type vision type
+     * @param lable Card lable
+     * @param obj_id:  object index
      */
     //% blockId=Sentry_detected_card block="%id| detected card %lable detected || index %obj_id " color="#2E8B57"
     //% obj_id.min=0 obj_id.max=24 obj_id.defl=0
@@ -1226,9 +1261,10 @@ namespace Sentry {
     }
 
     /**
-     * Get vision status
+     * Detected class20
      * @param SentryId id
-     * @param type vision type
+     * @param lable 20Class lable
+     * @param obj_id:  object index
      */
     //% blockId=Sentry_detected_class20 block="%id| detected 20Class %lable detected || index %obj_id " color="#2E8B57"
     //% obj_id.min=0 obj_id.max=24 obj_id.defl=0
@@ -1237,12 +1273,20 @@ namespace Sentry {
         return (pSentry[id].GetValue(sentry_vision_e.kVision20Classes, sentry_obj_info_e.kLabel, obj_id) == lable)
     }
 
+    /**
+     * image weight
+     * @param SentryId id
+     */
     //% blockId=Sentry_get_img_h block="%id image weight " color="#2E8B57"
     //% group="Functions"
     export function Rows(id: SentryId) {
         return pSentry[id].img_h;
     }
 
+    /**
+     * image height
+     * @param SentryId id
+     */
     //% blockId=Sentry_get_img_w block="%id image height " color="#2E8B57"
     //% group="Functions"
     export function Cols(id: SentryId) {
