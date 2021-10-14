@@ -1181,7 +1181,7 @@ namespace Sentry {
     //% expandableArgumentMode="enabled"
     //% obj_id.min=0 obj_id.max=24 obj_id.defl=0
     //% group="Functions"
-    export function GetValue(id: SentryId, vision_type: sentry_vision_value, object_info: sentry_gen_info_e, obj_id: number): number {
+    export function GetValue(id: SentryId, vision_type: sentry_vision_value, object_info: sentry_gen_info_e, obj_id: number = 0): number {
         return <number>pSentry[id].GetValue(<number>vision_type, <number>object_info, obj_id);
     }
 
@@ -1196,7 +1196,7 @@ namespace Sentry {
     //% expandableArgumentMode="enabled"
     //% obj_id.min=0 obj_id.max=24 obj_id.defl=0
     //% group="Functions"
-    export function ColorRcgValue(id: SentryId, obj_info: sentry_color_info_e, obj_id: number): number {
+    export function ColorRcgValue(id: SentryId, obj_info: sentry_color_info_e, obj_id: number = 0): number {
         return pSentry[id].GetValue(sentry_vision_e.kVisionColor, <number>obj_info, obj_id)
     }
 
@@ -1230,7 +1230,7 @@ namespace Sentry {
     //% blockId=Sentry_detected_color block="%id| detected Color %lable detected || index %obj_id " color="#2E8B57"
     //% obj_id.min=0 obj_id.max=24 obj_id.defl=0
     //% group="Functions"
-    export function DetectedColor(id: SentryId, lable: color_label_e, obj_id: number): boolean {
+    export function DetectedColor(id: SentryId, lable: color_label_e, obj_id: number = 0): boolean {
         return (pSentry[id].GetValue(sentry_vision_e.kVisionCard, sentry_obj_info_e.kLabel, obj_id) == lable)
     }
 
@@ -1243,7 +1243,7 @@ namespace Sentry {
     //% blockId=Sentry_detected_blob block="%id| detected Blob %lable detected || index %obj_id " color="#2E8B57"
     //% obj_id.min=0 obj_id.max=24 obj_id.defl=0
     //% group="Functions"
-    export function DetectedBlob(id: SentryId, lable: color_label_e, obj_id: number): boolean {
+    export function DetectedBlob(id: SentryId, lable: color_label_e, obj_id: number = 0): boolean {
         return (pSentry[id].GetValue(sentry_vision_e.kVisionBlob, sentry_obj_info_e.kLabel, obj_id) == lable)
     }
 
@@ -1256,7 +1256,7 @@ namespace Sentry {
     //% blockId=Sentry_detected_card block="%id| detected card %lable detected || index %obj_id " color="#2E8B57"
     //% obj_id.min=0 obj_id.max=24 obj_id.defl=0
     //% group="Functions"
-    export function DetectedCard(id: SentryId, lable: card_label_e, obj_id: number): boolean {
+    export function DetectedCard(id: SentryId, lable: card_label_e, obj_id: number = 0): boolean {
         return (pSentry[id].GetValue(sentry_vision_e.kVisionCard, sentry_obj_info_e.kLabel, obj_id)==lable)
     }
 
@@ -1269,7 +1269,7 @@ namespace Sentry {
     //% blockId=Sentry_detected_class20 block="%id| detected 20Class %lable detected || index %obj_id " color="#2E8B57"
     //% obj_id.min=0 obj_id.max=24 obj_id.defl=0
     //% group="Functions"
-    export function Detected20Class(id: SentryId, lable: class20_label_e, obj_id: number): boolean {
+    export function Detected20Class(id: SentryId, lable: class20_label_e, obj_id: number = 0): boolean {
         return (pSentry[id].GetValue(sentry_vision_e.kVision20Classes, sentry_obj_info_e.kLabel, obj_id) == lable)
     }
 
