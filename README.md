@@ -20,10 +20,25 @@
 
 ## 积木块预览
 
-此图像显示主分支中最后一次提交的块代码。
-此图像可能需要几分钟才能刷新。
+* Get vision result
 
-![块的渲染视图](https://github.com/uniquemf/sentry/raw/master/.github/makecode/blocks.png)
+```blocks
+// Initialized Sentry with I2C port
+Sentry.Begin(SentryId.Sentry00, sentry_mode_e.kI2CMode)
+Sentry.VisionSetStatus(SentryId.Sentry00, SentryStatus.Enable, sentry_vision_e.kVisionQrCode)
+Sentry.LedSetColor(SentryId.Sentry00, sentry_led_color_e.kLedBlue, sentry_led_color_e.kLedGreen, 1)
+basic.forever(function () {
+    for (let index = 0; index <= Sentry.Detected(SentryId.Sentry00, sentry_vision_e.kVisionQrCode) - 1; index++) {
+        serial.writeValue("x", Sentry.QrRcgValue(SentryId.Sentry00, sentry_qr_info_e.kXValue))
+        serial.writeValue("y", Sentry.QrRcgValue(SentryId.Sentry00, sentry_qr_info_e.kYValue))
+        serial.writeValue("w", Sentry.QrRcgValue(SentryId.Sentry00, sentry_qr_info_e.kWidthValue))
+        serial.writeValue("h", Sentry.QrRcgValue(SentryId.Sentry00, sentry_qr_info_e.kHeightValue))
+        serial.writeLine(Sentry.GetQrCodeValue(SentryId.Sentry00))
+    }
+    basic.pause(2000)
+})
+
+```
 
 #### 元数据（用于搜索、渲染）
 
