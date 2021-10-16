@@ -1,5 +1,5 @@
 
-> 在 [https://uniquemf.github.io/sentry/](https://uniquemf.github.io/sentry/) 打开此页面
+> 在 [https://uniquemf.github.io/sentry/](https://github.com/Uniquemf/pxt-Sentry/) 打开此页面
 
 ## 用作扩展
 
@@ -10,7 +10,7 @@
 * 点击齿轮图标菜单下的 **扩展**
 * 搜索 **https://github.com/uniquemf/sentry** 并导入
 
-## 编辑此项目 ![构建状态标志](https://github.com/uniquemf/sentry/workflows/MakeCode/badge.svg)
+## 编辑此项目 ![构建状态标志](https://github.com/Uniquemf/pxt-Sentry/workflows/MakeCode/badge.svg)
 
 在 MakeCode 中编辑此仓库。
 
