@@ -329,13 +329,13 @@ declare const enum color_label_e {
 }
 
 declare const enum SentryId {
-    //% block="Sentry00"
+    //% block="Sentry#1"
     Sentry00 = 0,
-    //% block="Sentry01"
+    //% block="Sentry#2"
     Sentry01 = 1,
-    //% block="Sentry10"
+    //% block="Sentry#3"
     Sentry10 = 2,
-    //% block="Sentry11"
+    //% block="Sentry#4"
     Sentry11 = 3,
 }
 
