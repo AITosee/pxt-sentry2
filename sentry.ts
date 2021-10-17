@@ -171,7 +171,7 @@ namespace Sentry {
                 return [SENTRY_OK, vision_state];
             }
 
-            if (SENTRY_MAX_RESULT > vision_state.detect) {
+            if (SENTRY_MAX_RESULT < vision_state.detect) {
                 vision_state.detect = SENTRY_MAX_RESULT;
             }
 

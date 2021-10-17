@@ -18,9 +18,29 @@
 * 点击 **导入**，然后点击 **导入 URL**
 * 粘贴 **https://github.com/Uniquemf/pxt-Sentry** 并点击导入
 
-## 积木块预览
+## 使用方法
 
-* Get vision result
+* Get Vision result
+
+```blocks
+// Initialized Sentry with I2C port
+Sentry.Begin(SentryId.Sentry00, sentry_mode_e.kI2CMode)
+Sentry.VisionSetStatus(SentryId.Sentry00, SentryStatus.Enable, sentry_vision_e.kVisionQrCode)
+Sentry.LedSetColor(SentryId.Sentry00, sentry_led_color_e.kLedBlue, sentry_led_color_e.kLedGreen, 1)
+basic.forever(function () {
+    for (let index = 0; index <= Sentry.Detected(SentryId.Sentry00, sentry_vision_e.kVisionQrCode) - 1; index++) {
+        serial.writeValue("x", Sentry.QrRcgValue(SentryId.Sentry00, sentry_qr_info_e.kXValue))
+        serial.writeValue("y", Sentry.QrRcgValue(SentryId.Sentry00, sentry_qr_info_e.kYValue))
+        serial.writeValue("w", Sentry.QrRcgValue(SentryId.Sentry00, sentry_qr_info_e.kWidthValue))
+        serial.writeValue("h", Sentry.QrRcgValue(SentryId.Sentry00, sentry_qr_info_e.kHeightValue))
+        serial.writeLine(Sentry.GetQrCodeValue(SentryId.Sentry00))
+    }
+    basic.pause(2000)
+})
+
+```
+
+* Get QrCode result
 
 ```blocks
 // Initialized Sentry with I2C port
