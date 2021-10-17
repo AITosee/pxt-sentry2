@@ -1231,7 +1231,7 @@ namespace Sentry {
     //% obj_id.min=0 obj_id.max=24 obj_id.defl=0
     //% group="Functions"
     export function DetectedColor(id: SentryId, lable: color_label_e, obj_id: number = 0): boolean {
-        return (pSentry[id].GetValue(sentry_vision_e.kVisionCard, sentry_obj_info_e.kLabel, obj_id) == lable)
+        return (pSentry[id].GetValue(sentry_vision_e.kVisionColor, sentry_obj_info_e.kLabel, obj_id) == lable)
     }
 
     /**

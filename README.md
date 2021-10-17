@@ -43,6 +43,38 @@ basic.forever(function () {
 
 ```
 
+* Get Vision result
+
+```blocks
+// Initialized Sentry with Serial port
+let target_num = 0
+serial.redirect(
+SerialPin.P13,
+SerialPin.P14,
+BaudRate.BaudRate115200
+)
+Sentry.Begin(SentryId.Sentry00, sentry_mode_e.kSerialMode)
+Sentry.VisionSetStatus(SentryId.Sentry00, SentryStatus.Enable, sentry_vision_e.kVisionCard)
+Sentry.LedSetColor(SentryId.Sentry00, sentry_led_color_e.kLedBlue, sentry_led_color_e.kLedGreen)
+basic.showIcon(IconNames.Heart)
+basic.forever(function () {
+    target_num = Sentry.Detected(SentryId.Sentry00, sentry_vision_e.kVisionCard)
+    for (let index = 0; index <= target_num - 1; index++) {
+        if (Sentry.DetectedCard(SentryId.Sentry00, card_label_e.kCardZero)) {
+            basic.showNumber(0)
+        } else if (Sentry.DetectedCard(SentryId.Sentry00, card_label_e.kCardSix)) {
+            basic.showNumber(6)
+        } else if (Sentry.DetectedCard(SentryId.Sentry00, card_label_e.kCardH)) {
+            basic.showIcon(IconNames.No)
+        } else if (Sentry.DetectedCard(SentryId.Sentry00, card_label_e.kCardSquare)) {
+            basic.showIcon(IconNames.Square)
+        }
+    }
+})
+
+
+```
+
 * Get Color result
 
 ```blocks
@@ -51,6 +83,11 @@ let target_num = 0
 Sentry.Begin(SentryId.Sentry00, sentry_mode_e.kI2CMode)
 Sentry.VisionSetStatus(SentryId.Sentry00, SentryStatus.Enable, sentry_vision_e.kVisionColor)
 Sentry.LedSetColor(SentryId.Sentry00, sentry_led_color_e.kLedBlue, sentry_led_color_e.kLedGreen)
+Sentry.SetParamNum(SentryId.Sentry00, sentry_vision_e.kVisionColor, 3)
+Sentry.SetParam(SentryId.Sentry00, sentry_vision_e.kVisionColor, Sentry.ColorParam(10, 10, 5, 5))
+Sentry.SetParam(SentryId.Sentry00, sentry_vision_e.kVisionColor, Sentry.ColorParam(40, 40, 6, 6))
+Sentry.SetParam(SentryId.Sentry00, sentry_vision_e.kVisionColor, Sentry.ColorParam(80, 80, 8, 8))
+basic.showIcon(IconNames.Heart)
 basic.forever(function () {
     target_num = Sentry.Detected(SentryId.Sentry00, sentry_vision_e.kVisionColor)
     serial.writeValue("target_num", target_num)
@@ -60,11 +97,21 @@ basic.forever(function () {
         serial.writeValue("G", Sentry.ColorRcgValue(SentryId.Sentry00, sentry_color_info_e.kGValue, index))
         serial.writeValue("B", Sentry.ColorRcgValue(SentryId.Sentry00, sentry_color_info_e.kBValue, index))
         serial.writeValue("L", Sentry.ColorRcgValue(SentryId.Sentry00, sentry_color_info_e.kLabel, index))
+        if (Sentry.DetectedColor(SentryId.Sentry00, color_label_e.kColorBlack)) {
+            serial.writeLine("black")
+        } else if (Sentry.DetectedColor(SentryId.Sentry00, color_label_e.kColorWhite)) {
+            serial.writeLine("white")
+        } else if (Sentry.DetectedColor(SentryId.Sentry00, color_label_e.kColorRed)) {
+            serial.writeLine("red")
+        } else if (Sentry.DetectedColor(SentryId.Sentry00, color_label_e.kColorYellow)) {
+            serial.writeLine("yellow")
+        }
     }
 })
 
 
 ```
+
 
 * Get QrCode result
 
@@ -80,6 +127,30 @@ basic.forever(function () {
         serial.writeValue("w", Sentry.QrRcgValue(SentryId.Sentry00, sentry_qr_info_e.kXValue))
         serial.writeValue("h", Sentry.QrRcgValue(SentryId.Sentry00, sentry_qr_info_e.kXValue))
         serial.writeLine(Sentry.GetQrCodeValue(SentryId.Sentry00))
+    }
+})
+
+
+```
+
+* Get QrCode result
+
+```blocks
+// Initialized Sentry with Seria port
+let target_num = 0
+serial.redirect(
+SerialPin.P13,
+SerialPin.P14,
+BaudRate.BaudRate115200
+)
+Sentry.Begin(SentryId.Sentry00, sentry_mode_e.kSerialMode)
+Sentry.VisionSetStatus(SentryId.Sentry00, SentryStatus.Enable, sentry_vision_e.kVisionQrCode)
+Sentry.LedSetColor(SentryId.Sentry00, sentry_led_color_e.kLedBlue, sentry_led_color_e.kLedGreen)
+basic.showIcon(IconNames.Heart)
+basic.forever(function () {
+    target_num = Sentry.Detected(SentryId.Sentry00, sentry_vision_e.kVisionQrCode)
+    for (let index = 0; index <= target_num - 1; index++) {
+        basic.showString(Sentry.GetQrCodeValue(SentryId.Sentry00))
     }
 })
 

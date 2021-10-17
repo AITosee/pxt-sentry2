@@ -57,7 +57,7 @@
     "color_label_e.kColorGreen|block": "🟢 绿色",
     "color_label_e.kColorBlue|block": "🔵 蓝色",
     "color_label_e.kColorYellow|block": "🟡 黄色",
-    "color_label_e.Unkown|block": "🪅 其他",
+    "color_label_e.kColorUnkown|block": "🪅 其他",
     "SentryStatus.Disable|block": "关闭",
     "SentryStatus.Enable|block": "开启",
     "sentry_color_info_e.kBValue|block": "蓝色通道",
