@@ -24,19 +24,45 @@
 
 ```blocks
 // Initialized Sentry with I2C port
+let target_num = 0
 Sentry.Begin(SentryId.Sentry00, sentry_mode_e.kI2CMode)
-Sentry.VisionSetStatus(SentryId.Sentry00, SentryStatus.Enable, sentry_vision_e.kVisionQrCode)
-Sentry.LedSetColor(SentryId.Sentry00, sentry_led_color_e.kLedBlue, sentry_led_color_e.kLedGreen, 1)
+Sentry.VisionSetStatus(SentryId.Sentry00, SentryStatus.Enable, sentry_vision_e.kVisionCard)
+Sentry.LedSetColor(SentryId.Sentry00, sentry_led_color_e.kLedBlue, sentry_led_color_e.kLedGreen)
 basic.forever(function () {
-    for (let index = 0; index <= Sentry.Detected(SentryId.Sentry00, sentry_vision_e.kVisionQrCode) - 1; index++) {
-        serial.writeValue("x", Sentry.QrRcgValue(SentryId.Sentry00, sentry_qr_info_e.kXValue))
-        serial.writeValue("y", Sentry.QrRcgValue(SentryId.Sentry00, sentry_qr_info_e.kYValue))
-        serial.writeValue("w", Sentry.QrRcgValue(SentryId.Sentry00, sentry_qr_info_e.kWidthValue))
-        serial.writeValue("h", Sentry.QrRcgValue(SentryId.Sentry00, sentry_qr_info_e.kHeightValue))
-        serial.writeLine(Sentry.GetQrCodeValue(SentryId.Sentry00))
+    target_num = Sentry.Detected(SentryId.Sentry00, sentry_vision_e.kVisionCard)
+    serial.writeValue("target_num", target_num)
+    for (let index = 0; index <= target_num - 1; index++) {
+        serial.writeValue("index", index)
+        serial.writeValue("x", Sentry.GetValue(SentryId.Sentry00, sentry_vision_value.kVisionCard, sentry_gen_info_e.kXValue, index))
+        serial.writeValue("y", Sentry.GetValue(SentryId.Sentry00, sentry_vision_value.kVisionCard, sentry_gen_info_e.kYValue, index))
+        serial.writeValue("w", Sentry.GetValue(SentryId.Sentry00, sentry_vision_value.kVisionCard, sentry_gen_info_e.kWidthValue, index))
+        serial.writeValue("h", Sentry.GetValue(SentryId.Sentry00, sentry_vision_value.kVisionCard, sentry_gen_info_e.kWidthValue, index))
+        serial.writeValue("l", Sentry.GetValue(SentryId.Sentry00, sentry_vision_value.kVisionCard, sentry_gen_info_e.kLabel, index))
     }
-    basic.pause(2000)
 })
+
+```
+
+* Get Color result
+
+```blocks
+// Initialized Sentry with I2C port
+let target_num = 0
+Sentry.Begin(SentryId.Sentry00, sentry_mode_e.kI2CMode)
+Sentry.VisionSetStatus(SentryId.Sentry00, SentryStatus.Enable, sentry_vision_e.kVisionColor)
+Sentry.LedSetColor(SentryId.Sentry00, sentry_led_color_e.kLedBlue, sentry_led_color_e.kLedGreen)
+basic.forever(function () {
+    target_num = Sentry.Detected(SentryId.Sentry00, sentry_vision_e.kVisionColor)
+    serial.writeValue("target_num", target_num)
+    for (let index = 0; index <= target_num - 1; index++) {
+        serial.writeValue("index", index)
+        serial.writeValue("R", Sentry.ColorRcgValue(SentryId.Sentry00, sentry_color_info_e.kRValue, index))
+        serial.writeValue("G", Sentry.ColorRcgValue(SentryId.Sentry00, sentry_color_info_e.kGValue, index))
+        serial.writeValue("B", Sentry.ColorRcgValue(SentryId.Sentry00, sentry_color_info_e.kBValue, index))
+        serial.writeValue("L", Sentry.ColorRcgValue(SentryId.Sentry00, sentry_color_info_e.kLabel, index))
+    }
+})
+
 
 ```
 
@@ -48,15 +74,15 @@ Sentry.Begin(SentryId.Sentry00, sentry_mode_e.kI2CMode)
 Sentry.VisionSetStatus(SentryId.Sentry00, SentryStatus.Enable, sentry_vision_e.kVisionQrCode)
 Sentry.LedSetColor(SentryId.Sentry00, sentry_led_color_e.kLedBlue, sentry_led_color_e.kLedGreen, 1)
 basic.forever(function () {
-    for (let index = 0; index <= Sentry.Detected(SentryId.Sentry00, sentry_vision_e.kVisionQrCode) - 1; index++) {
+    if (Sentry.Detected(SentryId.Sentry00, sentry_vision_e.kVisionQrCode) > 0) {
         serial.writeValue("x", Sentry.QrRcgValue(SentryId.Sentry00, sentry_qr_info_e.kXValue))
-        serial.writeValue("y", Sentry.QrRcgValue(SentryId.Sentry00, sentry_qr_info_e.kYValue))
-        serial.writeValue("w", Sentry.QrRcgValue(SentryId.Sentry00, sentry_qr_info_e.kWidthValue))
-        serial.writeValue("h", Sentry.QrRcgValue(SentryId.Sentry00, sentry_qr_info_e.kHeightValue))
+        serial.writeValue("y", Sentry.QrRcgValue(SentryId.Sentry00, sentry_qr_info_e.kXValue))
+        serial.writeValue("w", Sentry.QrRcgValue(SentryId.Sentry00, sentry_qr_info_e.kXValue))
+        serial.writeValue("h", Sentry.QrRcgValue(SentryId.Sentry00, sentry_qr_info_e.kXValue))
         serial.writeLine(Sentry.GetQrCodeValue(SentryId.Sentry00))
     }
-    basic.pause(2000)
 })
+
 
 ```
 
