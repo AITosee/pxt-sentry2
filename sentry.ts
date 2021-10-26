@@ -1014,7 +1014,7 @@ namespace Sentry {
     //% blockId=Sentry_vision_bold_param block="Bold min weight%w| height%h| lable%l "
     //% inlineInputMode=inline
     //% group="AlgorithmSettings" advanced=true
-    export function BoldParam(w: number, h: number, l: number): sentry_object_t {
+    export function BoldParam(w: number, h: number, l: color_label_e): sentry_object_t {
         let prama = new sentry_object_t();
         prama.data3 = w;
         prama.data4 = h;
