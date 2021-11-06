@@ -351,6 +351,8 @@ namespace Sentry {
                                 }
 
                                 vision_state.sentry_objects[0].bytestr = bytestr;
+
+                                break;
                             }
                         }
 
