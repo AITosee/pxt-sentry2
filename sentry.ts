@@ -668,30 +668,6 @@ namespace Sentry {
             return SENTRY_OK;
         }
 
-        LedSetMode(manual: SentryStatus, hold: SentryStatus) {
-            let err = SENTRY_OK;
-            let led_reg_value = 0;
-
-            [err, led_reg_value] = this._stream.Get(kRegLed)
-            if (err) return err;
-
-            let gmanual = led_reg_value & 0x01
-            let ghold = (led_reg_value >> 4) & 0x01
-
-            if (manual != gmanual || hold != ghold) {
-                led_reg_value &= 0xfe
-                led_reg_value |= manual & 0x01
-
-                led_reg_value &= 0xef
-                led_reg_value |= (hold & 0x01) << 4
-
-                err = this._stream.Set(kRegLed, led_reg_value)
-                if (err) return err;
-            }
-
-            return SENTRY_OK
-        }
-
         LedSetColor(detected_color: sentry_led_color_e, undetected_color: sentry_led_color_e, level: number = 1) {
             let err = SENTRY_OK;
             let led_reg_value = 0;
@@ -706,7 +682,14 @@ namespace Sentry {
             led_level = (led_level & 0xF0) | (level & 0x0F);
             this._stream.Set(kRegLedLevel, led_level)
 
-            led_reg_value &= 0xf1
+            if (detected_color != undetected_color){
+                led_reg_value &= 0xf0
+            }
+            else{
+                led_reg_value &= 0xf0
+                led_reg_value |= 0x1
+            }
+            
             led_reg_value |= (detected_color & 0x07) << 1
 
             led_reg_value &= 0x1f
