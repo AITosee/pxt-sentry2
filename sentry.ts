@@ -59,7 +59,7 @@ namespace Sentry {
     const SENTRY_DEVICE_ID = 0x04
     const SENTRY_FIRMWARE_VERSION = 0xFF
 
-    const SENTRY_MAX_RESULT = 25
+    const SENTRY_MAX_RESULT = 5
 
     const SENTRY_OK = 0x00
     const SENTRY_FAIL = 0x01
@@ -1166,7 +1166,7 @@ namespace Sentry {
     //% expandableArgumentMode="enabled"
     //% obj_id.min=0 obj_id.max=24 obj_id.defl=0
     //% group="Functions"
-    export function GetValue(id: SentryId, vision_type: sentry_vision_value, object_info: sentry_gen_info_e, obj_id: number = 0): number {
+    export function GetValue(id: SentryId, vision_type: sentry_vision_e, object_info: sentry_gen_info_e, obj_id: number = 0): number {
         return <number>pSentry[id].GetValue(<number>vision_type, <number>object_info, obj_id);
     }
 
