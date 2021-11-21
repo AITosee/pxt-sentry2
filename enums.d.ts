@@ -88,31 +88,6 @@ declare const enum sentry_camera_zoom_e {
     kZoom5 = 5,
 }
 
-declare const enum sentry_camera_config_e {
-    //% block="Auto"
-    kLevelDefault = 0,
-    //% block="Level1"
-    kLevel1 = 1,
-    //% block="Level2"
-    kLevel2 = 2,
-    //% block="Level3"
-    kLevel3 = 3,
-    //% block="Level4"
-    kLevel4 = 4,
-    //% block="Level5"
-    kLevel5 = 5,
-    //% block="Level6"
-    kLevel6 = 6,
-    //% block="Level7"
-    kLevel7 = 7,
-    //% block="Level8"
-    kLevel8 = 8,
-    //% block="Level9"
-    kLevel9 = 9,
-    //% block="Level10"
-    kLevel10 = 10,
-}
-
 declare const enum sentry_camera_fps_e {
     //% block="FPSNorma"
     kFPSNormal = 0,
@@ -307,17 +282,6 @@ declare const enum color_label_e {
     kColorUnkown = 7
 }
 
-declare const enum SentryId {
-    //% block="Sentry#1"
-    Sentry00 = 0,
-    //% block="Sentry#2"
-    Sentry01 = 1,
-    //% block="Sentry#3"
-    Sentry10 = 2,
-    //% block="Sentry#4"
-    Sentry11 = 3,
-}
-
 declare const enum SentryStatus {
     //% block="enable"
     Enable = 1,
@@ -379,4 +343,15 @@ declare const enum sentry_color_info_e {
     kBValue = 8,
     //% block="label"
     kLabel = 5
+}
+
+declare const enum sentry_addr_e {
+    //% block="0x60"
+    ADDR1 = 0x60,
+    //% block="0x61"
+    ADDR2 = 0x61,
+    //% block="0x62"
+    ADDR3 = 0x62,
+    //% block="0x63"
+    ADDR4 = 0x63,
 }
