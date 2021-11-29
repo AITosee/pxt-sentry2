@@ -524,13 +524,13 @@ namespace Sentry {
                 case sentry_obj_info_e.kStatus:
                     return _vision_states[vision_type - 1].detect;
                 case sentry_obj_info_e.kXValue:
-                    return _vision_states[vision_type - 1].sentry_objects[obj_id].data1 * 100 / this.img_w | 0;
+                    return _vision_states[vision_type - 1].sentry_objects[obj_id].data1;
                 case sentry_obj_info_e.kYValue:
-                    return _vision_states[vision_type - 1].sentry_objects[obj_id].data2 * 100 / this.img_h | 0;
+                    return _vision_states[vision_type - 1].sentry_objects[obj_id].data2;
                 case sentry_obj_info_e.kWidthValue:
-                    return _vision_states[vision_type - 1].sentry_objects[obj_id].data3 * 100 / this.img_w | 0;
+                    return _vision_states[vision_type - 1].sentry_objects[obj_id].data3;
                 case sentry_obj_info_e.kHeightValue:
-                    return _vision_states[vision_type - 1].sentry_objects[obj_id].data4 * 100 / this.img_h | 0;
+                    return _vision_states[vision_type - 1].sentry_objects[obj_id].data4;
                 case sentry_obj_info_e.kLabel:
                     return _vision_states[vision_type - 1].sentry_objects[obj_id].data5;
                 case sentry_obj_info_e.kGValue:
