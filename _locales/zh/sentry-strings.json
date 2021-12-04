@@ -3,7 +3,7 @@
     "sentry_vision_e.kVisionBlob|block": "色块检测",
     "sentry_vision_e.kVisionAprilTag|block": "AprilTag",
     "sentry_vision_e.kVisionLine|block": "线段检测",
-    "sentry_vision_e.kVisionBody|block": "人体识别",
+    "sentry_vision_e.kVisionLearning|block": "机器学习",
     "sentry_vision_e.kVisionCard|block": "卡片识别",
     "sentry_vision_e.kVisionFace|block": "人脸识别",
     "sentry_vision_e.kVision20Classes|block": "20分类识别",

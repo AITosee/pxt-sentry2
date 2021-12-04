@@ -7,8 +7,8 @@ declare const enum sentry_vision_e {
     kVisionAprilTag = 3,
     //% block="Line"
     kVisionLine = 4,
-    //% block="Body"
-    kVisionBody = 5,
+    //% block="Learning"
+    kVisionLearning  = 5,
     //% block="Card"
     kVisionCard = 6,
     //% block="Face"
