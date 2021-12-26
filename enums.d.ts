@@ -53,6 +53,12 @@ declare const enum sentry_mode_e {
     kUnknownMode,
 }
 
+declare const enum sentry_coordinate_type_e {
+    //% block="AbsoluteCoordinate"
+    kAbsoluteCoordinate = 0,
+    //% block="PercentageCoordinate"
+    kPercentageCoordinate = 1,
+}
 
 declare const enum sentry_baudrate_e {
     //% block="9600"

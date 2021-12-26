@@ -8,6 +8,7 @@ namespace Sentry {
     const kRegLed = 0x06
     const kRegLedLevel = 0x08
     const kRegLcdCongig = 0x0C
+    const kRegHWConfig = 0x0F
     const kRegCameraConfig1 = 0x10
     const kRegFrameCount = 0x1F
     const kRegVisionId = 0x20
@@ -402,6 +403,17 @@ namespace Sentry {
             return err;
         }
 
+        SeneorSetCoordinateType(coordinate: sentry_coordinate_type_e) {
+            let err, hw_config_reg_value = this._stream.Get(kRegHWConfig)
+
+            if (((hw_config_reg_value & 0x0c) >> 2) != coordinate) {
+                hw_config_reg_value &= 0xF3
+                hw_config_reg_value != (coordinate & 0x03) << 2
+                err = this._stream.Set(kRegHWConfig, hw_config_reg_value)
+            }
+            return err;
+        }
+        
         SensorSetRestart() {
             return this._stream.Set(kRegRestart, 1);
         }
@@ -639,6 +651,15 @@ namespace Sentry {
         while (pSentry.SensorSetDefault() != SENTRY_OK);
     }
 
+    /**
+   * Set coordinate type.
+   */
+    //% blockId=Sentry_set_coordinate_type block="set coordinate type %coordinate "
+    //% group="Settings"
+    export function SeneorSetCoordinateType(coordinate: sentry_coordinate_type_e) {
+        while (pSentry.SeneorSetCoordinateType(coordinate) != SENTRY_OK);
+    }
+    
     /**
      * Sentry vision enable set.
     */
