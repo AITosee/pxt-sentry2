@@ -7,7 +7,6 @@ namespace Sentry {
     const kRegLock = 0x05
     const kRegLed = 0x06
     const kRegLedLevel = 0x08
-    const kRegLcdCongig = 0x0C
     const kRegHWConfig = 0x0F
     const kRegCameraConfig1 = 0x10
     const kRegFrameCount = 0x1F
@@ -20,7 +19,7 @@ namespace Sentry {
 
     const SENTRY_DEVICE_ID = 0x04
 
-    const SENTRY_MAX_RESULT = 5
+    const SENTRY_MAX_RESULT = 25
 
     const SENTRY_OK = 0x00
     const SENTRY_FAIL = 0x01
@@ -595,16 +594,16 @@ namespace Sentry {
             return SENTRY_OK;
         }
 
-        CameraSetFPS(fps: sentry_camera_fps_e) {
-            let camera_reg_value = this._stream.Get(kRegCameraConfig1);
-            let gfps = (camera_reg_value >> 4) & 0x01
-            if (fps != gfps) {
-                camera_reg_value &= 0xef
-                camera_reg_value |= (fps & 0x01) << 4
-                return this._stream.Set(kRegCameraConfig1, camera_reg_value);
-            }
-            return SENTRY_OK;
-        }
+        // CameraSetFPS(fps: sentry_camera_fps_e) {
+        //     let camera_reg_value = this._stream.Get(kRegCameraConfig1);
+        //     let gfps = (camera_reg_value >> 4) & 0x01
+        //     if (fps != gfps) {
+        //         camera_reg_value &= 0xef
+        //         camera_reg_value |= (fps & 0x01) << 4
+        //         return this._stream.Set(kRegCameraConfig1, camera_reg_value);
+        //     }
+        //     return SENTRY_OK;
+        // }
 
         CameraSetAwb(awb: sentry_camera_white_balance_e) {
             let camera_reg_value = this._stream.Get(kRegCameraConfig1);
@@ -681,19 +680,19 @@ namespace Sentry {
         while (pSentry.SetParamNum(vision_type, max_num) != SENTRY_OK);
     }
 
-    /**
-    * set vision prama.
-    * @param vision_type vision type.
-    * @param vision prama.
-    * @param param_id vision prama id.
-    */
-    //% blockId=Sentry_vision_SetParam block="set  Sentry algorithm %vision_type|param %param index %param_id"
-    //% inlineInputMode=inline
-    //% param_id.min=0 param_id.max=24 param_id.defl=0
-    //% group="AlgorithmSettings" advanced=true
-    export function SetParam(vision_type: sentry_vision_e, param: sentry_object_t, param_id: number = 0) {
-        while (pSentry.SetParam(vision_type, param, param_id) != SENTRY_OK);
-    }
+    // /**
+    // * set vision prama.
+    // * @param vision_type vision type.
+    // * @param vision prama.
+    // * @param param_id vision prama id.
+    // */
+    // //% blockId=Sentry_vision_SetParam block="set  Sentry algorithm %vision_type|param %param index %param_id"
+    // //% inlineInputMode=inline
+    // //% param_id.min=0 param_id.max=24 param_id.defl=0
+    // //% group="AlgorithmSettings" advanced=true
+    // export function SetParam(vision_type: sentry_vision_e, param: sentry_object_t, param_id: number = 0) {
+    //     while (pSentry.SetParam(vision_type, param, param_id) != SENTRY_OK);
+    // }
 
     /**
     * color prama.
@@ -702,16 +701,16 @@ namespace Sentry {
     * @param w ROI weight.
     * @param h ROI height.
     */
-    //% blockId=Sentry_vision_color_param block="Color ROI centre x%x| y%y| weight%w| height%h "
+    //% blockId=Sentry_vision_color_param block="set  Sentry algorithm Color ROI centre x%x| y%y| weight%w| height%h ||param %param index %param_id"
     //% inlineInputMode=inline
     //% group="AlgorithmSettings" advanced=true
-    export function ColorParam(x: number, y: number, w: number, h: number): sentry_object_t {
+    export function SetColorParam(x: number, y: number, w: number, h: number, param_id: number = 0) {
         let prama = new sentry_object_t();
         prama.data1 = x;
         prama.data2 = y;
         prama.data3 = w;
         prama.data4 = h;
-        return prama;
+        while (pSentry.SetParam(sentry_vision_e.kVisionColor, prama, param_id) != SENTRY_OK);
     }
 
     /**
@@ -720,29 +719,29 @@ namespace Sentry {
     * @param h detecte min height.
     * @param l detecte lable.
     */
-    //% blockId=Sentry_vision_bold_param block="Bold min weight%w| height%h| lable%l "
+    //% blockId=Sentry_vision_bold_param block="set  Sentry algorithm Bold min weight%w| height%h| lable%l ||param %param index %param_id"
     //% inlineInputMode=inline
     //% group="AlgorithmSettings" advanced=true
-    export function BoldParam(w: number, h: number, l: color_label_e): sentry_object_t {
+    export function SetBoldParam(w: number, h: number, l: color_label_e, param_id: number = 0) {
         let prama = new sentry_object_t();
         prama.data3 = w;
         prama.data4 = h;
         prama.data5 = l;
-        return prama;
+        while (pSentry.SetParam(sentry_vision_e.kVisionBlob, prama, param_id) != SENTRY_OK);
     }
 
-    /**
-    * face prama.
-    * @param l detected lable.
-    */
-    //% blockId=Sentry_vision_face_param block="Face lable%l "
-    //% inlineInputMode=inline
-    //% group="AlgorithmSettings" advanced=true
-    export function FaceParam(l: number): sentry_object_t {
-        let prama = new sentry_object_t();
-        prama.data5 = l;
-        return prama;
-    }
+    // /**
+    // * face prama.
+    // * @param l detected lable.
+    // */
+    // //% blockId=Sentry_vision_face_param block="Face lable%l "
+    // //% inlineInputMode=inline
+    // //% group="AlgorithmSettings" advanced=true
+    // export function FaceParam(l: number): sentry_object_t {
+    //     let prama = new sentry_object_t();
+    //     prama.data5 = l;
+    //     return prama;
+    // }
 
     /**
     * set led color.
@@ -781,23 +780,23 @@ namespace Sentry {
         while (pSentry.CameraSetAwb(wb) != SENTRY_OK);
     }
 
-    /**
-     * set camera FPS.
-     * @param on FPS type.
-     */
-    //% blockId=Sentry_camera_set_fps block="set  Sentry camera high FPS mode$on " color="#1098C9"
-    //% on.shadow="toggleOnOff" on.defl="true"
-    //% group="CameraSettings" advanced=true
-    export function CameraSetFPS(on: boolean) {
-        let fps = on ? sentry_camera_fps_e.kFPSHigh : sentry_camera_fps_e.kFPSNormal;
-        while (pSentry.CameraSetFPS(fps) != SENTRY_OK);
-    }
+    // /**
+    //  * set camera FPS.
+    //  * @param on FPS type.
+    //  */
+    // //% blockId=Sentry_camera_set_fps block="set  Sentry camera high FPS mode$on " color="#1098C9"
+    // //% on.shadow="toggleOnOff" on.defl="true"
+    // //% group="CameraSettings" advanced=true
+    // export function CameraSetFPS(on: boolean) {
+    //     let fps = on ? sentry_camera_fps_e.kFPSHigh : sentry_camera_fps_e.kFPSNormal;
+    //     while (pSentry.CameraSetFPS(fps) != SENTRY_OK);
+    // }
     /**
      * Get vision detected number
      * @param type vision type
      */
     //% blockId=Sentry_detected block=" Sentry  algorithm %vision_type detected number " color="#2E8B57"
-    //% group="Functions"
+    //% group="Functions" advanced=false
     export function Detected(vision_type: sentry_vision_e): number {
         return pSentry.GetValue(vision_type, sentry_obj_info_e.kStatus)
     }
@@ -902,7 +901,7 @@ namespace Sentry {
      * image weight
      */
     //% blockId=Sentry_get_img_h block="Sentry image weight " color="#2E8B57"
-    //% group="Functions"
+    //% group="Functions" advanced=true
     export function Rows() {
         return pSentry.img_h;
     }
@@ -911,7 +910,7 @@ namespace Sentry {
      * image height
      */
     //% blockId=Sentry_get_img_w block="Sentry image height " color="#2E8B57"
-    //% group="Functions"
+    //% group="Functions" advanced=true
     export function Cols() {
         return pSentry.img_w;
     }
