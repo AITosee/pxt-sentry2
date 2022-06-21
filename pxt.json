@@ -9,9 +9,7 @@
     "files": [
         "README.md",
         "sentry.ts",
-        "enums.d.ts",
-        "_locales/zh/sentry-strings.json",
-        "_locales/zh/sentry-jsdoc-strings.json"
+        "enums.d.ts"
     ],
     "testFiles": [
         "test.ts"
