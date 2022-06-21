@@ -7,7 +7,6 @@ namespace Sentry {
     const kRegLock = 0x05
     const kRegLed = 0x06
     const kRegLedLevel = 0x08
-    const kRegHWConfig = 0x0F
     const kRegCameraConfig1 = 0x10
     const kRegFrameCount = 0x1F
     const kRegVisionId = 0x20
@@ -402,21 +401,6 @@ namespace Sentry {
             return err;
         }
 
-        SeneorSetCoordinateType(coordinate: sentry_coordinate_type_e) {
-            let err, hw_config_reg_value = this._stream.Get(kRegHWConfig)
-
-            if (((hw_config_reg_value & 0x0c) >> 2) != coordinate) {
-                hw_config_reg_value &= 0xF3
-                hw_config_reg_value != (coordinate & 0x03) << 2
-                err = this._stream.Set(kRegHWConfig, hw_config_reg_value)
-            }
-            return err;
-        }
-        
-        SensorSetRestart() {
-            return this._stream.Set(kRegRestart, 1);
-        }
-
         GetImageShape() {
             this.img_w = this._stream.Get(0x1B) << 8 | this._stream.Get(0x1C);
             this.img_h = this._stream.Get(0x1D) << 8 | this._stream.Get(0x1E);
@@ -446,18 +430,6 @@ namespace Sentry {
             }
 
             return SENTRY_OK;
-        }
-
-        VisionGetStatus(vision_type: sentry_vision_e) {
-            let err = SENTRY_OK;
-            let vision_config1 = 0;
-
-            err = this._stream.Set(kRegVisionId, vision_type);
-            if (err) return err;
-
-            vision_config1 = this._stream.Get(kRegVisionConfig1);
-
-            return 0x01 & vision_config1
         }
 
         GetValue(vision_type: sentry_vision_e, obj_info: sentry_obj_info_e, obj_id: number = 0) {
@@ -594,17 +566,6 @@ namespace Sentry {
             return SENTRY_OK;
         }
 
-        // CameraSetFPS(fps: sentry_camera_fps_e) {
-        //     let camera_reg_value = this._stream.Get(kRegCameraConfig1);
-        //     let gfps = (camera_reg_value >> 4) & 0x01
-        //     if (fps != gfps) {
-        //         camera_reg_value &= 0xef
-        //         camera_reg_value |= (fps & 0x01) << 4
-        //         return this._stream.Set(kRegCameraConfig1, camera_reg_value);
-        //     }
-        //     return SENTRY_OK;
-        // }
-
         CameraSetAwb(awb: sentry_camera_white_balance_e) {
             let camera_reg_value = this._stream.Get(kRegCameraConfig1);
             let white_balance = (camera_reg_value >> 5) & 0x03
@@ -639,24 +600,6 @@ namespace Sentry {
             pSentry = new SentryMethod(addr)
             while (pSentry.Begin(mode) != SENTRY_OK);
         }
-    }
-
-    /**
-     * Reset Sentry.
-     */
-    //% blockId=Sentry_set_default block="restore  Sentry  default settings "
-    //% group="Settings"
-    export function SetDefault() {
-        while (pSentry.SensorSetDefault() != SENTRY_OK);
-    }
-
-    /**
-   * Set coordinate type.
-   */
-    //% blockId=Sentry_set_coordinate_type block="set coordinate type %coordinate "
-    //% group="Settings"
-    export function SeneorSetCoordinateType(coordinate: sentry_coordinate_type_e) {
-        while (pSentry.SeneorSetCoordinateType(coordinate) != SENTRY_OK);
     }
     
     /**
@@ -743,54 +686,6 @@ namespace Sentry {
     //     return prama;
     // }
 
-    /**
-    * set led color.
-    * @param detected_color led color while sensor detected target.
-    * @param undetected_color led color while sensor undetected target.
-    * @param level led light level.
-    */
-    //% blockId=Sentry_led_set_color block="set  Sentry LED when detected %detected_color|when undetected %undetected_color||level %level "
-    //% detected_color.defl=sentry_led_color_e.kLedBlue
-    //% undetected_color.defl=sentry_led_color_e.kLedGreen
-    //% level.min=0 level.max=15 level.defl=1
-    //% inlineInputMode=inline
-    //% expandableArgumentMode="enabled"
-    //% group="Settings" advanced=true 
-    export function LedSetColor(detected_color: sentry_led_color_e, undetected_color: sentry_led_color_e, level: number = 1) {
-        while (pSentry.LedSetColor(detected_color, undetected_color, level) != SENTRY_OK);
-    }
-
-    /**
-     * set camera zoom.
-     * @param zoom zoom value.
-     */
-    //% blockId=Sentry_camera_set_zoom block="set  Sentry camera digital zoom%zoom " color="#1098C9"
-    //% group="CameraSettings" advanced=true
-    export function CameraSetZoom(zoom: sentry_camera_zoom_e) {
-        while (pSentry.CameraSetZoom(zoom) != SENTRY_OK);
-    }
-
-    /**
-    * set camera white balance.
-    * @param wb white balance type.
-    */
-    //% blockId=Sentry_camera_set_awb block="set  Sentry camera white balance%wb " color="#1098C9"
-    //% group="CameraSettings" advanced=true
-    export function CameraSetAwb(wb: sentry_camera_white_balance_e) {
-        while (pSentry.CameraSetAwb(wb) != SENTRY_OK);
-    }
-
-    // /**
-    //  * set camera FPS.
-    //  * @param on FPS type.
-    //  */
-    // //% blockId=Sentry_camera_set_fps block="set  Sentry camera high FPS mode$on " color="#1098C9"
-    // //% on.shadow="toggleOnOff" on.defl="true"
-    // //% group="CameraSettings" advanced=true
-    // export function CameraSetFPS(on: boolean) {
-    //     let fps = on ? sentry_camera_fps_e.kFPSHigh : sentry_camera_fps_e.kFPSNormal;
-    //     while (pSentry.CameraSetFPS(fps) != SENTRY_OK);
-    // }
     /**
      * Get vision detected number
      * @param type vision type

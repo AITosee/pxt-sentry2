@@ -1,7 +1,6 @@
 let target_num = 0
 Sentry.Begin(sentry_mode_e.kI2CMode,0x60)
 Sentry.VisionSetStatus( SentryStatus.Enable, sentry_vision_e.kVisionCard)
-Sentry.LedSetColor( sentry_led_color_e.kLedBlue, sentry_led_color_e.kLedGreen)
 basic.forever(function () {
     target_num = Sentry.Detected( sentry_vision_e.kVisionCard)
     serial.writeValue("target_num", target_num)
