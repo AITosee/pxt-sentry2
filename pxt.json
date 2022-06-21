@@ -1,6 +1,6 @@
 {
     "name": "sentry",
-    "version": "1.7.0",
+    "version": "1.7.1",
     "description": "Sensor designed for the AI education.",
     "license": "MIT",
     "dependencies": {
@@ -10,8 +10,10 @@
         "README.md",
         "sentry.ts",
         "enums.d.ts",
-        "_locales/zh/sentry-strings.json",
-        "_locales/zh/sentry-jsdoc-strings.json"
+        "_locales/zh-cn/sentry-strings.json",
+        "_locales/zh-cn/sentry-jsdoc-strings.json",
+        "_locales/zh-tw/sentry-strings.json",
+        "_locales/zh-tw/sentry-jsdoc-strings.json"
     ],
     "testFiles": [
         "test.ts"
