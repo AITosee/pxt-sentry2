@@ -26,25 +26,6 @@ declare const enum sentry_vision_e {
     kVisionMaxType
 }
 
-declare const enum sentry_led_color_e {
-    //% block="off"
-    kLedClose = 0,
-    //% block="red"
-    kLedRed = 1,
-    //% block="green"
-    kLedGreen = 2,
-    //% block="yellow"
-    kLedYellow = 3,
-    //% block="blue"
-    kLedBlue = 4,
-    //% block="purple"
-    kLedPurple = 5,
-    //% block="cyan"
-    kLedCyan = 6,
-    //% block="white"
-    kLedWhite = 7,
-}
-
 declare const enum sentry_mode_e {
     //% block="SerialMode"
     kSerialMode = 0,
@@ -52,68 +33,6 @@ declare const enum sentry_mode_e {
     kI2CMode = 1,
     //% blockHidden=true 
     kUnknownMode,
-}
-
-declare const enum sentry_coordinate_type_e {
-    //% block="AbsoluteCoordinate"
-    kAbsoluteCoordinate = 0,
-    //% block="PercentageCoordinate"
-    kPercentageCoordinate = 1,
-}
-
-declare const enum sentry_baudrate_e {
-    //% block="9600"
-    kBaud9600 = 0x00,
-    //% block="19200"
-    kBaud19200 = 0x01,
-    //% block="38400"
-    kBaud38400 = 0x02,
-    //% block="57600"
-    kBaud57600 = 0x03,
-    //% block="115200"
-    kBaud115200 = 0x04,
-    //% block="921600"
-    kBaud921600 = 0x05,
-    //% block="1152000"
-    kBaud1152000 = 0x06,
-    //% block="2000000"
-    kBaud2000000 = 0x07,
-}
-
-declare const enum sentry_camera_zoom_e {
-    //% block="Auto"
-    kZoomDefault = 0,
-    //% block="Level1"
-    kZoom1 = 1,
-    //% block="Level2"
-    kZoom2 = 2,
-    //% block="Level3"
-    kZoom3 = 3,
-    //% block="Level4"
-    kZoom4 = 4,
-    //% block="Level5"
-    kZoom5 = 5,
-}
-
-declare const enum sentry_camera_fps_e {
-    //% block="FPSNorma"
-    kFPSNormal = 0,
-    //% block="FPSHigh"
-    kFPSHigh = 1,
-}
-
-
-declare const enum sentry_camera_white_balance_e {
-    //% block="AutoWhiteBalance"
-    kAutoWhiteBalance = 0,
-    //% block="LockWhiteBalance"
-    kLockWhiteBalance = 1,
-    //% block="WhiteLight"
-    kWhiteLight = 2,
-    //% block="YellowLight"
-    kYellowLight = 3,
-    //% block="WhiteBalanceCalibrating"
-    kWhiteBalanceCalibrating = 4,
 }
 
 declare const enum card_label_e {
