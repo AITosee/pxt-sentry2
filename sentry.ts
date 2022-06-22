@@ -530,61 +530,6 @@ namespace Sentry {
         VisionSetDefault(vision_type: sentry_vision_e) {
             return this._stream.Set(kRegVisionId, vision_type);
         }
-
-        LedSetColor(detected_color: sentry_led_color_e, undetected_color: sentry_led_color_e, level: number = 1) {
-            let led_reg_value = 0;
-
-            led_reg_value = this._stream.Get(kRegLedLevel)
-            led_reg_value = (led_reg_value & 0xF0) | (level & 0x0F);
-            this._stream.Set(kRegLedLevel, led_reg_value)
-
-            led_reg_value = this._stream.Get(kRegLed)
-
-            if (detected_color != undetected_color) {
-                led_reg_value &= 0xf0
-            }
-            else {
-                led_reg_value &= 0xf0
-                led_reg_value |= 0x1
-            }
-
-            led_reg_value |= (detected_color & 0x07) << 1
-            led_reg_value &= 0x1f
-            led_reg_value |= (undetected_color & 0x07) << 5
-
-            return this._stream.Set(kRegLed, led_reg_value);
-        }
-
-        CameraSetZoom(zoom: sentry_camera_zoom_e) {
-            let camera_reg_value = this._stream.Get(kRegCameraConfig1);
-            let gzoom = camera_reg_value & 0x07
-            if (zoom != gzoom) {
-                camera_reg_value &= 0xf8
-                camera_reg_value |= zoom & 0x07
-                return this._stream.Set(kRegCameraConfig1, camera_reg_value);
-            }
-            return SENTRY_OK;
-        }
-
-        CameraSetAwb(awb: sentry_camera_white_balance_e) {
-            let camera_reg_value = this._stream.Get(kRegCameraConfig1);
-            let white_balance = (camera_reg_value >> 5) & 0x03
-            if (sentry_camera_white_balance_e.kLockWhiteBalance == awb) {
-                camera_reg_value &= 0x1f
-                camera_reg_value |= (awb & 0x03) << 5
-                let err = this._stream.Set(kRegCameraConfig1, camera_reg_value);
-                if (err) return err;
-                while ((camera_reg_value >> 7) == 0) {
-                    camera_reg_value = this._stream.Get(kRegCameraConfig1);
-                }
-            }
-            else if (white_balance != awb) {
-                camera_reg_value &= 0x1f
-                camera_reg_value |= (awb & 0x03) << 5
-                return this._stream.Set(kRegCameraConfig1, camera_reg_value);
-            }
-            return SENTRY_OK;
-        }
     }
 
     let pSentry: SentryMethod = null;
