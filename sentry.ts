@@ -459,7 +459,10 @@ namespace Sentry {
             return err;
         }
 
-        SetParam(vision_type: sentry_vision_e, param: sentry_object_t, param_id: number = 0) {
+        SetParam(vision_type: sentry_vision_e, param: sentry_object_t, param_id: number = 1) {
+            if (param_id < 1 || param_id > SENTRY_MAX_RESULT)
+                return SENTRY_FAIL;
+
             return this._stream.SetParam(vision_type, param, param_id)
         }
 
@@ -571,20 +574,6 @@ namespace Sentry {
         while (pSentry.SetParamNum(vision_type, max_num) != SENTRY_OK);
     }
 
-    // /**
-    // * set vision prama.
-    // * @param vision_type vision type.
-    // * @param vision prama.
-    // * @param param_id vision prama id.
-    // */
-    // //% blockId=Sentry_vision_SetParam block="set  Sentry algorithm %vision_type|param %param index %param_id"
-    // //% inlineInputMode=inline
-    // //% param_id.min=0 param_id.max=24 param_id.defl=0
-    // //% group="AlgorithmSettings" advanced=true
-    // export function SetParam(vision_type: sentry_vision_e, param: sentry_object_t, param_id: number = 0) {
-    //     while (pSentry.SetParam(vision_type, param, param_id) != SENTRY_OK);
-    // }
-
     /**
     * color prama.
     * @param x ROI centre x.
@@ -595,7 +584,7 @@ namespace Sentry {
     //% blockId=Sentry_vision_color_param block="set  Sentry algorithm Color ROI centre x%x| y%y| weight%w| height%h ||param %param index %param_id"
     //% inlineInputMode=inline
     //% group="AlgorithmSettings" advanced=true
-    export function SetColorParam(x: number, y: number, w: number, h: number, param_id: number = 0) {
+    export function SetColorParam(x: number, y: number, w: number, h: number, param_id: number = 1) {
         let prama = new sentry_object_t();
         prama.data1 = x;
         prama.data2 = y;
@@ -613,7 +602,7 @@ namespace Sentry {
     //% blockId=Sentry_vision_bold_param block="set  Sentry algorithm Bold min weight%w| height%h| lable%l ||param %param index %param_id"
     //% inlineInputMode=inline
     //% group="AlgorithmSettings" advanced=true
-    export function SetBoldParam(w: number, h: number, l: color_label_e, param_id: number = 0) {
+    export function SetBoldParam(w: number, h: number, l: color_label_e, param_id: number = 1) {
         let prama = new sentry_object_t();
         prama.data3 = w;
         prama.data4 = h;
