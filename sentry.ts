@@ -669,7 +669,7 @@ namespace Sentry {
     //% blockId=Sentry_get_qrRcg_value  block=" Sentry QrCode Recognition|%obj_info " color="#2E8B57"
     //% group="Functions"
     export function QrRcgValue(obj_info: sentry_qr_info_e): number {
-        return pSentry.GetValue(sentry_vision_e.kVisionQrCode, <number>obj_info, 0)
+        return pSentry.GetValue(sentry_vision_e.kVisionQrCode, <number>obj_info)
     }
 
     /**
