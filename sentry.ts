@@ -582,6 +582,7 @@ namespace Sentry {
     * @param h ROI height.
     */
     //% blockId=Sentry_vision_color_param block="set  Sentry algorithm Color ROI centre x%x| y%y| weight%w| height%h ||param %param index %param_id"
+    //% param_id.min=1 param_id.max=25 param_id.defl=1
     //% inlineInputMode=inline
     //% group="AlgorithmSettings" advanced=true
     export function SetColorParam(x: number, y: number, w: number, h: number, param_id: number = 1) {
@@ -600,6 +601,7 @@ namespace Sentry {
     * @param l detecte lable.
     */
     //% blockId=Sentry_vision_bold_param block="set  Sentry algorithm Bold min weight%w| height%h| lable%l ||param %param index %param_id"
+    //% param_id.min=1 param_id.max=25 param_id.defl=1
     //% inlineInputMode=inline
     //% group="AlgorithmSettings" advanced=true
     export function SetBoldParam(w: number, h: number, l: color_label_e, param_id: number = 1) {
@@ -609,19 +611,6 @@ namespace Sentry {
         prama.data5 = l;
         while (pSentry.SetParam(sentry_vision_e.kVisionBlob, prama, param_id) != SENTRY_OK);
     }
-
-    // /**
-    // * face prama.
-    // * @param l detected lable.
-    // */
-    // //% blockId=Sentry_vision_face_param block="Face lable%l "
-    // //% inlineInputMode=inline
-    // //% group="AlgorithmSettings" advanced=true
-    // export function FaceParam(l: number): sentry_object_t {
-    //     let prama = new sentry_object_t();
-    //     prama.data5 = l;
-    //     return prama;
-    // }
 
     /**
      * Get vision detected number
@@ -669,7 +658,7 @@ namespace Sentry {
     //% blockId=Sentry_get_qrRcg_value  block=" Sentry QrCode Recognition|%obj_info " color="#2E8B57"
     //% group="Functions"
     export function QrRcgValue(obj_info: sentry_qr_info_e): number {
-        return pSentry.GetValue(sentry_vision_e.kVisionQrCode, <number>obj_info, 0)
+        return pSentry.GetValue(sentry_vision_e.kVisionQrCode, <number>obj_info)
     }
 
     /**
