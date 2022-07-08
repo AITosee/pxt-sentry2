@@ -24,20 +24,22 @@
 
 ```blocks
 // Initialized Sentry with I2C port
+let index = 0
 let target_num = 0
 Sentry.Begin(sentry_mode_e.kI2CMode, sentry_addr_e.ADDR1)
 Sentry.VisionSetStatus(SentryStatus.Enable, sentry_vision_e.kVisionCard)
-Sentry.LedSetColor(sentry_led_color_e.kLedBlue, sentry_led_color_e.kLedGreen)
 basic.forever(function () {
     target_num = Sentry.Detected(sentry_vision_e.kVisionCard)
     serial.writeValue("target_num", target_num)
-    for (let index = 0; index <= target_num - 1; index++) {
+    index = 1
+    for (let index2 = 0; index2 < target_num; index2++) {
         serial.writeValue("index", index)
         serial.writeValue("x", Sentry.GetValue(sentry_vision_e.kVisionCard, sentry_gen_info_e.kXValue, index))
         serial.writeValue("y", Sentry.GetValue(sentry_vision_e.kVisionCard, sentry_gen_info_e.kYValue, index))
         serial.writeValue("w", Sentry.GetValue(sentry_vision_e.kVisionCard, sentry_gen_info_e.kWidthValue, index))
         serial.writeValue("h", Sentry.GetValue(sentry_vision_e.kVisionCard, sentry_gen_info_e.kWidthValue, index))
         serial.writeValue("l", Sentry.GetValue(sentry_vision_e.kVisionCard, sentry_gen_info_e.kLabel, index))
+        index += 1
     }
 })
 
@@ -47,24 +49,25 @@ basic.forever(function () {
 
 ```blocks
 // Initialized Sentry with I2C port
+let index = 0
 let target_num = 0
 Sentry.Begin(sentry_mode_e.kI2CMode, sentry_addr_e.ADDR1)
 Sentry.VisionSetStatus(SentryStatus.Enable, sentry_vision_e.kVisionColor)
-Sentry.LedSetColor(sentry_led_color_e.kLedBlue, sentry_led_color_e.kLedGreen)
 Sentry.SetParamNum(sentry_vision_e.kVisionColor, 3)
-Sentry.SetParam(sentry_vision_e.kVisionColor, Sentry.ColorParam(10, 10, 5, 5))
-Sentry.SetParam(sentry_vision_e.kVisionColor, Sentry.ColorParam(40, 40, 6, 6))
-Sentry.SetParam(sentry_vision_e.kVisionColor, Sentry.ColorParam(80, 80, 8, 8))
+Sentry.SetColorParam(10, 10, 5, 5, 1)
+Sentry.SetColorParam(40, 40, 6, 6, 2)
+Sentry.SetColorParam(80, 80, 8, 8, 3)
 basic.showIcon(IconNames.Heart)
 basic.forever(function () {
     target_num = Sentry.Detected(sentry_vision_e.kVisionColor)
     serial.writeValue("target_num", target_num)
-    for (let index = 0; index <= target_num - 1; index++) {
+    index = 1
+    for (let index2 = 0; index2 < target_num; index2++) {
         serial.writeValue("index", index)
         serial.writeValue("R", Sentry.ColorRcgValue(sentry_color_info_e.kRValue, index))
-        serial.writeValue("G", Sentry.ColorRcgValue(sentry_color_info_e.kGValue, index))
-        serial.writeValue("B", Sentry.ColorRcgValue(sentry_color_info_e.kBValue, index))
-        serial.writeValue("L", Sentry.ColorRcgValue(sentry_color_info_e.kLabel, index))
+        serial.writeValue("G", Sentry.ColorRcgValue(sentry_color_info_e.kRValue, index))
+        serial.writeValue("B", Sentry.ColorRcgValue(sentry_color_info_e.kRValue, index))
+        serial.writeValue("L", Sentry.ColorRcgValue(sentry_color_info_e.kRValue, index))
         if (Sentry.DetectedColor(color_label_e.kColorBlack)) {
             serial.writeLine("black")
         } else if (Sentry.DetectedColor(color_label_e.kColorWhite)) {
@@ -74,6 +77,7 @@ basic.forever(function () {
         } else if (Sentry.DetectedColor(color_label_e.kColorYellow)) {
             serial.writeLine("yellow")
         }
+        index += 1
     }
 })
 
@@ -86,9 +90,7 @@ basic.forever(function () {
 ```blocks
 // Initialized Sentry with I2C port
 Sentry.Begin(sentry_mode_e.kI2CMode, sentry_addr_e.ADDR1)
-Sentry.SetDefault()
 Sentry.VisionSetStatus(SentryStatus.Enable, sentry_vision_e.kVisionQrCode)
-Sentry.LedSetColor(sentry_led_color_e.kLedGreen, sentry_led_color_e.kLedPurple, 1)
 basic.forever(function () {
     if (Sentry.Detected(sentry_vision_e.kVisionQrCode) > 0) {
         serial.writeValue("x", Sentry.QrRcgValue(sentry_qr_info_e.kXValue))
@@ -106,16 +108,13 @@ basic.forever(function () {
 
 ```blocks
 // Initialized Sentry with Serial port
-let target_num = 0
 serial.redirect(
 SerialPin.P13,
 SerialPin.P14,
 BaudRate.BaudRate115200
 )
 Sentry.Begin(sentry_mode_e.kSerialMode, sentry_addr_e.ADDR1)
-Sentry.SetDefault()
 Sentry.VisionSetStatus(SentryStatus.Enable, sentry_vision_e.kVisionQrCode)
-Sentry.LedSetColor(sentry_led_color_e.kLedGreen, sentry_led_color_e.kLedPurple, 1)
 basic.forever(function () {
     if (Sentry.Detected(sentry_vision_e.kVisionQrCode) > 0) {
         serial.writeValue("x", Sentry.QrRcgValue(sentry_qr_info_e.kXValue))
