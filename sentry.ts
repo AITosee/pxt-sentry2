@@ -153,7 +153,7 @@ namespace Sentry {
             err = this.Set(kRegVisionId, vision_id)
             if (err) return err;
 
-            err = this.Set(kRegParamId, param_id + 1)
+            err = this.Set(kRegParamId, param_id)
             if (err) return err;
 
             this.Set(0x70, (param.data1 >> 8) & 0xFF)
@@ -289,7 +289,7 @@ namespace Sentry {
         }
 
         SetParam(vision_id: number, param: sentry_object_t, param_id: number): number {
-            let pkg: number[] = [this.address, protocol.SENTRY_PROTOC_SET_PARAM, vision_id, param_id + 1, param_id + 1];
+            let pkg: number[] = [this.address, protocol.SENTRY_PROTOC_SET_PARAM, vision_id, param_id, param_id];
 
             pkg.push((param.data1 >> 8) & 0xFF); pkg.push(param.data1 & 0xff);
             pkg.push((param.data1 >> 8) & 0xFF); pkg.push(param.data1 & 0xff);
