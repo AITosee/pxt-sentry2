@@ -249,6 +249,19 @@ declare const enum sentry_gen_info_e {
     kLabel
 }
 
+declare const enum sentry_Line_info_e {
+    //% block="X coordinate of end point"
+    kXValue = 1,
+    //% block="Y coordinate of end point"
+    kYValue,
+    //% block="X coordinate of starting point"
+    kWidthValue,
+    //% block="Y coordinate of starting point"
+    kHeightValue,
+    //% block="inclination angle"
+    kLabel
+}
+
 declare const enum sentry_qr_info_e {
     //% block="horizontal"
     kXValue = 1,

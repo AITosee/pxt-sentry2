@@ -652,6 +652,20 @@ namespace Sentry {
     }
 
     /**
+     * Get the result of vision Line value.
+     * @param obj_info Paramters type
+     * @param obj_id:  object index
+     */
+    //% blockId=Sentry_get_Line_value block=" Sentry  algorithm Line| %obj_info|| index %obj_id " color="#2E8B57"
+    //% inlineInputMode=inline
+    //% expandableArgumentMode="enabled"
+    //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
+    //% group="Functions"
+    export function LineValue(obj_info: sentry_Line_info_e, obj_id: number = 1): number {
+        return pSentry.GetValue(sentry_vision_e.kVisionLine, <number>obj_info, obj_id)
+    }
+
+    /**
      * Get the result of vision color recognition.
      * @param obj_info Paramters type
      */
@@ -716,24 +730,6 @@ namespace Sentry {
     //% group="Functions"
     export function Detected20Class(lable: class20_label_e, obj_id: number = 1): boolean {
         return (pSentry.GetValue(sentry_vision_e.kVision20Classes, sentry_obj_info_e.kLabel, obj_id) == lable)
-    }
-
-    /**
-     * image weight
-     */
-    //% blockId=Sentry_get_img_h block="Sentry image weight " color="#2E8B57"
-    //% group="Functions" advanced=true
-    export function Rows() {
-        return pSentry.img_h;
-    }
-
-    /**
-     * image height
-     */
-    //% blockId=Sentry_get_img_w block="Sentry image height " color="#2E8B57"
-    //% group="Functions" advanced=true
-    export function Cols() {
-        return pSentry.img_w;
     }
 }
 

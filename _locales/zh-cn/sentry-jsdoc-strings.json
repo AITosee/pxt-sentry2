@@ -26,6 +26,7 @@
     "Sentry.GetValue": "算法结果",
     "Sentry.GetValue|param|vision_type": "算法类型",
     "Sentry.ColorRcgValue": "颜色识别算法结果",
+    "Sentry.LineValue": "线段检测算法结果",
     "Sentry.QrRcgValue": "二维码识别结果",
     "Sentry.GetQrCodeValue": "二维码识别结果字符串  ",
     "Sentry.Rows": "图像宽度 ",
