@@ -15,15 +15,5 @@
         "_locales/zh-tw/sentry-strings.json",
         "_locales/zh-tw/sentry-jsdoc-strings.json"
     ],
-    "testFiles": [
-        "test.ts"
-    ],
-    "targetVersions": {
-        "target": "5.0.12",
-        "targetId": "microbit"
-    },
-    "supportedTargets": [
-        "microbit"
-    ],
     "preferredEditor": "tsprj"
 }
