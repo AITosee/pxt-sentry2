@@ -22,6 +22,8 @@ declare const enum sentry_vision_e {
     kVisionObjTrack = 10,
     //% block="MotionDetect"
     kVisionMotionDetect = 11,
+    //% block="VisionCustom"
+    kVisionCustom = 12,
     //% blockHidden=true
     kVisionMaxType
 }
@@ -249,6 +251,18 @@ declare const enum sentry_gen_info_e {
     kLabel
 }
 
+declare const enum sentry_custom_info_e {
+    //% block="reult1"
+    kXValue = 1,
+    //% block="reult2"
+    kYValue,
+    //% block="reult3"
+    kWidthValue,
+    //% block="reult4"
+    kHeightValue,
+    //% block="reult5"
+    kLabel
+}
 declare const enum sentry_Line_info_e {
     //% block="X coordinate of end point"
     kXValue = 1,

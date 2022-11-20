@@ -2,12 +2,8 @@
 namespace Sentry {
     // sentry_reg
     const kRegDeviceId = 0x01
-    const kRegRestart = 0x03
     const kRegSensorConfig1 = 0x04
     const kRegLock = 0x05
-    const kRegLed = 0x06
-    const kRegLedLevel = 0x08
-    const kRegCameraConfig1 = 0x10
     const kRegFrameCount = 0x1F
     const kRegVisionId = 0x20
     const kRegVisionConfig1 = 0x21
@@ -611,7 +607,28 @@ namespace Sentry {
         prama.data5 = l;
         while (pSentry.SetParam(sentry_vision_e.kVisionBlob, prama, param_id) != SENTRY_OK);
     }
-
+    /**
+    * Custom prama.
+    * @param param1.
+    * @param param2.
+    * @param param3.
+    * @param param4.
+    * @param param5.
+    */
+    //% blockId=Sentry_vision_custom_param block="set  Sentry  %vision_type|  param1%param1| param2%param2| param3%param3| param4%param4| param5%param5 || 索引  %obj_id  "
+    //% param_id.min=1 param_id.max=25 param_id.defl=1
+    //% vision_type.defl=sentry_vision_e.kVisionCustom
+    //% inlineInputMode=inline
+    //% group="AlgorithmSettings" advanced=true
+    export function SetCustomParam(vision_type: sentry_vision_e, param1: number, param2: number, param3: number, param4: number, param5: number, param_id: number = 1) {
+        let prama = new sentry_object_t();
+        prama.data1 = param1;
+        prama.data2 = param2;
+        prama.data3 = param3;
+        prama.data4 = param4;
+        prama.data5 = param5;
+        while (pSentry.SetParam(vision_type, prama, param_id) != SENTRY_OK);
+    }
     /**
      * Get vision detected number
      * @param type vision type
@@ -636,7 +653,15 @@ namespace Sentry {
     export function GetValue(vision_type: sentry_vision_e, object_info: sentry_gen_info_e, obj_id: number = 1): number {
         return <number>pSentry.GetValue(<number>vision_type, <number>object_info, obj_id);
     }
-
+    //% blockId=Sentry_get_custom_value block=" Sentry  algorithm%vision_type| Recognition%object_inf|| index %obj_id " color="#2E8B57"
+    //% inlineInputMode=inline
+    //% expandableArgumentMode="enabled"
+    //% vision_type.defl=sentry_vision_e.kVisionCustom
+    //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
+    //% group="Functions"
+    export function GetCustomValue(vision_type: sentry_vision_e, object_info: sentry_custom_info_e, obj_id: number = 1): number {
+        return <number>pSentry.GetValue(<number>vision_type, <number>object_info, obj_id);
+    }
     /**
      * Get the result of vision color recognition.
      * @param obj_info Paramters type
