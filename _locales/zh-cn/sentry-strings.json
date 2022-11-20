@@ -126,7 +126,7 @@
     "Sentry.CameraSetShaprness|block": "设置 Sentry图像锐化  %level  ",
     "Sentry.Detected|block": "Sentry算法 %vision_type 检测结果数量  ",
     "Sentry.GetValue|block": "Sentry算法 %vision_type 结果  %object_inf|| 索引  %obj_id  ",
-    "Sentry.GetCustomValue|block": "Sentry算法 %vision_type 自定义结果  %object_inf|| 索引  %obj_id  ",
+    "Sentry.GetCustomValue|block": "Sentry算法 %vision_type  获取  %object_inf|| 索引  %obj_id  ",
     "Sentry.ColorRcgValue|block": "Sentry算法颜色识别结果  %object_inf|| 索引  %obj_id  ",
     "Sentry.LineValue|block": "Sentry算法线段检测结果  %object_inf|| 索引  %obj_id  ",
     "Sentry.QrRcgValue|block": "Sentry二维码识别结果  %object_inf  ",

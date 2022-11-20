@@ -653,7 +653,7 @@ namespace Sentry {
     export function GetValue(vision_type: sentry_vision_e, object_info: sentry_gen_info_e, obj_id: number = 1): number {
         return <number>pSentry.GetValue(<number>vision_type, <number>object_info, obj_id);
     }
-    //% blockId=Sentry_get_custom_value block=" Sentry  algorithm%vision_type| Recognition%object_inf|| index %obj_id " color="#2E8B57"
+    //% blockId=Sentry_get_custom_value block=" Sentry  algorithm%vision_type| get %object_inf|| index %obj_id " color="#2E8B57"
     //% inlineInputMode=inline
     //% expandableArgumentMode="enabled"
     //% vision_type.defl=sentry_vision_e.kVisionCustom
@@ -675,7 +675,6 @@ namespace Sentry {
     export function ColorRcgValue(obj_info: sentry_color_info_e, obj_id: number = 1): number {
         return pSentry.GetValue(sentry_vision_e.kVisionColor, <number>obj_info, obj_id)
     }
-
     /**
      * Get the result of vision Line value.
      * @param obj_info Paramters type
