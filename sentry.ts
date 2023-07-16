@@ -428,13 +428,13 @@ namespace Sentry {
             return SENTRY_OK;
         }
 
-        GetValue(vision_type: sentry_vision_e, obj_info: sentry_obj_info_e, obj_id: number = 1) {
+        GetValue(vision_type: sentry_vision_e, object_info: sentry_obj_info_e, obj_id: number = 1) {
 
-            if (obj_info == sentry_obj_info_e.kStatus) {
+            if (object_info == sentry_obj_info_e.kStatus) {
                 while (this.UpdateResult(vision_type));
             }
 
-            return this.read(vision_type, obj_info, obj_id)
+            return this.read(vision_type, object_info, obj_id)
         }
 
         GetQrCodeValue(): string {
@@ -495,7 +495,7 @@ namespace Sentry {
             return err;
         }
 
-        private read(vision_type: sentry_vision_e, obj_info: sentry_obj_info_e, obj_id: number = 1) {
+        private read(vision_type: sentry_vision_e, object_info: sentry_obj_info_e, obj_id: number = 1) {
 
             if (obj_id > SENTRY_MAX_RESULT || obj_id < 1)
                 return 0;
@@ -505,7 +505,7 @@ namespace Sentry {
             
             obj_id = obj_id - 1;
 
-            switch (obj_info) {
+            switch (object_info) {
                 case sentry_obj_info_e.kStatus:
                     return _vision_states[vision_type - 1].detect;
                 case sentry_obj_info_e.kXValue:
@@ -577,7 +577,7 @@ namespace Sentry {
     * @param w ROI weight.
     * @param h ROI height.
     */
-    //% blockId=Sentry_vision_color_param block="set  Sentry algorithm Color ROI centre x%x| y%y| weight%w| height%h ||param %param index %param_id"
+    //% blockId=Sentry_vision_color_param block="set  Sentry algorithm Color ROI centre x%x| y%y| weight%w| height%h ||param index %param_id"
     //% param_id.min=1 param_id.max=25 param_id.defl=1
     //% inlineInputMode=inline
     //% group="AlgorithmSettings" advanced=true
@@ -596,7 +596,7 @@ namespace Sentry {
     * @param h detecte min height.
     * @param l detecte lable.
     */
-    //% blockId=Sentry_vision_bold_param block="set  Sentry algorithm Bold min weight%w| height%h| lable%l ||param %param index %param_id"
+    //% blockId=Sentry_vision_bold_param block="set  Sentry algorithm Bold min weight%w| height%h| lable%l ||param index %param_id"
     //% param_id.min=1 param_id.max=25 param_id.defl=1
     //% inlineInputMode=inline
     //% group="AlgorithmSettings" advanced=true
@@ -615,7 +615,7 @@ namespace Sentry {
     * @param param4.
     * @param param5.
     */
-    //% blockId=Sentry_vision_custom_param block="set  Sentry  %vision_type|  param1%param1| param2%param2| param3%param3| param4%param4| param5%param5 || 索引  %obj_id  "
+    //% blockId=Sentry_vision_custom_param block="set  Sentry  %vision_type|  param1%param1| param2%param2| param3%param3| param4%param4| param5%param5 || 索引  %param_id "
     //% param_id.min=1 param_id.max=25 param_id.defl=1
     //% vision_type.defl=sentry_vision_e.kVisionCustom
     //% inlineInputMode=inline
@@ -642,10 +642,10 @@ namespace Sentry {
     /**
     * get vision sentry_object_t data, this function will update vision sentry_object_t automatically.
     * @param vision_type: vision type.
-    * @param object_inf:  object information
+    * @param object_info:  object information
     * @param obj_id:  object index
     */
-    //% blockId=Sentry_get_value block=" Sentry  algorithm%vision_type| Recognition%object_inf|| index %obj_id " color="#2E8B57"
+    //% blockId=Sentry_get_value block=" Sentry  algorithm%vision_type| Recognition%object_info|| index %obj_id " color="#2E8B57"
     //% inlineInputMode=inline
     //% expandableArgumentMode="enabled"
     //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
@@ -653,7 +653,7 @@ namespace Sentry {
     export function GetValue(vision_type: sentry_vision_e, object_info: sentry_gen_info_e, obj_id: number = 1): number {
         return <number>pSentry.GetValue(<number>vision_type, <number>object_info, obj_id);
     }
-    //% blockId=Sentry_get_custom_value block=" Sentry  algorithm%vision_type| get %object_inf|| index %obj_id " color="#2E8B57"
+    //% blockId=Sentry_get_custom_value block=" Sentry  algorithm%vision_type| get %object_info|| index %obj_id " color="#2E8B57"
     //% inlineInputMode=inline
     //% expandableArgumentMode="enabled"
     //% vision_type.defl=sentry_vision_e.kVisionCustom
@@ -664,39 +664,39 @@ namespace Sentry {
     }
     /**
      * Get the result of vision color recognition.
-     * @param obj_info Paramters type
+     * @param object_info Paramters type
      * @param obj_id:  object index
      */
-    //% blockId=Sentry_get_color_value block=" Sentry  algorithm Color| Recognition%obj_info|| index %obj_id " color="#2E8B57"
+    //% blockId=Sentry_get_color_value block=" Sentry  algorithm Color| Recognition%object_info|| index %obj_id " color="#2E8B57"
     //% inlineInputMode=inline
     //% expandableArgumentMode="enabled"
     //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
     //% group="Functions"
-    export function ColorRcgValue(obj_info: sentry_color_info_e, obj_id: number = 1): number {
-        return pSentry.GetValue(sentry_vision_e.kVisionColor, <number>obj_info, obj_id)
+    export function ColorRcgValue(object_info: sentry_color_info_e, obj_id: number = 1): number {
+        return pSentry.GetValue(sentry_vision_e.kVisionColor, <number>object_info, obj_id)
     }
     /**
      * Get the result of vision Line value.
-     * @param obj_info Paramters type
+     * @param object_info Paramters type
      * @param obj_id:  object index
      */
-    //% blockId=Sentry_get_Line_value block=" Sentry  algorithm Line| %obj_info|| index %obj_id " color="#2E8B57"
+    //% blockId=Sentry_get_Line_value block=" Sentry  algorithm Line| %object_info|| index %obj_id " color="#2E8B57"
     //% inlineInputMode=inline
     //% expandableArgumentMode="enabled"
     //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
     //% group="Functions"
-    export function LineValue(obj_info: sentry_Line_info_e, obj_id: number = 1): number {
-        return pSentry.GetValue(sentry_vision_e.kVisionLine, <number>obj_info, obj_id)
+    export function LineValue(object_info: sentry_Line_info_e, obj_id: number = 1): number {
+        return pSentry.GetValue(sentry_vision_e.kVisionLine, <number>object_info, obj_id)
     }
 
     /**
      * Get the result of vision color recognition.
-     * @param obj_info Paramters type
+     * @param object_info Paramters type
      */
-    //% blockId=Sentry_get_qrRcg_value  block=" Sentry QrCode Recognition|%obj_info " color="#2E8B57"
+    //% blockId=Sentry_get_qrRcg_value  block=" Sentry QrCode Recognition|%object_info " color="#2E8B57"
     //% group="Functions"
-    export function QrRcgValue(obj_info: sentry_qr_info_e): number {
-        return pSentry.GetValue(sentry_vision_e.kVisionQrCode, <number>obj_info)
+    export function QrRcgValue(object_info: sentry_qr_info_e): number {
+        return pSentry.GetValue(sentry_vision_e.kVisionQrCode, <number>object_info)
     }
 
     /**
