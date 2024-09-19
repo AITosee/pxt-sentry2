@@ -1,4 +1,4 @@
-declare namespace Sentry2VisionSensor {
+declare namespace sentry {
   //% shim=tosee_sentry::sentry2_Begin
   function sentry2_Begin(mode: number, addr: number): number;
 

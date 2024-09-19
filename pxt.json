@@ -1,5 +1,5 @@
 {
-    "name": "Sentry2VisionSensor",
+    "name": "sentry",
     "version": "2.0.0",
     "description": "Sentry2 Vision Sensor",
     "dependencies": {
@@ -33,7 +33,8 @@
         "lib/protoc/protocol_types.h",
         "lib/protoc/sentry_protocol_analysis.h",
         "lib/protoc/SimpleList.h",
-        "_locales/zh-cn/Sentry2VisionSensor-strings.json",
+        "_locales/zh-cn/sentry-strings.json",
+        "_locales/zh-tw/sentry-strings.json",
         "tutorial-info-cache.json"
     ],
     "testFiles": [

@@ -197,7 +197,7 @@ declare const enum sentry2_addr_e {
 }
 
 //% color="#ff6600" icon="\uf085"
-namespace Sentry2VisionSensor {
+namespace sentry {
   const SENTRY_OK = 0x00;
 
   //% shim=tosee_sentry::sentry2_Begin
