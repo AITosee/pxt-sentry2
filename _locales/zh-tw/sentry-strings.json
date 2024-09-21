@@ -1,8 +1,10 @@
 {
   "sentry_vision_e.kVisionColor|block": "顏色識別",
   "sentry_vision_e.kVisionBlob|block": "色塊檢測",
+  "sentry_vision_e.kVisionAprilTag|block": "標簽識別",
   "sentry_vision_e.kVisionBall|block": "球體識別",
   "sentry_vision_e.kVisionLine|block": "線段檢測",
+  "sentry_vision_e.kVisionLearning|block": "深度學習",
   "sentry_vision_e.kVisionCard|block": "卡片識別",
   "sentry_vision_e.kVisionBody|block": "人體檢測",
   "sentry_vision_e.kVisionFace|block": "人臉識別",
@@ -13,8 +15,10 @@
 
   "sentry_vision_e_1.kVisionColor|block": "顏色識別",
   "sentry_vision_e_1.kVisionBlob|block": "色塊檢測",
+  "sentry_vision_e_1.kVisionAprilTag|block": "標簽識別",
   "sentry_vision_e_1.kVisionBall|block": "球體識別",
   "sentry_vision_e_1.kVisionLine|block": "線段檢測",
+  "sentry_vision_e_1.kVisionLearning|block": "深度學習",
   "sentry_vision_e_1.kVisionCard|block": "卡片識別",
   "sentry_vision_e_1.kVisionBody|block": "人體檢測",
   "sentry_vision_e_1.kVisionFace|block": "人臉識別",
@@ -25,8 +29,10 @@
 
   "sentry_vision_e_2.kVisionColor|block": "顏色識別",
   "sentry_vision_e_2.kVisionBlob|block": "色塊檢測",
+  "sentry_vision_e_2.VisionAprilTag|block": "標簽識別",
   "sentry_vision_e_2.kVisionBall|block": "球體識別",
   "sentry_vision_e_2.kVisionLine|block": "線段檢測",
+  "sentry_vision_e_2.VisionLearning|block": "深度學習",
   "sentry_vision_e_2.kVisionCard|block": "卡片識別",
   "sentry_vision_e_2.kVisionBody|block": "人體檢測",
   "sentry_vision_e_2.kVisionFace|block": "人臉識別",
@@ -73,13 +79,13 @@
   "sentry_obj_info_e.kYValue|block": "縱向坐標",
   "sentry_obj_info_e.kWidthValue|block": "寬度",
   "sentry_obj_info_e.kHeightValue|block": "高度",
-  "sentry_obj_info_e.kLabel|block": "標籤",
+  "sentry_obj_info_e.kLabel|block": "標簽",
 
   "sentry.ColorRcgValue|block": "  Sentry2  顏色識別  返回值%object_info 結果%obj_id的 ",
   "sentry_color_info_e.kBValue|block": "紅色分量值",
   "sentry_color_info_e.kGValue|block": "綠色分量值",
   "sentry_color_info_e.kRValue|block": "藍色分量值",
-  "sentry_color_info_e.kLabel|block": "標籤",
+  "sentry_color_info_e.kLabel|block": "標簽",
 
   "sentry.LineValue|block": "  Sentry2  線段檢測  返回值%object_info 結果%obj_id的 ",
   "sentry_Line_info_e.kXValue|block": "終點橫坐標",

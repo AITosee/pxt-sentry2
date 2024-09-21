@@ -35,6 +35,8 @@
         "lib/protoc/SimpleList.h",
         "_locales/zh-cn/sentry-strings.json",
         "_locales/zh-tw/sentry-strings.json",
+        "_locales/zh-cn/sentry-jsdoc-strings.json",
+        "_locales/zh-tw/sentry-jsdoc-strings.json",
         "tutorial-info-cache.json"
     ],
     "testFiles": [
