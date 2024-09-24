@@ -320,7 +320,7 @@ namespace sentry {
     status: sentry2_status,
     vision_type: sentry_vision_e
   ) {
-    while (sentry2_VisionSetStatus(vision_type, status) != SENTRY_OK);
+    while (sentry2_VisionSetStatus(status, vision_type) != SENTRY_OK);
   }
 
   /**
@@ -441,7 +441,7 @@ namespace sentry {
   //% group="Operation Blocks" advanced=false
   //% weight=94
   export function Detected(vision_type: sentry_vision_e): number {
-    return sentry2_GetValue(<number>vision_type);
+    return sentry2_GetValue(<number>vision_type, 0, 1);
   }
 
   /**
