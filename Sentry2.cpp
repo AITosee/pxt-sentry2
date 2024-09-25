@@ -80,6 +80,6 @@ namespace tosee_sentry
     //%
     String sentry2_GetQrCodeValue()
     {
-        return String(sentry2.GetQrCodeValue());
+        return PSTR(sentry2.GetQrCodeValue());
     }
 }

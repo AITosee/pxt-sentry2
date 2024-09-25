@@ -524,7 +524,7 @@ namespace sentry {
     obj_id: number = 1
   ): number {
     return GetValue(
-      <number>sentry_vision_e.kVisionLine,
+        <number>sentry_vision_e.kVisionQrCode,
       <number>object_info,
       obj_id
     );
