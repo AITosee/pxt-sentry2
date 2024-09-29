@@ -22,7 +22,7 @@ declare const enum sentry_vision_e_1 {
   kVisionQrCode = 9,
   //% block="Custom"
   kVisionCustom = 10,
-  //% block="MotionDetect"
+  //% block="Motion"
   kVisionMotionDetect = 11,
   //% blockHidden=true
   kVisionMaxType,
@@ -40,13 +40,11 @@ declare const enum sentry_vision_e_2 {
   //% blockHidden=true
   kVisionLine = 4,
   //% block="Learning"
-  //% blockHidden=true
   kVisionLearning = 5,
   //% block="Card"
   //% blockHidden=true
   kVisionCard = 6,
   //% block="Face"
-  //% blockHidden=true
   kVisionFace = 7,
   //% block="20Classes"
   //% blockHidden=true
@@ -116,9 +114,9 @@ declare const enum sentry_obj_info_e {
   //% block="status"
   //% blockHidden=true
   kStatus = 0,
-  //% block="x-cood"
+  //% block="x-coord"
   kXValue = 1,
-  //% block="y-cood"
+  //% block="y-coord"
   kYValue = 2,
   //% block="width"
   kWidthValue = 3,
@@ -149,13 +147,13 @@ declare const enum sentry_color_info_e {
 }
 
 declare const enum sentry_Line_info_e {
-  //% block="x-cood of ending point"
+  //% block="x-coord of ending point"
   kXValue = 1,
-  //% block="y-cood of ending point"
+  //% block="y-coord of ending point"
   kYValue,
-  //% block="x-cood of starting point"
+  //% block="x-coord of starting point"
   kWidthValue,
-  //% block="y-cood of starting point"
+  //% block="y-coord of starting point"
   kHeightValue,
   //% block="inclination angle"
   kLabel,
@@ -175,9 +173,9 @@ declare const enum sentry_Custom_info_e {
 }
 
 declare const enum sentry_qr_info_e {
-  //% block="x-cood"
+  //% block="x-coord"
   kXValue = 1,
-  //% block="y-cood"
+  //% block="y-coord"
   kYValue,
   //% block="width"
   kWidthValue,
@@ -313,7 +311,7 @@ namespace sentry {
   /**
    * Sentry2 vision enable set.
    */
-  //% blockId=Sentry2_vision_Set block=" Set  Sentry2  %enable| algo%vision_type "
+  //% blockId=Sentry2_vision_Set block=" Set  Sentry2  %enable  algo %vision_type "
   //% group="Settings Blocks"
   //% weight=98
   export function VisionSetStatus(
@@ -328,7 +326,7 @@ namespace sentry {
    * @param vision_type: vision type.
    * @param max_num max prama number.
    */
-  //% blockId=Sentry2_vision_SetParamNum block=" Set  Sentry2  algo%vision_type|  %max_num sets of params"
+  //% blockId=Sentry2_vision_SetParamNum block=" Set  Sentry2  algo%vision_type  %max_num sets of params"
   //% max_num.min=1 max_num.max=25 max_num.defl=1
   //% group="Settings Blocks"
   //% weight=97
@@ -343,7 +341,7 @@ namespace sentry {
    * @param w ROI width.
    * @param h ROI height.
    */
-  //% blockId=Sentry2_vision_color_param block=" Set  Sentry2  algo Color  x-cood%x| y-cood%y| width%w| height%h| paramset%obj_id "
+  //% blockId=Sentry2_vision_color_param block=" Set  Sentry2  algo Color  x-coord%x| y-coord%y| width%w| height%h| paramset%obj_id "
   //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
   //% x.defl=50
   //% y.defl=50
@@ -408,12 +406,14 @@ namespace sentry {
    * @param h param4.
    * @param l param5.
    */
-  //% blockId=Sentry2_vision_custom_param block=" Set  Sentry2  algo Custom  param1%x| param2%y| param3%w| param4%h| param5%l| paramset%obj_id "
+  //% blockId=Sentry2_vision_custom_param block=" Set  Sentry2  algo %vision_type  param1%x| param2%y| param3%w| param4%h| param5%l| paramset%obj_id "
+  //% vision_type.defl=sentry_vision_e_2.kVisionCustom
   //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
   //% inlineInputMode=inline
   //% group="Settings Blocks"
   //% weight=94
   export function SetCustomParam(
+    vision_type: sentry_vision_e_2,
     x: number,
     y: number,
     w: number,
@@ -533,7 +533,7 @@ namespace sentry {
   /**
    * Get the result of vision Qr value string.
    */
-  //% blockId=Sentry2_get_Qrcode_value_string block="  Sentry2  algo QrCode  string  of detecting result" color="#2E8B57"
+  //% blockId=Sentry2_get_Qrcode_value_string block="  Sentry2  algo QrCode  string  of decoding result" color="#2E8B57"
   //% inlineInputMode=inline
   //% expandableArgumentMode="enabled"
   //% obj_id.min=1 obj_id.max=25 obj_id.defl=1

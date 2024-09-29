@@ -75,8 +75,8 @@
   "sentry.Detected|block": "  Sentry2  %vision_type  返回的結果數量 ",
 
   "sentry.GetValue|block": "  Sentry2  %vision_type  返回值%object_info 結果%obj_id的 ",
-  "sentry_obj_info_e.kXValue|block": "橫向坐標",
-  "sentry_obj_info_e.kYValue|block": "縱向坐標",
+  "sentry_obj_info_e.kXValue|block": "橫坐標",
+  "sentry_obj_info_e.kYValue|block": "縱坐標",
   "sentry_obj_info_e.kWidthValue|block": "寬度",
   "sentry_obj_info_e.kHeightValue|block": "高度",
   "sentry_obj_info_e.kLabel|block": "標簽",
@@ -121,15 +121,15 @@
 
   "sentry.DetectedCard|block": " Sentry2  卡片識別  識別到 %lable 結果%obj_id ",
   "card_label_e.kCardForward|block": "向前",
-  "card_label_e.kCardLeft|block": "向左",
-  "card_label_e.kCardRight|block": "向右",
+  "card_label_e.kCardLeft|block": "左转",
+  "card_label_e.kCardRight|block": "右转",
   "card_label_e.kCardTurnAround|block": "掉頭",
   "card_label_e.kCardPark|block": "停車",
   "card_label_e.kCardGreenLight|block": "綠燈",
   "card_label_e.kCardRedLight|block": "紅燈",
-  "card_label_e.kCardSpeed40|block": "速度40",
-  "card_label_e.kCardSpeed60|block": "速度60",
-  "card_label_e.kCardSpeed80|block": "速度80",
+  "card_label_e.kCardSpeed40|block": "限度40",
+  "card_label_e.kCardSpeed60|block": "限度60",
+  "card_label_e.kCardSpeed80|block": "限度80",
 
 
   "sentry.Detected20Class|block": " Sentry2  20類物體  檢測到 %lable 結果%obj_id ",
@@ -155,7 +155,7 @@
   "class20_label_e.kMonitor|block": "顯示器",
 
 
-  "{id:category}sentry": "Sentry2視覺傳感器",
+  "{id:category}Sentry": "Sentry2視覺傳感器",
   "{id:group}Settings Blocks": "設置模塊",
   "{id:group}Operation Blocks": "運行模塊"
 }

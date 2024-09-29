@@ -46,11 +46,11 @@
     kCardGreenLight = 6,
     //% block="Red Light"
     kCardRedLight = 7,
-    //% block="Speed40"
+    //% block="Speed 40"
     kCardSpeed40 = 8,
-    //% block="Speed60"
+    //% block="Speed 60"
     kCardSpeed60 = 9,
-    //% block="Speed80"
+    //% block="Speed 80"
     kCardSpeed80 = 10,
     //% block="✔"
     kCardCheck = 11,

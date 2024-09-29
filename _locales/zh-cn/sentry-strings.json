@@ -32,7 +32,7 @@
   "sentry_vision_e_2.VisionAprilTag|block": "标签识别",
   "sentry_vision_e_2.kVisionBall|block": "球体识别",
   "sentry_vision_e_2.kVisionLine|block": "线条检测",
-  "sentry_vision_e_2.VisionLearning|block": "深度学习",
+  "sentry_vision_e_2.kVisionLearning|block": "深度学习",
   "sentry_vision_e_2.kVisionCard|block": "卡片识别",
   "sentry_vision_e_2.kVisionBody|block": "人体检测",
   "sentry_vision_e_2.kVisionFace|block": "人脸识别",
@@ -60,23 +60,23 @@
   "sentry_led_color_e.kLedWhite|block": "白色",
   "sentry_led_color_e.kLedYellow|block": "黄色",
 
-  "sentry.VisionSetStatus|block": "设置  Sentry2  %enable| 算法%vision_type ",
+  "sentry.VisionSetStatus|block": "设置  Sentry2  %enable  算法%vision_type ",
   "sentry2_status.Disable|block": "关闭",
   "sentry2_status.Enable|block": "开启",
 
-  "sentry.SetParamNum|block": "设置  Sentry  %vision_type  %max_num组参数",
+  "sentry.SetParamNum|block": "设置  Sentry  %vision_type   %max_num组参数",
 
   "sentry.SetColorParam|block": "设置  Sentry2  颜色识别  中心横坐标%x| 中心纵坐标%y| 宽度%w| 高度%h 参数组%obj_id ",
 
   "sentry.SetBlobParam|block": "设置  Sentry2  色块检测  最小宽度%w| 最小高度%h | 颜色%l 参数组%obj_id ",
 
-  "sentry.SetCustomParam|block": "设置  Sentry2 自定义  参数1%x| 参数2%y| 参数3%w| 参数4%h| 参数5%l 参数组%obj_id ",
+  "sentry.SetCustomParam|block": "设置  Sentry2  %vision_type  参数1%x| 参数2%y| 参数3%w| 参数4%h| 参数5%l 参数组%obj_id ",
 
   "sentry.Detected|block": "  Sentry2  %vision_type  返回的结果数量 ",
 
   "sentry.GetValue|block": "  Sentry2  %vision_type  返回值%object_info 结果%obj_id的 ",
-  "sentry_obj_info_e.kXValue|block": "横向坐标",
-  "sentry_obj_info_e.kYValue|block": "纵向坐标",
+  "sentry_obj_info_e.kXValue|block": "横坐标",
+  "sentry_obj_info_e.kYValue|block": "纵坐标",
   "sentry_obj_info_e.kWidthValue|block": "宽度",
   "sentry_obj_info_e.kHeightValue|block": "高度",
   "sentry_obj_info_e.kLabel|block": "标签",
@@ -103,15 +103,15 @@
 
 
   "sentry.QrcodeValue|block": "  Sentry2  二维码  返回值%object_info 结果%obj_id的 ",
-  "sentry_qr_info_e.kXValue|block": "横向坐标",
-  "sentry_qr_info_e.kYValue|block": "纵向坐标",
+  "sentry_qr_info_e.kXValue|block": "横坐标",
+  "sentry_qr_info_e.kYValue|block": "纵坐标",
   "sentry_qr_info_e.kWidthValue|block": "宽度",
   "sentry_qr_info_e.kHeightValue|block": "高度",
 
   "sentry.QrcodeValueString|block": "  Sentry2  二维码  返回的结果字符串",
 
   "sentry.DetectedColor|block": " Sentry2  颜色识别  识别到 %lable 结果%obj_id ",
-  "sentry.DetectedBlob|block": " Sentry2  色块检测  检测到 %lable 结果%obj_id ",
+  "sentry.DetectedBlob|block": " Sentry2  色块检测  检测到 %lable 块 结果%obj_id ",
   "color_label_e.kColorBlack|block": "黑色",
   "color_label_e.kColorWhite|block": "白色",
   "color_label_e.kColorRed|block": "红色",
@@ -120,19 +120,19 @@
   "color_label_e.kColorYellow|block": "黄色",
 
   "sentry.DetectedCard|block": " Sentry2  卡片识别  识别到 %lable 结果%obj_id ",
-  "card_label_e.kCardForward|block": "向前",
-  "card_label_e.kCardLeft|block": "向左",
-  "card_label_e.kCardRight|block": "向右",
+  "card_label_e.kCardForward|block": "前进",
+  "card_label_e.kCardLeft|block": "左转",
+  "card_label_e.kCardRight|block": "右转",
   "card_label_e.kCardTurnAround|block": "掉头",
   "card_label_e.kCardPark|block": "停车",
   "card_label_e.kCardGreenLight|block": "绿灯",
   "card_label_e.kCardRedLight|block": "红灯",
-  "card_label_e.kCardSpeed40|block": "速度40",
-  "card_label_e.kCardSpeed60|block": "速度60",
-  "card_label_e.kCardSpeed80|block": "速度80",
+  "card_label_e.kCardSpeed40|block": "限度 40",
+  "card_label_e.kCardSpeed60|block": "限度 60",
+  "card_label_e.kCardSpeed80|block": "限度 80",
 
 
-  "sentry.Detected20Class|block": " Sentry2  20类物体  检测到 %lable 结果%obj_id ",
+  "sentry.Detected20Class|block": " Sentry2  20类物体  识别到 %lable 结果%obj_id ",
   "class20_label_e.kAirplane|block": "飞机",
   "class20_label_e.kBicycle|block": "自行车",
   "class20_label_e.kBird|block": "鸟",
@@ -155,7 +155,7 @@
   "class20_label_e.kMonitor|block": "显示器",
 
 
-  "{id:category}sentry": "Sentry2视觉传感器",
+  "{id:category}Sentry": "Sentry2视觉传感器",
   "{id:group}Settings Blocks": "设置模块",
   "{id:group}Operation Blocks": "运行模块"
 }
