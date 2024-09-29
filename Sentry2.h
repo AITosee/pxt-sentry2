@@ -150,8 +150,8 @@ namespace tosee_sentry
       kChair = 9,
       //% block="Cow"
       kCow = 10,
-      //% block="Table"
-      kTable = 11,
+      //% block="DiningTable"
+      kDiningTable = 11,
       //% block="Dog"
       kDog = 12,
       //% block="Horse"
@@ -160,16 +160,16 @@ namespace tosee_sentry
       kMotorBike = 14,
       //% block="Person"
       kPerson = 15,
-      //% block="Plant"
-      kPlant = 16,
+      //% block="PottedPlant"
+      kPottedPlant = 16,
       //% block="Sheep"
       kSheep = 17,
       //% block="Sofa"
       kSofa = 18,
       //% block="Train"
       kTrain = 19,
-      //% block="Monitor"
-      kMonitor = 20
+      //% block="TvMonitor"
+      kTvMonitor = 20
     };
     /* SentryFactory color label */
     enum color_label_e
