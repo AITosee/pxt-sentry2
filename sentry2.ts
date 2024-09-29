@@ -449,7 +449,7 @@ namespace sentry {
    * @param object_info Paramters type
    * @param obj_id:  object index
    */
-  //% blockId=Sentry2_get_color_value block="  Sentry2  algo Color|  %object_info of result %obj_id" color="#2E8B57"
+  //% blockId=Sentry2_get_color_value block="  Sentry2  algo Color   %object_info of result %obj_id" color="#2E8B57"
   //% inlineInputMode=inline
   //% expandableArgumentMode="enabled"
   //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
