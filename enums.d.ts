@@ -115,7 +115,7 @@
     kChair = 9,
     //% block="Cow"
     kCow = 10,
-    //% block="Table"
+    //% block="DiningTable"
     kDiningTable = 11,
     //% block="Dog"
     kDog = 12,
@@ -125,7 +125,7 @@
     kMotorBike = 14,
     //% block="Person"
     kPerson = 15,
-    //% block="Plant"
+    //% block="PottedPlant"
     kPottedPlant = 16,
     //% block="Sheep"
     kSheep = 17,
@@ -133,7 +133,7 @@
     kSofa = 18,
     //% block="Train"
     kTrain = 19,
-    //% block="Monitor"
+    //% block="TvMonitor"
     kTvMonitor = 20,
     }
 

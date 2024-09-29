@@ -326,7 +326,7 @@ namespace sentry {
    * @param vision_type: vision type.
    * @param max_num max prama number.
    */
-  //% blockId=Sentry2_vision_SetParamNum block=" Set  Sentry2  algo%vision_type  %max_num sets of params"
+  //% blockId=Sentry2_vision_SetParamNum block=" Set  Sentry2  algo%vision_type   %max_num sets of params"
   //% max_num.min=1 max_num.max=25 max_num.defl=1
   //% group="Settings Blocks"
   //% weight=97
@@ -341,7 +341,7 @@ namespace sentry {
    * @param w ROI width.
    * @param h ROI height.
    */
-  //% blockId=Sentry2_vision_color_param block=" Set  Sentry2  algo Color  x-coord%x| y-coord%y| width%w| height%h| paramset%obj_id "
+  //% blockId=Sentry2_vision_color_param block=" Set  Sentry2  algo Color   x-coord%x| y-coord%y| width%w| height%h| paramset%obj_id "
   //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
   //% x.defl=50
   //% y.defl=50
@@ -406,7 +406,7 @@ namespace sentry {
    * @param h param4.
    * @param l param5.
    */
-  //% blockId=Sentry2_vision_custom_param block=" Set  Sentry2  algo %vision_type  param1%x| param2%y| param3%w| param4%h| param5%l| paramset%obj_id "
+  //% blockId=Sentry2_vision_custom_param block=" Set  Sentry2  algo %vision_type   param1%x| param2%y| param3%w| param4%h| param5%l| paramset%obj_id "
   //% vision_type.defl=sentry_vision_e_2.kVisionCustom
   //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
   //% inlineInputMode=inline
@@ -472,7 +472,7 @@ namespace sentry {
    * @param object_info:  object information
    * @param obj_id:  object index
    */
-  //% blockId=Sentry2_get_value block="  Sentry2  algo%vision_type  %object_info of result %obj_id" color="#2E8B57"
+  //% blockId=Sentry2_get_value block="  Sentry2  algo%vision_type   %object_info of result %obj_id" color="#2E8B57"
   //% inlineInputMode=inline
   //% expandableArgumentMode="enabled"
   //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
@@ -491,7 +491,7 @@ namespace sentry {
    * @param object_info Paramters type
    * @param obj_id:  object index
    */
-  //% blockId=Sentry2_get_Line_value block="  Sentry2  algo Line  |%object_info of result %obj_id" color="#2E8B57"
+  //% blockId=Sentry2_get_Line_value block="  Sentry2  algo Line   %object_info of result %obj_id" color="#2E8B57"
   //% inlineInputMode=inline
   //% expandableArgumentMode="enabled"
   //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
@@ -513,7 +513,7 @@ namespace sentry {
    * @param object_info Paramters type
    * @param obj_id:  object index
    */
-  //% blockId=Sentry2_get_qr_value block="  Sentry2  algo QrCode  |%object_info of result %obj_id" color="#2E8B57"
+  //% blockId=Sentry2_get_qr_value block="  Sentry2  algo QrCode   %object_info of result %obj_id" color="#2E8B57"
   //% inlineInputMode=inline
   //% expandableArgumentMode="enabled"
   //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
@@ -547,7 +547,7 @@ namespace sentry {
    * @param object_info Paramters type
    * @param obj_id:  object index
    */
-  //% blockId=Sentry2_get_Custom_value block="  Sentry2  algo Custom  |%object_info of result %obj_id" color="#2E8B57"
+  //% blockId=Sentry2_get_Custom_value block="  Sentry2  algo Custom   %object_info of result %obj_id" color="#2E8B57"
   //% inlineInputMode=inline
   //% expandableArgumentMode="enabled"
   //% obj_id.min=1 obj_id.max=25 obj_id.defl=1

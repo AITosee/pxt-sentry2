@@ -1,6 +1,6 @@
 {
     "name": "sentry",
-    "version": "2.0.1",
+    "version": "2.0.0",
     "description": "Sentry2 Vision Sensor",
     "dependencies": {
         "core": "*",
