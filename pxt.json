@@ -1,6 +1,6 @@
 {
     "name": "Sentry2 Vision Sensor",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "description": "Sensor designed for the AI education.",
     "dependencies": {
         "core": "*",
