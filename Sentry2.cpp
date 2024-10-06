@@ -52,7 +52,7 @@ namespace tosee_sentry
             param.result_data4 = buff->data[6]<<8|buff->data[7];
             param.result_data5 = buff->data[8]<<8|buff->data[9];
 
-            return sentry2.SetParam((Sentry2::sentry_vision_e)vision_type, &param，param_id);
+            return sentry2.SetParam((Sentry2::sentry_vision_e)vision_type, &param, param_id);
         }
         
         return SENTRY_FAIL;
