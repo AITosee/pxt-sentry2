@@ -1,19 +1,53 @@
 {
-    "name": "Sentry2 Vision Sensor",
-    "version": "1.7.12",
+    "name": "Sentry2VisionSensor",
+    "version": "2.0.2",
     "description": "Sensor designed for the AI education.",
-    "license": "MIT",
     "dependencies": {
-        "core": "*"
+        "core": "*",
+        "microphone": "*"
     },
     "files": [
+        "main.blocks",
+        "main.ts",
         "README.md",
-        "sentry.ts",
         "enums.d.ts",
-        "_locales/zh-cn/sentry-strings.json",
-        "_locales/zh-cn/sentry-jsdoc-strings.json",
-        "_locales/zh-tw/sentry-strings.json",
-        "_locales/zh-tw/sentry-jsdoc-strings.json"
+        "shims.d.ts",
+        "sentry2.ts",
+        "Sentry2.cpp",
+        "Sentry2.h",
+        "lib/SentryFactory.cpp",
+        "lib/SentryFactory.h",
+        "lib/sentry_stream_base.h",
+        "lib/sentry_type.h",
+        "lib/sentry_uart.cpp",
+        "lib/sentry_uart.h",
+        "lib/sentry_i2c.cpp",
+        "lib/sentry_i2c.h",
+        "lib/hardware/hw_sentry_uart.cpp",
+        "lib/hardware/hw_sentry_uart.h",
+        "lib/hardware/hw_sentry_i2c.cpp",
+        "lib/hardware/hw_sentry_i2c.h",
+        "lib/debug/debug_tool.h",
+        "lib/protoc/protocol_analysis.cpp",
+        "lib/protoc/protocol_analysis.h",
+        "lib/protoc/protocol_types.h",
+        "lib/protoc/sentry_protocol_analysis.h",
+        "lib/protoc/SimpleList.h",
+        "_locales/zh-cn/Sentry2VisionSensor-strings.json",
+        "_locales/zh-tw/Sentry2VisionSensor-strings.json",
+        "_locales/zh-cn/Sentry2VisionSensor-jsdoc-strings.json",
+        "_locales/zh-tw/Sentry2VisionSensor-jsdoc-strings.json",
+        "tutorial-info-cache.json"
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "targetVersions": {
+        "target": "7.0.42",
+        "targetId": "microbit"
+    },
+    "supportedTargets": [
+        "microbit"
     ],
     "preferredEditor": "tsprj"
 }

@@ -1,18 +1,8 @@
-let index = 0
-let target_num = 0
-Sentry.Begin(sentry_mode_e.kI2CMode, sentry_addr_e.ADDR1)
-Sentry.VisionSetStatus(SentryStatus.Enable, sentry_vision_e.kVisionCard)
-basic.forever(function () {
-    target_num = Sentry.Detected(sentry_vision_e.kVisionCard)
-    serial.writeValue("target_num", target_num)
-    index = 1
-    for (let index2 = 0; index2 < target_num; index2++) {
-        serial.writeValue("index", index)
-        serial.writeValue("x", Sentry.GetValue(sentry_vision_e.kVisionCard, sentry_gen_info_e.kXValue, index))
-        serial.writeValue("y", Sentry.GetValue(sentry_vision_e.kVisionCard, sentry_gen_info_e.kYValue, index))
-        serial.writeValue("w", Sentry.GetValue(sentry_vision_e.kVisionCard, sentry_gen_info_e.kWidthValue, index))
-        serial.writeValue("h", Sentry.GetValue(sentry_vision_e.kVisionCard, sentry_gen_info_e.kWidthValue, index))
-        serial.writeValue("l", Sentry.GetValue(sentry_vision_e.kVisionCard, sentry_gen_info_e.kLabel, index))
-        index += 1
-    }
-})
+
+Sentry2VisionSensor.Begin(sentry_mode_e.kI2CMode, sentry2_addr_e.ADDR1)
+Sentry2VisionSensor.CameraSetAwb(sentry_camera_white_balance_e.kAutoWhiteBalance)
+Sentry2VisionSensor.VisionSetStatus(sentry2_status.Enable, sentry_vision_e.kVisionColor)
+Sentry2VisionSensor.SetParamNum(sentry_vision_e_2.kVisionColor, 1)
+Sentry2VisionSensor.SetColorParam(50, 50, 3, 4, 1)
+Sentry2VisionSensor.SetBlobParam(3, 4, color_label_e.kColorRed, 1)
+Sentry2VisionSensor.SetCustomParam(0, 0, 0, 0, 0, 1)
