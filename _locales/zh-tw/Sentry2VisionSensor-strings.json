@@ -64,7 +64,7 @@
   "sentry2_status.Disable|block": "關閉",
   "sentry2_status.Enable|block": "開啓",
 
-  "Sentry2VisionSensor.SetParamNum|block": "設置  Sentry  %vision_type   %max_num組參數",
+  "Sentry2VisionSensor.SetParamNum|block": "設置  Sentry2  %vision_type   %max_num組參數",
 
   "Sentry2VisionSensor.SetColorParam|block": "設置  Sentry2  顏色識別  中心橫座標%x| 中心縱座標%y| 寬度%w| 高度%h 參數組%obj_id ",
 
