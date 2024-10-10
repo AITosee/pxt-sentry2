@@ -346,7 +346,7 @@ namespace Sentry2VisionSensor {
    * @param w ROI width.
    * @param h ROI height.
    */
-  //% blockId=Sentry2_vision_color_param block=" Set  Sentry2  algo Color   x-coord%x| y-coord%y| width%w| height%h| paramset%obj_id "
+  //% blockId=Sentry2_vision_color_param block=" Set  Sentry2  algo Color  x-coord%x| y-coord%y| width%w| height%h| paramset%obj_id "
   //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
   //% x.defl=50
   //% y.defl=50
