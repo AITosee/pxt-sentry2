@@ -82,9 +82,9 @@
   "sentry_obj_info_e.kLabel|block": "標籤",
 
   "Sentry2VisionSensor.ColorRcgValue|block": "  Sentry2  顏色識別  返回值%object_info 結果%obj_id的 ",
-  "sentry_color_info_e.kBValue|block": "紅色分量值",
+  "sentry_color_info_e.kRValue|block": "紅色分量值",
   "sentry_color_info_e.kGValue|block": "綠色分量值",
-  "sentry_color_info_e.kRValue|block": "藍色分量值",
+  "sentry_color_info_e.kBValue|block": "藍色分量值",
   "sentry_color_info_e.kLabel|block": "標籤",
 
   "Sentry2VisionSensor.LineValue|block": "  Sentry2  線條檢測  返回值%object_info 結果%obj_id的 ",

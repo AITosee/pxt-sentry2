@@ -17,13 +17,13 @@
     kVisionCard = 6,
     //% block="Face"
     kVisionFace = 7,
-    //% block="20Classes"
+    //% block="20Class"
     kVision20Classes = 8,
     //% block="QrCode"
     kVisionQrCode = 9,
     //% block="Custom"
     kVisionCustom = 10,
-    //% block="MotionDetect"
+    //% block="Motion"
     kVisionMotionDetect = 11,
     //% blockHidden=true
     kVisionMaxType = 12,

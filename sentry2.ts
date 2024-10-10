@@ -15,12 +15,13 @@ declare const enum sentry_vision_e_1 {
   kVisionCard = 6,
   //% block="Face"
   kVisionFace = 7,
-  //% block="20Classes"
+  //% block="20Class"
   kVision20Classes = 8,
   //% block="QrCode"
   //% blockHidden=true
   kVisionQrCode = 9,
   //% block="Custom"
+  //% blockHidden=true
   kVisionCustom = 10,
   //% block="Motion"
   kVisionMotionDetect = 11,
@@ -40,13 +41,15 @@ declare const enum sentry_vision_e_2 {
   //% blockHidden=true
   kVisionLine = 4,
   //% block="Learning"
+  //% blockHidden=true
   kVisionLearning = 5,
   //% block="Card"
   //% blockHidden=true
   kVisionCard = 6,
   //% block="Face"
+  //% blockHidden=true
   kVisionFace = 7,
-  //% block="20Classes"
+  //% block="20Class"
   //% blockHidden=true
   kVision20Classes = 8,
   //% block="QrCode"
@@ -376,7 +379,7 @@ namespace Sentry2VisionSensor {
    * @param h detecte min height.
    * @param l detecte lable.
    */
-  //% blockId=Sentry2_vision_blob_param block=" Set  Sentry2  algo Blob  min-width%w| min-height%h| lable%l| paramset%obj_id "
+  //% blockId=Sentry2_vision_blob_param block=" Set  Sentry2  algo Blob  min-width%w| min-height%h| color%l| paramset%obj_id "
   //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
   //% w.defl=3
   //% h.defl=4
@@ -408,14 +411,12 @@ namespace Sentry2VisionSensor {
    * @param h param4.
    * @param l param5.
    */
-  //% blockId=Sentry2_vision_custom_param block=" Set  Sentry2  algo %vision_type   param1%x| param2%y| param3%w| param4%h| param5%l| paramset%obj_id "
-  //% vision_type.defl=sentry_vision_e_2.kVisionCustom
+  //% blockId=Sentry2_vision_custom_param block=" Set  Sentry2  algo Custom  param1%x| param2%y| param3%w| param4%h| param5%l| paramset%obj_id "
   //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
   //% inlineInputMode=inline
   //% group="Settings Blocks"
   //% weight=94
   export function SetCustomParam(
-    vision_type: sentry_vision_e_2,
     x: number,
     y: number,
     w: number,
@@ -535,7 +536,7 @@ namespace Sentry2VisionSensor {
   /**
    * Get the result of vision Qr value string.
    */
-  //% blockId=Sentry2_get_Qrcode_value_string block="  Sentry2  algo QrCode  string  of decoding result" color="#2E8B57"
+  //% blockId=Sentry2_get_Qrcode_value_string block="  Sentry2  algo QrCode  string of decoding result" color="#2E8B57"
   //% inlineInputMode=inline
   //% expandableArgumentMode="enabled"
   //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
