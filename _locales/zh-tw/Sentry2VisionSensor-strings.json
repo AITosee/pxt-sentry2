@@ -139,7 +139,7 @@
   "class20_label_e.kBoat|block": "船",
   "class20_label_e.kBottle|block": "瓶子",
   "class20_label_e.kBus|block": "公交車",
-  "class20_label_e.kCar|block": "小汽車",
+  "class20_label_e.kCar|block": "汽車",
   "class20_label_e.kCat|block": "貓",
   "class20_label_e.kChair|block": "椅子",
   "class20_label_e.kCow|block": "牛",
@@ -152,7 +152,7 @@
   "class20_label_e.kSheep|block": "羊",
   "class20_label_e.kSofa|block": "沙發",
   "class20_label_e.kTrain|block": "火車",
-  "class20_label_e.kTvMonitor|block": "電視",
+  "class20_label_e.kTvMonitor|block": "监視器",
 
 
   "{id:category}Sentry": "Sentry2視覺傳感器",

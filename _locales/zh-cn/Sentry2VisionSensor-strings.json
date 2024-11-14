@@ -70,7 +70,7 @@
 
   "Sentry2VisionSensor.SetBlobParam|block": "设置  Sentry2  色块检测  最小宽度%w| 最小高度%h | 颜色%l 参数组%obj_id ",
 
-  "Sentry2VisionSensor.SetCustomParam|block": "设置  Sentry2  自定义  参数1%x| 参数2%y| 参数3%w| 参数4%h| 参数5%l 参数组%obj_id ",
+  "Sentry2VisionSensor.SetCustomParam|block": "设置  Sentry2  %vision_type  参数1%x| 参数2%y| 参数3%w| 参数4%h| 参数5%l 参数组%obj_id ",
 
   "Sentry2VisionSensor.Detected|block": "  Sentry2  %vision_type  返回的结果数量 ",
 
@@ -139,7 +139,7 @@
   "class20_label_e.kBoat|block": "船",
   "class20_label_e.kBottle|block": "瓶子",
   "class20_label_e.kBus|block": "公交车",
-  "class20_label_e.kCar|block": "小汽车",
+  "class20_label_e.kCar|block": "汽车",
   "class20_label_e.kCat|block": "猫",
   "class20_label_e.kChair|block": "椅子",
   "class20_label_e.kCow|block": "牛",
@@ -152,7 +152,7 @@
   "class20_label_e.kSheep|block": "羊",
   "class20_label_e.kSofa|block": "沙发",
   "class20_label_e.kTrain|block": "火车",
-  "class20_label_e.kTvMonitor|block": "电视",
+  "class20_label_e.kTvMonitor|block": "监视器",
 
   "{id:group}Settings Blocks": "设置模块",
   "{id:group}Operation Blocks": "运行模块"
