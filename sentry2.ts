@@ -41,13 +41,11 @@ declare const enum sentry_vision_e_2 {
     //% blockHidden=true
     kVisionLine = 4,
     //% block="Learning"
-    //% blockHidden=true
     kVisionLearning = 5,
     //% block="Card"
     //% blockHidden=true
     kVisionCard = 6,
     //% block="Face"
-    //% blockHidden=true
     kVisionFace = 7,
     //% block="20Class"
     //% blockHidden=true
