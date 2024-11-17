@@ -94,7 +94,7 @@
   "sentry_Line_info_e.kHeightValue|block": "起點縱座標",
   "sentry_Line_info_e.kLabel|block": "傾斜角度",
 
-  "Sentry2VisionSensor.CustomValue|block": "  Sentry2  自定義  返回值%object_info 結果%obj_id的 ",
+  "Sentry2VisionSensor.CustomValue|block": "  Sentry2  %vision_type  返回值%object_info 結果%obj_id的 ",
   "sentry_Custom_info_e.kXValue|block": "數據1",
   "sentry_Custom_info_e.kYValue|block": "數據2",
   "sentry_Custom_info_e.kWidthValue|block": "數據3",

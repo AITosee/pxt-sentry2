@@ -550,18 +550,20 @@ namespace Sentry2VisionSensor {
      * @param object_info Paramters type
      * @param obj_id:  object index
      */
-    //% blockId=Sentry2_get_Custom_value block="  Sentry2  algo Custom   %object_info of result %obj_id" color="#2E8B57"
+    //% blockId=Sentry2_get_Custom_value block="  Sentry2  algo %vision_type   %object_info of result %obj_id" color="#2E8B57"
     //% inlineInputMode=inline
     //% expandableArgumentMode="enabled"
+    //% vision_type.defl=sentry_vision_e_2.kVisionCustom
     //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
     //% group="Operation Blocks"
     //% weight=88
     export function CustomValue(
+        vision_type: sentry_vision_e_2,
         object_info: sentry_Custom_info_e,
         obj_id: number = 1
     ): number {
         return GetValue(
-            <number>sentry_vision_e.kVisionCustom,
+            <number>vision_type,
             <number>object_info,
             obj_id
         );
