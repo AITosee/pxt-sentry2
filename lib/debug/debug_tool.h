@@ -8,7 +8,7 @@
 #include <Arduino.h>
 #endif
 #if !defined(SENTRY_DEBUG_ENABLE)
-#define SENTRY_DEBUG_ENABLE 1
+#define SENTRY_DEBUG_ENABLE 0
 #endif
 
 #if SENTRY_DEBUG_ENABLE != 0
@@ -21,7 +21,7 @@
 // LOG_OUTPUT:  1 -> Simple Output
 //              2 -> Complete Output
 #if !defined(LOG_OUTPUT)
-#define LOG_OUTPUT 2
+#define LOG_OUTPUT 0
 #endif
 #endif /* SENTRY_DEBUG_ENABLE != 0 */
 

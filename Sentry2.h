@@ -196,7 +196,6 @@ public:
     uint8_t begin(sentry_mode_e mode = kI2CMode,
                   int set_default = 1)
     {
-        DOPRINTF("mode1:%d\r\n", mode);
         return SentryFactory_Begin(&factory, mode, set_default);
     }
     /**

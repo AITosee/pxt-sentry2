@@ -31,28 +31,34 @@ typedef struct _pkg_t
     uint8_t buf[PROTOCOL_SINGLE_BUFFER_SIZE];
 } pkg_t;
 
-static int serial_read(uint8_t *buffer, int len)
+static int serial_read(uint8_t *pkg_b, int len)
 {
     int ret = 0;
 #ifdef SENTRY_MICRO_BIT
     auto mode = SYNC_SLEEP;
 
-    ret = uBit.serial.read(buffer, len, mode);
+    ret = uBit.serial.read(pkg_b, len, mode);
+#else
+    ret = Serial1.read(pkg_b, len);
 #endif
     return ret > 0;
 }
 
-static void serial_write(const uint8_t *buffer, int len)
+static void serial_write(const uint8_t *pkg_b, int len)
 {
 #if SENTRY_DEBUG_ENABLE && LOG_OUTPUT
+    DOPRINTF("pkg_b[%d]", len);
     for (unsigned int i = 0; i < len; ++i)
     {
-        DOPRINTF("%02x,", buffer[i]);
+        DOPRINTF("%02x ", pkg_b[i]);
     }
+    DOPRINTF("\n");
 #endif
 
 #ifdef SENTRY_MICRO_BIT
-    uBit.serial.send((unsigned char *)buffer, len);
+    uBit.serial.send((unsigned char *)pkg_b, len);
+#else
+    Serial1.write((unsigned char *)pkg_b, len);
 #endif
 }
 
@@ -139,22 +145,22 @@ static int writepkg(pkg_t *pkg)
         return 0;
     }
 
-    int protocol_buf[pkg->len + 4];
-    protocol_buf[0] = SENTRY_PROTOC_START;
-    protocol_buf[1] = 4 + pkg->len;
+    int checksum = SENTRY_PROTOC_START + 4 + pkg->len;
 
-    int checksum = SENTRY_PROTOC_START + protocol_buf[1];
-    for (int i = 0; i < pkg->len; ++i)
+    for (int i = pkg->len-1; i >= 0; i--)
     {
         checksum += pkg->buf[i];
-        protocol_buf[i + 2] = pkg->buf[i];
+        pkg->buf[i+2] = pkg->buf[i];
     }
 
-    checksum &= 0xff;
-    protocol_buf[pkg->len + 2] = checksum;
-    protocol_buf[pkg->len + 3] = SENTRY_PROTOC_END;
+    pkg->buf[0] = SENTRY_PROTOC_START;
+    pkg->buf[1] = 4 + pkg->len;
+    pkg->buf[pkg->len + 2] = checksum & 0xff;
+    pkg->buf[pkg->len + 3] = SENTRY_PROTOC_END;
+    pkg->len += 4;
 
-    serial_write((const uint8_t *)protocol_buf, pkg->len + 4);
+    serial_write(pkg->buf, pkg->len);
+
     return 1;
 }
 

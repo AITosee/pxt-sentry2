@@ -1,1 +1,1 @@
-<xml xmlns="https://developers.google.com/blockly/xml"><variables></variables></xml>
+<xml xmlns="https://developers.google.com/blockly/xml"><variables></variables><block type="pxt-on-start" id="O]?!uTC2]$F7`VAtAPff" x="0" y="0"><statement name="HANDLER"><block type="serial_redirect" id="vUs|DW/k0dhd3DfWvgmA"><field name="tx">SerialPin.P14</field><field name="rx">SerialPin.P13</field><field name="rate">BaudRate.BaudRate115200</field></block></statement></block></xml>
