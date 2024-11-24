@@ -40,11 +40,11 @@ void SentryFactory_Init(SentryFactory *factory, uint8_t address, uint8_t device_
                         sentry_vision_state_t **vision_state, int vision_max_type,
                         int vision_qrcode_type)
 {
-  factory->address = address;
   factory->device_id = device_id;
   factory->vision_max_type = vision_max_type;
   factory->vision_qrcode_type = vision_qrcode_type;
   factory->vision_state = vision_state;
+  factory->stream.address = address;
   factory->mode = kUnknownMode;
   factory->img_w = 0;
   factory->img_h = 0;

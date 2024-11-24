@@ -194,7 +194,7 @@ public:
      *         other: protocol assert fail.
      */
     uint8_t begin(sentry_mode_e mode = kI2CMode,
-                  bool set_default = true)
+                  int set_default = 1)
     {
         return SentryFactory_Begin(&factory, mode, set_default);
     }

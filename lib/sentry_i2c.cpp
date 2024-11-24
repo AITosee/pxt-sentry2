@@ -16,12 +16,13 @@ uint32_t I2CRead(uint8_t address, uint8_t reg_address, uint8_t *temp)
   uBit.i2c.write(address << 1, (BUFFER_TYPE)&reg_address, 1, false);
   // Debug Output
 #if SENTRY_DEBUG_ENABLE && LOG_OUTPUT
-  IPRINTF("[R:%02x,", reg_address);
+  IPRINTF("D:%02x\r\n", address);  
+  IPRINTF("R:%02x", reg_address);
 #endif
   uBit.i2c.read(address << 1, (BUFFER_TYPE)temp, 1, false);
   // Debug Output
 #if SENTRY_DEBUG_ENABLE && LOG_OUTPUT
-  IPRINTF("%02x]\r\n", *temp);
+  IPRINTF("%02x\r\n", *temp);
 #endif
   return SENTRY_OK;
 }
@@ -33,7 +34,7 @@ uint32_t I2CWrite(uint8_t address, uint8_t reg_address, uint8_t value)
   uBit.i2c.write(address << 1, (BUFFER_TYPE)buff, 2, false);
   // Debug Output
 #if SENTRY_DEBUG_ENABLE && LOG_OUTPUT
-  IPRINTF("[W:%02x,%02x]\r\n", reg_address, value);
+  IPRINTF("W:%02x%02x\r\n", reg_address, value);
 #endif
 
   return SENTRY_OK;

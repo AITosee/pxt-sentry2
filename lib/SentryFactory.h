@@ -19,7 +19,6 @@
 #include "sentry_uart.h"
 
 typedef struct {
-    uint8_t address;
     uint8_t device_id;
     int vision_max_type;
     int vision_qrcode_type;
