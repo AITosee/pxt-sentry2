@@ -23,16 +23,7 @@
         "lib/sentry_uart.h",
         "lib/sentry_i2c.cpp",
         "lib/sentry_i2c.h",
-        "lib/hardware/hw_sentry_uart.cpp",
-        "lib/hardware/hw_sentry_uart.h",
-        "lib/hardware/hw_sentry_i2c.cpp",
-        "lib/hardware/hw_sentry_i2c.h",
         "lib/debug/debug_tool.h",
-        "lib/protoc/protocol_analysis.cpp",
-        "lib/protoc/protocol_analysis.h",
-        "lib/protoc/protocol_types.h",
-        "lib/protoc/sentry_protocol_analysis.h",
-        "lib/protoc/SimpleList.h",
         "_locales/zh-cn/Sentry2VisionSensor-strings.json",
         "_locales/zh-tw/Sentry2VisionSensor-strings.json",
         "_locales/zh-cn/Sentry2VisionSensor-jsdoc-strings.json",
@@ -49,5 +40,5 @@
     "supportedTargets": [
         "microbit"
     ],
-    "preferredEditor": "blocksprj"
+    "preferredEditor": "tsprj"
 }

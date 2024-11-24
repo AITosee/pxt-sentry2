@@ -1,14 +1,9 @@
 declare const enum sentry_vision_e_1 {
-    //% block="Color"
-    //% blockHidden=true
-    kVisionColor = 1,
+
     //% block="Blob"
     kVisionBlob = 2,
     //% block="AprilTag"
     kVisionAprilTag = 3,
-    //% block="Line"
-    //% blockHidden=true
-    kVisionLine = 4,
     //% block="Learning"
     kVisionLearning = 5,
     //% block="Card"
@@ -17,12 +12,6 @@ declare const enum sentry_vision_e_1 {
     kVisionFace = 7,
     //% block="20Class"
     kVision20Classes = 8,
-    //% block="QrCode"
-    //% blockHidden=true
-    kVisionQrCode = 9,
-    //% block="Custom"
-    //% blockHidden=true
-    kVisionCustom = 10,
     //% block="Motion"
     kVisionMotionDetect = 11,
     //% blockHidden=true
@@ -34,30 +23,12 @@ declare const enum sentry_vision_e_2 {
     kVisionColor = 1,
     //% block="Blob"
     kVisionBlob = 2,
-    //% block="AprilTag"
-    //% blockHidden=true
-    kVisionAprilTag = 3,
-    //% block="Line"
-    //% blockHidden=true
-    kVisionLine = 4,
     //% block="Learning"
     kVisionLearning = 5,
-    //% block="Card"
-    //% blockHidden=true
-    kVisionCard = 6,
     //% block="Face"
     kVisionFace = 7,
-    //% block="20Class"
-    //% blockHidden=true
-    kVision20Classes = 8,
-    //% block="QrCode"
-    //% blockHidden=true
-    kVisionQrCode = 9,
     //% block="Custom"
     kVisionCustom = 10,
-    //% block="MotionDetect"
-    //% blockHidden=true
-    kVisionMotionDetect = 11,
     //% blockHidden=true
     kVisionMaxType,
 }
@@ -90,9 +61,6 @@ declare const enum sentry_camera_white_balance_e {
     kWhiteLight = 2,
     //% block="YellowLight"
     kYellowLight = 3,
-    //% blockHidden=true
-    //% block="Calibrating"
-    kWhiteBalanceCalibrating = 4,
 }
 
 declare const enum sentry_mode_e {
@@ -100,8 +68,6 @@ declare const enum sentry_mode_e {
     kSerialMode = 0,
     //% block="I2C"
     kI2CMode = 1,
-    //% blockHidden=true
-    kUnknownMode,
 }
 
 declare const enum sentry2_status {
@@ -112,9 +78,6 @@ declare const enum sentry2_status {
 }
 
 declare const enum sentry_obj_info_e {
-    //% block="status"
-    //% blockHidden=true
-    kStatus = 0,
     //% block="x-coord"
     kXValue = 1,
     //% block="y-coord"
@@ -125,15 +88,6 @@ declare const enum sentry_obj_info_e {
     kHeightValue = 4,
     //% block="label"
     kLabel = 5,
-    //% block="red CH value"
-    //% blockHidden=true
-    kRValue = 6,
-    //% block="green CH value"
-    //% blockHidden=true
-    kGValue = 7,
-    //% block="blue CH value"
-    //% blockHidden=true
-    kBValue = 8,
 }
 
 declare const enum sentry_color_info_e {
@@ -482,7 +436,7 @@ namespace Sentry2VisionSensor {
     //% group="Operation Blocks"
     //% weight=92
     export function GetValue(
-        vision_type: sentry_vision_e_1,
+        vision_type: sentry_vision_e,
         object_info: sentry_obj_info_e,
         obj_id: number = 1
     ): number {
@@ -583,7 +537,7 @@ namespace Sentry2VisionSensor {
     ): boolean {
         return (
             GetValue(
-                sentry_vision_e_1.kVisionColor,
+                sentry_vision_e.kVisionColor,
                 sentry_obj_info_e.kLabel,
                 obj_id
             ) == lable
@@ -606,7 +560,7 @@ namespace Sentry2VisionSensor {
     ): boolean {
         return (
             GetValue(
-                sentry_vision_e_1.kVisionBlob,
+                sentry_vision_e.kVisionBlob,
                 sentry_obj_info_e.kLabel,
                 obj_id
             ) == lable
@@ -628,7 +582,7 @@ namespace Sentry2VisionSensor {
     ): boolean {
         return (
             GetValue(
-                sentry_vision_e_1.kVisionCard,
+                sentry_vision_e.kVisionCard,
                 sentry_obj_info_e.kLabel,
                 obj_id
             ) == lable
@@ -649,7 +603,7 @@ namespace Sentry2VisionSensor {
     ): boolean {
         return (
             GetValue(
-                sentry_vision_e_1.kVision20Classes,
+                sentry_vision_e.kVision20Classes,
                 sentry_obj_info_e.kLabel,
                 obj_id
             ) == lable

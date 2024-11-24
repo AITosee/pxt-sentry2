@@ -7,18 +7,7 @@ namespace tosee_sentry
     //%
     int sentry2_Begin(int mode, int addr)
     {
-        if (mode == kI2CMode)
-        {
-            HwSentryI2C::hw_i2c_t communication_port = 0;
-            return sentry2.begin(&communication_port, addr);
-        }
-        else
-        {
-            HwSentryUart::hw_uart_t communication_port = 0;
-            return sentry2.begin(communication_port, addr);
-        }
-
-        return SENTRY_FAIL;
+        return sentry2.begin((sentry_mode_e)mode, (uint8_t)addr);
     }
 
     //%
