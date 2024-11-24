@@ -25,7 +25,7 @@
 #endif
 #endif /* SENTRY_DEBUG_ENABLE != 0 */
 
-#ifdef MICRO_BIT
+#ifdef SENTRY_MICRO_BIT
 #define DOPRINTF(s, ...)                                                  \
     do                                                                    \
     {                                                                     \
