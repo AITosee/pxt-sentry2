@@ -150,12 +150,10 @@ uint8_t SentryFactory_Begin(SentryFactory *factory, sentry_mode_e mode, int set_
   else if (mode == kSerialMode)
   {
     sentry_uart_init(&factory->stream.base);
-    factory->mode = kSerialMode;
   }
   else if (mode == kI2CMode)
   {
     sentry_i2c_init(&factory->stream.base);
-    factory->mode = kI2CMode;
   }
 
   err = SentryFactory_SensorInit(factory, set_default);
