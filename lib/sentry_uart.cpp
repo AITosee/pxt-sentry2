@@ -36,7 +36,7 @@ void sentry_serial_write(const uint8_t *pkg_b, int len);
 #else
 int sentry_serial_read(uint8_t *pkg_b, int len) {
   int ret = 0;
-  auto mode = ASYNC; //SYNC_SLEEP;
+  auto mode = SYNC_SLEEP;
 
   ret = uBit.serial.read(pkg_b, len, mode);
 
