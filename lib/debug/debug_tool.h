@@ -8,12 +8,12 @@
 #include <Arduino.h>
 #endif
 #if !defined(SENTRY_DEBUG_ENABLE)
-#define SENTRY_DEBUG_ENABLE 0
+#define SENTRY_DEBUG_ENABLE 1
 #endif
 
 #if SENTRY_DEBUG_ENABLE != 0
 #if !defined(ERROR_OUTPUT)
-#define ERROR_OUTPUT 0
+#define ERROR_OUTPUT 1
 #endif
 #if !defined(WARNING_OUTPUT)
 #define WARNING_OUTPUT 0
