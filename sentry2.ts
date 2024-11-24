@@ -157,7 +157,7 @@ namespace Sentry2VisionSensor {
 
     //% shim=tosee_sentry::sentry2_Begin
     function sentry2_Begin(mode: number, addr: number): number {
-        console.log("sentry2_Begin " + addr.toString());
+        console.log("sentry2_Begin " + mode.toString());
         return 0;
     }
 

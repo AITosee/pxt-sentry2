@@ -16,12 +16,12 @@
 #define ERROR_OUTPUT 1
 #endif
 #if !defined(WARNING_OUTPUT)
-#define WARNING_OUTPUT 0
+#define WARNING_OUTPUT 1
 #endif
 // LOG_OUTPUT:  1 -> Simple Output
 //              2 -> Complete Output
 #if !defined(LOG_OUTPUT)
-#define LOG_OUTPUT 1
+#define LOG_OUTPUT 2
 #endif
 #endif /* SENTRY_DEBUG_ENABLE != 0 */
 

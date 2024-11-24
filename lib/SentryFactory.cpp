@@ -143,17 +143,23 @@ uint8_t SentryFactory_SensorInit(SentryFactory *factory, int set_default)
 uint8_t SentryFactory_Begin(SentryFactory *factory, sentry_mode_e mode, int set_default)
 {
   sentry_err_t err = SENTRY_OK;
+  DOPRINTF("mode2:%d\r\n", mode);
   if (factory->mode == mode)
   {
     return SENTRY_OK;
   }
-  else if (mode == kSerialMode)
+  
+  if (kSerialMode == mode)
   {
     sentry_uart_init(&factory->stream.base);
   }
-  else if (mode == kI2CMode)
+  else if (kI2CMode == mode)
   {
     sentry_i2c_init(&factory->stream.base);
+  }
+  else
+  {
+      return SENTRY_UNSUPPORT_PARAM;
   }
 
   err = SentryFactory_SensorInit(factory, set_default);
@@ -161,7 +167,7 @@ uint8_t SentryFactory_Begin(SentryFactory *factory, sentry_mode_e mode, int set_
   {
     return err;
   }
-
+  DOPRINTF("mode:%d -> %d\r\n",factory->mode, mode);
   factory->mode = mode;
 
   return err;

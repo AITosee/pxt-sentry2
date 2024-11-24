@@ -47,7 +47,7 @@ static void serial_write(const uint8_t *buffer, int len)
 #if SENTRY_DEBUG_ENABLE && LOG_OUTPUT
     for (unsigned int i = 0; i < len; ++i)
     {
-        printf("%02x,", buffer[i]);
+        DOPRINTF("%02x,", buffer[i]);
     }
 #endif
 
