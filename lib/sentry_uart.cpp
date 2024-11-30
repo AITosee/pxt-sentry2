@@ -30,33 +30,10 @@ typedef struct _pkg_t {
   uint8_t buf[PROTOCOL_SINGLE_BUFFER_SIZE];
 } pkg_t;
 
-#ifndef SENTRY_MICRO_BIT
-int sentry_serial_read(uint8_t *pkg_b, int len);
-void sentry_serial_write(const uint8_t *pkg_b, int len);
-#else
-int sentry_serial_read(uint8_t *pkg_b, int len) {
-  int ret = 0;
-  auto mode = SYNC_SLEEP;
 
-  ret = uBit.serial.read(pkg_b, len, mode);
+extern int sentry_serial_read(uint8_t *pkg_b, int len);
+extern void sentry_serial_write(const uint8_t *pkg_b, int len);
 
-#if SENTRY_DEBUG_ENABLE && LOG_OUTPUT
-  DOPRINTF("R%d %02x\n", ret, pkg_b[0]);
-#endif
-  return ret > 0 ? 1 : 0;
-}
-
-void sentry_serial_write(const uint8_t *pkg_b, int len) {
-#if SENTRY_DEBUG_ENABLE && LOG_OUTPUT
-  DOPRINTF("pkg_b[%d]", len);
-  for (unsigned int i = 0; i < len; ++i) {
-    DOPRINTF("%02x ", pkg_b[i]);
-  }
-  DOPRINTF("\n");
-#endif
-  uBit.serial.send((unsigned char *)pkg_b, len);
-}
-#endif
 
 static int readpkg(pkg_t *pkg, int timeout) {
   int start_receive = 0;
@@ -117,7 +94,7 @@ static int readpkg(pkg_t *pkg, int timeout) {
     }
 
 #ifdef SENTRY_MICRO_BIT
-    fiber_sleep(5);  // Sleep for 5 milliseconds
+    //usleep(5000);  // Sleep for 5 milliseconds
 #endif
   }
 
@@ -330,7 +307,7 @@ static sentry_err_t sentry_uart_read_qrcode(uint8_t address, int vision_type, se
     if (pkg.len > 0) {
 #if SENTRY_DEBUG_ENABLE && LOG_OUTPUT
       DOPRINTF("pkg_r[%d]", pkg.len);
-      for (unsigned int i = 0; i < pkg.len; ++i) {
+      for (int i = 0; i < pkg.len; ++i) {
         DOPRINTF("%02x ", pkg.buf[i]);
       }
       DOPRINTF("\n");
@@ -368,7 +345,7 @@ static sentry_err_t sentry_uart_read_qrcode(uint8_t address, int vision_type, se
       return SENTRY_READ_TIMEOUT;
     }
   }
-  return SENTRY_OK;
+  return err;
 }
 
 static sentry_err_t sentry_uart_write(uint8_t address, int vision_type, const sentry_vision_state_t *vision_state) {
