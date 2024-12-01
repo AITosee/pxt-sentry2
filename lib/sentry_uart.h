@@ -14,37 +14,10 @@
 
 #ifndef SENTRY_UART_H_
 #define SENTRY_UART_H_
-
-#include "hardware/hw_sentry_uart.h"
-#include "protoc/sentry_protocol_analysis.h"
 #include "sentry_stream_base.h"
 
-namespace tosee_sentry {
+// 初始化函数
+void sentry_uart_init(sentry_stream_base_t* stream);
 
-class SentryUart
-    : public SentryStreamBase,
-      SentryPtotocolAnalysis<HwSentryUart, HwSentryUart::hw_uart_t> {
- public:
-  SentryUart(HwSentryUart::hw_uart_t hw_port, uint32_t address);
-  virtual ~SentryUart();
-  SentryUart(const SentryUart&) = delete;
-  SentryUart& operator=(const SentryUart&) = delete;
-
-  sentry_err_t Get(const uint8_t reg_address, uint8_t* value) override;
-  sentry_err_t Set(const uint8_t reg_address, const uint8_t value) override;
-  sentry_err_t SetParam(int vision_type, sentry_object_t* param,
-                        int param_id) override;
-  sentry_err_t Read(int vision_type,
-                    sentry_vision_state_t* vision_state) override;
-  sentry_err_t ReadQrCode(int vision_type,
-                          sentry_qrcode_state_t* qrcode) override;
-  sentry_err_t Write(int vision_type,
-                     const sentry_vision_state_t* vision_state) override;
-
- private:
- protected:
-};
-
-}  // namespace tosee_sentry
 
 #endif /* SENTRY_UART_H_ */

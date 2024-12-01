@@ -2,10 +2,12 @@
 #define DEBUG_TOOL_H_
 
 #include <stdio.h>
-#include "pxt.h"
+
+#define SENTRY_DEBUG_ENABLE 1
+#define LOG_OUTPUT 1
 
 #if !defined(SENTRY_DEBUG_ENABLE)
-#define SENTRY_DEBUG_ENABLE 1
+#define SENTRY_DEBUG_ENABLE 0
 #endif
 
 #if SENTRY_DEBUG_ENABLE != 0
@@ -18,17 +20,20 @@
 // LOG_OUTPUT:  1 -> Simple Output
 //              2 -> Complete Output
 #if !defined(LOG_OUTPUT)
-#define LOG_OUTPUT 1
+#define LOG_OUTPUT 0
 #endif
 #endif /* SENTRY_DEBUG_ENABLE != 0 */
+
+extern void sentry_debug_send(uint8_t *buffer, int bufferLen);
 
 #define DOPRINTF(s, ...)                                                  \
     do                                                                    \
     {                                                                     \
         uint8_t buffer[300];                                              \
         int written = snprintf((char*)buffer, sizeof(buffer), s, ##__VA_ARGS__); \
-        uBit.serial.send(buffer, written);                                \
+        sentry_debug_send(buffer, written);                                \
     } while (0)
+
 
 #if LOG_OUTPUT != 0
 #define IPRINTF(s, ...) DOPRINTF(s, ##__VA_ARGS__)
