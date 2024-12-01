@@ -1,6 +1,6 @@
 declare namespace Sentry2VisionSensor {
   //% shim=tosee_sentry::sentry2_Begin
-  function sentry2_Begin(mode: number, addr: number): number;
+    function sentry2_Begin(mode: number, addr: number, buad: number, user_serial: number): number;
 
   //% shim=tosee_sentry::sentry2_LedSetColor
   function sentry2_LedSetColor(

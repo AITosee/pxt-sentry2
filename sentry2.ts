@@ -156,7 +156,7 @@ namespace Sentry2VisionSensor {
     const SENTRY_OK = 0x00;
 
     //% shim=tosee_sentry::sentry2_Begin
-    function sentry2_Begin(mode: number, addr: number): number {
+    function sentry2_Begin(mode: number, addr: number, buad: number, user_serial: number): number {
         console.log("sentry2_Begin " + mode.toString());
         return 0;
     }
@@ -226,7 +226,7 @@ namespace Sentry2VisionSensor {
     //% group="Settings Blocks"
     //% weight=100
     export function Begin(mode: sentry_mode_e, addr: sentry2_addr_e) {
-        while (sentry2_Begin(mode, addr) != SENTRY_OK);
+        while (sentry2_Begin(mode, addr, 38400, 1) != SENTRY_OK);
     }
 
     /**

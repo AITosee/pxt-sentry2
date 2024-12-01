@@ -38,7 +38,7 @@ extern void sentry_serial_write(const uint8_t *pkg_b, int len);
 static int readpkg(pkg_t *pkg, int timeout) {
   int start_receive = 0;
   int timeout_t = timeout;
-  int index = 0;
+  int index = 0,read_len = 1;
 
   memset(pkg, 0, sizeof(pkg_t));
 
@@ -58,44 +58,59 @@ static int readpkg(pkg_t *pkg, int timeout) {
         continue;
       } else {
         timeout_t = timeout;
+        index += 1;
       }
     }
 
-    switch (pkg->buf[index]) {
+    switch (pkg->buf[index-1]) {
       case SENTRY_PROTOC_START:
         start_receive = 1;
+        read_len = 1;
         break;
       case SENTRY_PROTOC_END:
-        if (start_receive && (pkg->buf[1] == index + 1)) {
-          int checksum = SENTRY_PROTOC_START + pkg->buf[1];
-          for (int i = 1; i <= index; ++i) {
+        if (start_receive && (pkg->buf[1] == index)) {
+#if SENTRY_DEBUG_ENABLE && LOG_OUTPUT
+            DOPRINTF("pkg_r[%d]:", index);
+            for (int i = 0; i < index; ++i) {
+                DOPRINTF("%x ", pkg->buf[i]);
+            }
+            DOPRINTF("\n");
+#endif
+          int checksum = 0;
+
+          for (int i = 0; i < index-2; ++i) {
             checksum += pkg->buf[i];
           }
+
           checksum &= 0xff;
 
-          if (pkg->buf[index - 1] != checksum) {
-            pkg->buf[2] = SENTRY_PROTOC_CHECK_ERROR;
+          if (pkg->buf[index - 2] != checksum) {
+            pkg->buf[0] = SENTRY_PROTOC_CHECK_ERROR;
+#if SENTRY_DEBUG_ENABLE && LOG_OUTPUT
+            DOPRINTF("Check error!\n");
+#endif
           }
-
-          pkg->len = pkg->buf[1] - 5;
-          memmove(pkg->buf, pkg->buf + 3, pkg->len);
+          else{
+            pkg->len = pkg->buf[1] - 5;
+            memmove(pkg->buf, pkg->buf + 3, pkg->len);
+          }
           return 1;
         }
         break;
       default:
+        if(index == 2)
+        {
+            read_len = pkg->buf[1]-2;
+        }
         break;
     }
 
-    if (start_receive) {
-      index++;
-      if (sentry_serial_read(&pkg->buf[index], 1)) {
+    if (start_receive) {  
+      if (sentry_serial_read(&pkg->buf[index], read_len)) {
         timeout_t = timeout;
+        index+=read_len;
       }
     }
-
-#ifdef SENTRY_MICRO_BIT
-    //usleep(5000);  // Sleep for 5 milliseconds
-#endif
   }
 
   return 0;
@@ -127,7 +142,7 @@ static int writepkg(pkg_t *pkg) {
 // 实现函数
 static sentry_err_t sentry_uart_get(uint8_t address, const uint8_t reg_address, uint8_t *value) {
   uint8_t try_time = 0;
-  sentry_err_t err;
+
   for (;;) {
     pkg_t pkg = { 3, { address, SENTRY_PROTOC_COMMADN_GET, reg_address } };
 
@@ -156,7 +171,7 @@ static sentry_err_t sentry_uart_get(uint8_t address, const uint8_t reg_address, 
 
 static sentry_err_t sentry_uart_set(uint8_t address, const uint8_t reg_address, const uint8_t value) {
   uint8_t try_time = 0;
-  sentry_err_t err;
+
   for (;;) {
     pkg_t pkg = { 4, { address, SENTRY_PROTOC_COMMADN_SET, reg_address, value } };
 
@@ -247,13 +262,6 @@ static sentry_err_t sentry_uart_read(uint8_t address, int vision_type, sentry_vi
       return SENTRY_READ_TIMEOUT;
     }
     if (pkg.len > 0) {
-#if SENTRY_DEBUG_ENABLE && LOG_OUTPUT
-      DOPRINTF("pkg_r[%d]", pkg.len);
-      for (unsigned int i = 0; i < pkg.len; ++i) {
-        DOPRINTF("%02x ", pkg.buf[i]);
-      }
-      DOPRINTF("\n");
-#endif
       if (pkg.buf[0] == SENTRY_PROTOC_OK || pkg.buf[0] == SENTRY_PROTOC_RESULT_NOT_END || pkg.buf[3] == vision_type) {
         if (pkg.buf[1] == SENTRY_PROTOC_GET_RESULT) {
           vision_state->frame = pkg.buf[2];
@@ -305,13 +313,6 @@ static sentry_err_t sentry_uart_read_qrcode(uint8_t address, int vision_type, se
       return SENTRY_READ_TIMEOUT;
     }
     if (pkg.len > 0) {
-#if SENTRY_DEBUG_ENABLE && LOG_OUTPUT
-      DOPRINTF("pkg_r[%d]", pkg.len);
-      for (int i = 0; i < pkg.len; ++i) {
-        DOPRINTF("%02x ", pkg.buf[i]);
-      }
-      DOPRINTF("\n");
-#endif
       if (pkg.buf[0] == SENTRY_PROTOC_OK || pkg.buf[3] == vision_type) {
         if (pkg.buf[1] == SENTRY_PROTOC_GET_RESULT) {
           qrcode->frame = pkg.buf[2];
