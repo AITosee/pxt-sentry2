@@ -3,8 +3,8 @@
 
 #include <stdio.h>
 
-#define SENTRY_DEBUG_ENABLE 1
-#define LOG_OUTPUT 1
+#define SENTRY_DEBUG_ENABLE 0
+#define LOG_OUTPUT 0
 
 #if !defined(SENTRY_DEBUG_ENABLE)
 #define SENTRY_DEBUG_ENABLE 0
