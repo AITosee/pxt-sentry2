@@ -24,22 +24,33 @@ function kVisionColor() {
     Sentry2VisionSensor.SetColorParam(80, 50, 3, 4, 4)
     while (true) {
         count = Sentry2VisionSensor.Detected(sentry_vision_e.kVisionColor)
-        serial.writeValue("count", count)
         if (count) {
+            serial.redirectToUSB()
+            serial.writeValue("count", count)
             for (let index = 0; index < count; index++) {
                 serial.writeValue("l", Sentry2VisionSensor.ColorRcgValue(sentry_color_info_e.kLabel, 1))
                 serial.writeValue("r", Sentry2VisionSensor.ColorRcgValue(sentry_color_info_e.kRValue, 1))
                 serial.writeValue("g", Sentry2VisionSensor.ColorRcgValue(sentry_color_info_e.kGValue, 1))
                 serial.writeValue("b", Sentry2VisionSensor.ColorRcgValue(sentry_color_info_e.kBValue, 1))
             }
+            serial.redirect(
+                SerialPin.P14,
+                SerialPin.P13,
+                BaudRate.BaudRate9600
+            )
         }
     }
     Sentry2VisionSensor.VisionSetStatus(sentry2_status.Disable, sentry_vision_e.kVisionColor)
 }
 let count = 0
+serial.redirect(
+    SerialPin.P14,
+    SerialPin.P13,
+    BaudRate.BaudRate9600
+)
 Sentry2VisionSensor.Begin(sentry_mode_e.kSerialMode, sentry2_addr_e.ADDR1)
 basic.forever(function () {
-    kVisionQrCode()
     kVisionColor()
     basic.pause(1000)
+    kVisionQrCode()
 })
