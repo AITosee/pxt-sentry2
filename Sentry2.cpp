@@ -135,7 +135,7 @@ int sentry_serial_read(uint8_t *pkg_b, int len)
         if(ret <= 0)
         {
             pkg_b[0] = 0;
-            fiber_sleep(5);
+            fiber_sleep(2);
         }
     }
     else{
@@ -202,5 +202,7 @@ void sentry_serial_write(const uint8_t *pkg_b, int len)
 }
 
 void sentry_debug_send(uint8_t *buffer, int bufferLen) {
+#if SENTRY_DEBUG_ENABLE && LOG_OUTPUT    
   uBit.serial.send((unsigned char *)buffer, bufferLen);
+#endif
 }
