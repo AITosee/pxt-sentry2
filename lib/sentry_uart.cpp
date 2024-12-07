@@ -44,7 +44,7 @@ static int readpkg(pkg_t *pkg, int timeout) {
 
   while (1) {
 #ifdef SENTRY_MICRO_BIT
-    timeout_t -= 5;
+    timeout_t -= 40;
 #else
     timeout_t -= 900;
 #endif
