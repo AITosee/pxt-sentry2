@@ -226,7 +226,7 @@ namespace Sentry2VisionSensor {
     //% group="Settings Blocks"
     //% weight=100
     export function Begin(mode: sentry_mode_e, addr: sentry2_addr_e) {
-        while (sentry2_Begin(mode, addr, 38400, 1) != SENTRY_OK);
+        while (sentry2_Begin(mode, addr, 9600, 0) != SENTRY_OK);
     }
 
     /**
