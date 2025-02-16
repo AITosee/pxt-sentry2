@@ -33,6 +33,17 @@ declare const enum sentry_vision_e_2 {
     kVisionMaxType,
 }
 
+declare const enum sentry_vision_e_3 {
+    //% block="Color"
+    kVisionColor = 1,
+    //% block="Blob"
+    kVisionBlob = 2,
+    //% block="Custom"
+    kVisionCustom = 10,
+    //% blockHidden=true
+    kVisionMaxType,
+}
+
 declare const enum sentry_led_color_e {
     //% block="off"
     kLedClose = 0,
@@ -287,7 +298,7 @@ namespace Sentry2VisionSensor {
     //% max_num.min=1 max_num.max=25 max_num.defl=1
     //% group="Settings Blocks"
     //% weight=97
-    export function SetParamNum(vision_type: sentry_vision_e_2, max_num: number) {
+    export function SetParamNum(vision_type: sentry_vision_e_3, max_num: number) {
         while (sentry2_SetParamNum(<number>vision_type, max_num) != SENTRY_OK);
     }
 

@@ -17,7 +17,7 @@ function kVisionQrCode() {
 }
 function kVisionColor() {
     Sentry2VisionSensor.VisionSetStatus(sentry2_status.Enable, sentry_vision_e.kVisionColor)
-    Sentry2VisionSensor.SetParamNum(sentry_vision_e_2.kVisionColor, 4)
+    Sentry2VisionSensor.SetParamNum(sentry_vision_e_3.kVisionColor, 4)
     Sentry2VisionSensor.SetColorParam(10, 50, 3, 4, 1)
     Sentry2VisionSensor.SetColorParam(40, 50, 3, 4, 2)
     Sentry2VisionSensor.SetColorParam(60, 50, 3, 4, 3)
