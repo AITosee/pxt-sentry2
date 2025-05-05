@@ -1,5 +1,7 @@
 declare const enum sentry_vision_e_1 {
-
+    //% block="Color"
+    //% blockHidden=true
+    kVisionColor = 1,
     //% block="Blob"
     kVisionBlob = 2,
     //% block="AprilTag"
@@ -447,7 +449,7 @@ namespace Sentry2VisionSensor {
     //% group="Operation Blocks"
     //% weight=92
     export function GetValue(
-        vision_type: sentry_vision_e,
+        vision_type: sentry_vision_e_1,
         object_info: sentry_obj_info_e,
         obj_id: number = 1
     ): number {
@@ -548,7 +550,7 @@ namespace Sentry2VisionSensor {
     ): boolean {
         return (
             GetValue(
-                sentry_vision_e.kVisionColor,
+                sentry_vision_e_1.kVisionColor,
                 sentry_obj_info_e.kLabel,
                 obj_id
             ) == lable
@@ -571,7 +573,7 @@ namespace Sentry2VisionSensor {
     ): boolean {
         return (
             GetValue(
-                sentry_vision_e.kVisionBlob,
+                sentry_vision_e_1.kVisionBlob,
                 sentry_obj_info_e.kLabel,
                 obj_id
             ) == lable
@@ -593,7 +595,7 @@ namespace Sentry2VisionSensor {
     ): boolean {
         return (
             GetValue(
-                sentry_vision_e.kVisionCard,
+                sentry_vision_e_1.kVisionCard,
                 sentry_obj_info_e.kLabel,
                 obj_id
             ) == lable
@@ -614,7 +616,7 @@ namespace Sentry2VisionSensor {
     ): boolean {
         return (
             GetValue(
-                sentry_vision_e.kVision20Classes,
+                sentry_vision_e_1.kVision20Classes,
                 sentry_obj_info_e.kLabel,
                 obj_id
             ) == lable
