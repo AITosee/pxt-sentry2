@@ -52,7 +52,7 @@
     "sentry_vision_e_3.kVisionCustom|block": "自定义",
     "sentry_vision_e_3.kVisionMotionDetect|block": "运动物体",
     "Sentry2VisionSensor.Begin|block": "初始化  Sentry2  端口%mode |地址%addr ",
-    "Sentry2VisionSensor.CameraSetAwb|block": "设置 Sentry2  白平衡模式  %wb  ",
+    "Sentry2VisionSensor.CameraSetAwb|block": "设置  Sentry2  白平衡模式  %wb  ",
     "sentry_camera_white_balance_e.kAutoWhiteBalance|block": "自动",
     "sentry_camera_white_balance_e.kLockWhiteBalance|block": "锁定",
     "sentry_camera_white_balance_e.kWhiteLight|block": "白光",
